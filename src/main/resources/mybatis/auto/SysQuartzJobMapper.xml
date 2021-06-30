@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.v2.mapper.auto.SysQuartzJobMapper">
+  <resultMap id="BaseResultMap" type="com.fc.v2.model.auto.SysQuartzJob">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="jobName" jdbcType="VARCHAR" property="jobName" />
+    <result column="jobGroup" jdbcType="VARCHAR" property="jobGroup" />
+    <result column="invokeTarget" jdbcType="VARCHAR" property="invokeTarget" />
+    <result column="cronExpression" jdbcType="VARCHAR" property="cronExpression" />
+    <result column="misfirePolicy" jdbcType="VARCHAR" property="misfirePolicy" />
+    <result column="concurrent" jdbcType="VARCHAR" property="concurrent" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+<sql id="Base_Column_List">
+	  	  	      	id,
+       	  	      	jobName,
+       	  	      	jobGroup,
+       	  	      	invokeTarget,
+       	  	      	cronExpression,
+       	  	      	misfirePolicy,
+       	  	      	concurrent,
+       	  	    	  	status
+       	</sql>
+  <select id="selectByExample" parameterType="com.fc.v2.model.auto.SysQuartzJobExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sys_quartz_job
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_quartz_job
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sys_quartz_job
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fc.v2.model.auto.SysQuartzJobExample">
+    delete from t_sys_quartz_job
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <insert id="insert" parameterType="com.fc.v2.model.auto.SysQuartzJob">
+    insert into t_sys_quartz_job (
+      	  	       id,
+       	  	       jobName,
+       	  	       jobGroup,
+       	  	       invokeTarget,
+       	  	       cronExpression,
+       	  	       misfirePolicy,
+       	  	       concurrent,
+       	  	    	  status
+       	    )
+    values (
+	  	  	      	#{id,jdbcType=VARCHAR},
+       	  	      	#{jobName,jdbcType=VARCHAR},
+       	  	      	#{jobGroup,jdbcType=VARCHAR},
+       	  	      	#{invokeTarget,jdbcType=VARCHAR},
+       	  	      	#{cronExpression,jdbcType=VARCHAR},
+       	  	      	#{misfirePolicy,jdbcType=VARCHAR},
+       	  	      	#{concurrent,jdbcType=VARCHAR},
+       	  	    	  #{status,jdbcType=INTEGER}
+       	    )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.fc.v2.model.auto.SysQuartzJob">
+    insert into t_sys_quartz_job
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+          
+      <if test="id != null">
+        id,
+      </if>
+      
+         
+      <if test="jobName != null">
+        jobName,
+      </if>
+      
+         
+      <if test="jobGroup != null">
+        jobGroup,
+      </if>
+      
+         
+      <if test="invokeTarget != null">
+        invokeTarget,
+      </if>
+      
+         
+      <if test="cronExpression != null">
+        cronExpression,
+      </if>
+      
+         
+      <if test="misfirePolicy != null">
+        misfirePolicy,
+      </if>
+      
+         
+      <if test="concurrent != null">
+        concurrent,
+      </if>
+      
+         
+      <if test="status != null">
+        status,
+      </if>
+      
+         </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+          <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+          <if test="jobName != null">
+        #{jobName,jdbcType=VARCHAR},
+      </if>
+          <if test="jobGroup != null">
+        #{jobGroup,jdbcType=VARCHAR},
+      </if>
+          <if test="invokeTarget != null">
+        #{invokeTarget,jdbcType=VARCHAR},
+      </if>
+          <if test="cronExpression != null">
+        #{cronExpression,jdbcType=VARCHAR},
+      </if>
+          <if test="misfirePolicy != null">
+        #{misfirePolicy,jdbcType=VARCHAR},
+      </if>
+          <if test="concurrent != null">
+        #{concurrent,jdbcType=VARCHAR},
+      </if>
+          <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+        </trim>
+  </insert>
+  
+  <select id="countByExample" parameterType="com.fc.v2.model.auto.SysQuartzJobExample" resultType="java.lang.Long">
+    select count(*) from t_sys_quartz_job
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_sys_quartz_job
+    <set>
+          <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+          <if test="record.jobName != null">
+        jobName = #{record.jobName,jdbcType=VARCHAR},
+      </if>
+          <if test="record.jobGroup != null">
+        jobGroup = #{record.jobGroup,jdbcType=VARCHAR},
+      </if>
+          <if test="record.invokeTarget != null">
+        invokeTarget = #{record.invokeTarget,jdbcType=VARCHAR},
+      </if>
+          <if test="record.cronExpression != null">
+        cronExpression = #{record.cronExpression,jdbcType=VARCHAR},
+      </if>
+          <if test="record.misfirePolicy != null">
+        misfirePolicy = #{record.misfirePolicy,jdbcType=VARCHAR},
+      </if>
+          <if test="record.concurrent != null">
+        concurrent = #{record.concurrent,jdbcType=VARCHAR},
+      </if>
+          <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+         
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+  <update id="updateByExample" parameterType="map">
+    update t_sys_quartz_job
+    set
+            	     	 id = #{record.id,jdbcType=VARCHAR},
+    	         	     	 jobName = #{record.jobName,jdbcType=VARCHAR},
+    	         	     	 jobGroup = #{record.jobGroup,jdbcType=VARCHAR},
+    	         	     	 invokeTarget = #{record.invokeTarget,jdbcType=VARCHAR},
+    	         	     	 cronExpression = #{record.cronExpression,jdbcType=VARCHAR},
+    	         	     	 misfirePolicy = #{record.misfirePolicy,jdbcType=VARCHAR},
+    	         	     	 concurrent = #{record.concurrent,jdbcType=VARCHAR},
+    	         	     	 status = #{record.status,jdbcType=INTEGER}
+    	         <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+      <update id="updateByPrimaryKeySelective" parameterType="com.fc.v2.model.auto.SysQuartzJob">
+    update t_sys_quartz_job
+    <set>
+      <if test="jobName != null">
+        jobName = #{jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobGroup != null">
+        jobGroup = #{jobGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeTarget != null">
+        invokeTarget = #{invokeTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="cronExpression != null">
+        cronExpression = #{cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="misfirePolicy != null">
+        misfirePolicy = #{misfirePolicy,jdbcType=VARCHAR},
+      </if>
+      <if test="concurrent != null">
+        concurrent = #{concurrent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+       </set>
+    	where id = #{id,jdbcType=VARCHAR}                                                    
+  </update>
+
+      	      	   	      	   	      	   	      	   	      	   	      	   	      	   	      	
+
+  <update id="updateByPrimaryKey" parameterType="com.fc.v2.model.auto.SysQuartzJob">
+    update t_sys_quartz_job
+    set 
+             	        	    	 			jobName = #{jobName,jdbcType=VARCHAR},
+		     	        	    	 			jobGroup = #{jobGroup,jdbcType=VARCHAR},
+		     	        	    	 			invokeTarget = #{invokeTarget,jdbcType=VARCHAR},
+		     	        	    	 			cronExpression = #{cronExpression,jdbcType=VARCHAR},
+		     	        	    	 			misfirePolicy = #{misfirePolicy,jdbcType=VARCHAR},
+		     	        	    	 			concurrent = #{concurrent,jdbcType=VARCHAR},
+		     	        	    	 			status = #{status,jdbcType=INTEGER}
+		     	        where 
+            id = #{id,jdbcType=VARCHAR}
+                                                                    
+  </update>
+  
+                                            
+</mapper>

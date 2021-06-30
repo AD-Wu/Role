@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/static/common/css/Element-2.15.1.css}">
+    <link rel="stylesheet" th:href="@{/static/common/css/common.css}">
+    <script th:src="@{/static/common/js/vue.js}"></script>
+    <script th:src="@{/static/common/js/Element-2.15.1.js}"></script>
+
+</head>
+
+<body>
+<div id="app">
+
+<el-container>
+    <el-main>
+        <!--:row-class-name="tableRowStripe"-->
+        <el-table
+                fit
+                stripe
+                style="width: 100%"
+                :max-height="tableHeight"
+                ref="multipleTable"
+                :data="handleSearch(tableData)"
+                @selection-change="handleSelectionChange">
+            <el-table-column
+                    fixed
+                    align="center"
+                    type="selection"
+                    width=55>
+            </el-table-column>
+            <el-table-column fixed type="expand">
+                <template slot-scope="props">
+                    <el-form label-position="left"
+                             class="demo-table-expand"
+                             inline>
+                        <el-form-item label="姓名">
+                            <span>{{ props.row.name }}</span>
+                        </el-form-item>
+                        <el-form-item label="省份">
+                            <span>{{ props.row.province }}</span>
+                        </el-form-item>
+                        <el-form-item label="市区">
+                            <span>{{ props.row.city }}</span>
+                        </el-form-item>
+                        <el-form-item label="地址">
+                            <span>{{ props.row.address }}</span>
+                        </el-form-item>
+                        <el-form-item label="邮编">
+                            <span>{{ props.row.zip }}</span>
+                        </el-form-item>
+                        <el-form-item label="日期">
+                            <span>{{ props.row.date }}</span>
+                        </el-form-item>
+                    </el-form>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    fixed
+                    sortable
+                    prop="name"
+                    align="center"
+                    label="姓名"
+                    min-width="5%">
+                <template slot-scope="scope">
+                    <el-popover trigger="hover" placement="right">
+                        <p>姓名: {{ scope.row.name }}</p>
+                        <p>住址: {{ scope.row.address }}</p>
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag size="medium">{{ scope.row.name }}</el-tag>
+                        </div>
+                    </el-popover>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="province"
+                    label="省份"
+                    align="center"
+                    min-width="5%">
+            </el-table-column>
+            <el-table-column
+                    prop="city"
+                    label="市区"
+                    align="center"
+                    min-width="5%">
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="地址"
+                    align="center"
+                    min-width="15%">
+            </el-table-column>
+            <!--                        <el-table-column-->
+            <!--                                prop="address"-->
+            <!--                                label="地址"-->
+            <!--                                align="center"-->
+            <!--                                min-width="15%">-->
+            <!--                        </el-table-column>-->
+            <!--                        <el-table-column-->
+            <!--                                prop="address"-->
+            <!--                                label="地址"-->
+            <!--                                align="center"-->
+            <!--                                min-width="15%">-->
+            <!--                        </el-table-column>-->
+            <!--                        <el-table-column-->
+            <!--                                prop="address"-->
+            <!--                                label="地址"-->
+            <!--                                align="center"-->
+            <!--                                min-width="15%">-->
+            <!--                        </el-table-column>-->
+            <!--                        <el-table-column-->
+            <!--                                prop="address"-->
+            <!--                                label="地址"-->
+            <!--                                align="center"-->
+            <!--                                min-width="15%">-->
+            <!--                        </el-table-column>-->
+            <el-table-column
+                    prop="zip"
+                    label="邮编"
+                    align="center"
+                    min-width="5%">
+            </el-table-column>
+            <el-table-column
+                    sortable
+                    prop="date"
+                    label="日期"
+                    align="center"
+                    min-width="10%">
+                <template slot-scope="scope">
+                    <i class="el-icon-time"></i>
+                    <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    align="center"
+                    min-width="10%">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            clearable
+                            size="medium"
+                            v-model="search"
+                            prefix-icon="el-icon-search"
+                            placeholder="输入关键字搜索" />
+                </template>
+                <template slot-scope="scope">
+                    <el-button
+                            circle
+                            icon="el-icon-edit"
+                            type="primary"
+                            size="mini"
+                            @click="handleEdit(scope.$index, scope.row)">
+                    </el-button>
+                    <el-button
+                            circle
+                            icon="el-icon-delete"
+                            type="danger"
+                            size="mini"
+                            @click.native.prevent="deleteRow(scope.$index, tableData)">
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="[10, 20, 50]" :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="totalCount"
+                       background>
+        </el-pagination>
+    </el-main>
+</el-container>
+
+</div>
+</body>
+<script th:src="@{/static/proxy/eleHome.js}"></script>
+
+</html>
+

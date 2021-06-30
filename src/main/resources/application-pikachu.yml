@@ -1,0 +1,15 @@
+#datasouce:
+#  name: AD
+#  url: jdbc:mysql://localhost:3306/springbootv2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT
+#  driver: com.mysql.cj.jdbc.Driver
+#  user: root
+#  password: 123456
+
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:3306/springbootv2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 123456
+      pool-name: ad
