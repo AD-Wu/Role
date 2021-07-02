@@ -118,7 +118,7 @@ public class RoleController extends BaseController{
 	@ApiOperation(value = "检查Name唯一", notes = "检查Name唯一")
 	@PostMapping("/checkNameUnique")
 	@ResponseBody
-	public int checkNameUnique(TsysRole tsysRole){
+	public int checkNameUnique(TsysRole tsysRole) throws Exception {
 		int b=sysRoleService.checkNameUnique(tsysRole);
 		if(b>0){
 			return 1;
