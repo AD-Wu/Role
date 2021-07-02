@@ -32,7 +32,7 @@ public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
 //    //角色mapper
 //    @Autowired
 //    private TsysRoleMapper tsysRoleMapper;
-    //自定义角色dao
+//    //自定义角色dao
 //    @Autowired
 //    private RoleDao roleDao;
 //    //自动生成的权限角色映射mapper
@@ -149,7 +149,10 @@ public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
         //添加权限
         String[] permissions = permission.split(",");
         for (String permissionID : permissions) {
-            TsysPermissionRole permissionRole = new TsysPermissionRole(RandomUtil.randomUUID(), roleID, permissionID);
+            TsysPermissionRole permissionRole = new TsysPermissionRole();
+            permissionRole.setId(RandomUtil.randomUUID());
+            permissionRole.setRoleId(roleID);
+            permissionRole.setPermissionId(permissionID);
             permissionRoleDao.add(permissionRole);
         }
         IDao<TsysRole> roleDao = daoManager.getDao(TsysRole.class);
@@ -199,7 +202,10 @@ public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
         String[] permIdAry = powerIds.split(",");
         int i = 0;
         for (String perID : permIdAry) {
-            TsysPermissionRole permissionRole = new TsysPermissionRole(RandomUtil.randomUUID(), roleId, perID);
+            TsysPermissionRole permissionRole = new TsysPermissionRole();
+            permissionRole.setId(RandomUtil.randomUUID());
+            permissionRole.setRoleId(roleId);
+            permissionRole.setPermissionId(perID);
             permissionRoleDao.add(permissionRole);
             i++;
         }
