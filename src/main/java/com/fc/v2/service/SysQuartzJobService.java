@@ -37,9 +37,9 @@ import java.util.List;
  **/
 @Service
 public class SysQuartzJobService implements IService<SysQuartzJob, SysQuartzJobExample> {
-    @Autowired
-    private SysQuartzJobMapper sysQuartzJobMapper;
 
+//    @Autowired
+//    private SysQuartzJobMapper sysQuartzJobMapper;
 
     @Autowired
     private QuartzSchedulerUtil scheduler;
