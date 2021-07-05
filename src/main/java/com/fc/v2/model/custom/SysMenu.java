@@ -43,7 +43,7 @@ public class SysMenu {
     /**
      * 子菜单
      * */
-    private List<SysMenu> children = new ArrayList<>();
+    private List<SysMenu> children;
 
 
     /**

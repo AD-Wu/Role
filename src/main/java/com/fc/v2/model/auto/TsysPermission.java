@@ -8,138 +8,117 @@ import java.util.StringJoiner;
 
 @ITable(doc = "权限表", cache = true, history = true, table = "t_sys_permission")
 public class TsysPermission implements Serializable {
-    
+    private static final long serialVersionUID = 1L;
     @IColumn(doc = "主键", pk = true)
     private String id;
     private String name;
     private String descripion;
     private String url;
-    private Integer isBlank;
+    private int isBlank;
     private String pid;
     private String perms;
-    private Integer type;
+    private int type;
     private String icon;
-    private Integer orderNum;
-    private Integer visible;
-    private Integer childCount;
-    private static final long serialVersionUID = 1L;
-    
-    public TsysPermission(String id, String name, String descripion, String url, Integer isBlank, String pid, String perms,
-            Integer type, String icon, Integer orderNum, Integer visible, Integer childCount) {
-        this.id = id;
-        this.name = name;
-        this.descripion = descripion;
-        this.url = url;
-        this.isBlank = isBlank;
-        this.pid = pid;
-        this.perms = perms;
-        this.type = type;
-        this.icon = icon;
-        this.orderNum = orderNum;
-        this.visible = visible;
-        this.childCount = childCount;
-    }
-    
-    public TsysPermission() {
-        super();
-    }
-    
+    private int orderNum;
+    private int visible;
+    private int childCount;
+
     public String getId() {
         return id;
     }
-    
+
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
-    
+
     public String getDescripion() {
         return descripion;
     }
-    
+
     public void setDescripion(String descripion) {
         this.descripion = descripion == null ? null : descripion.trim();
     }
-    
+
     public String getUrl() {
         return url;
     }
-    
+
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
     }
-    
-    public Integer getIsBlank() {
+
+    public int getIsBlank() {
         return isBlank;
     }
-    
-    public void setIsBlank(Integer isBlank) {
+
+    public void setIsBlank(int isBlank) {
         this.isBlank = isBlank;
     }
-    
+
     public String getPid() {
         return pid;
     }
-    
+
     public void setPid(String pid) {
         this.pid = pid == null ? null : pid.trim();
     }
-    
+
     public String getPerms() {
         return perms;
     }
-    
+
     public void setPerms(String perms) {
         this.perms = perms == null ? null : perms.trim();
     }
-    
-    public Integer getType() {
+
+    public int getType() {
         return type;
     }
-    
-    public void setType(Integer type) {
+
+    public void setType(int type) {
         this.type = type;
     }
-    
+
     public String getIcon() {
         return icon;
     }
-    
+
     public void setIcon(String icon) {
         this.icon = icon == null ? null : icon.trim();
     }
-    
-    public Integer getOrderNum() {
+
+    public int getOrderNum() {
         return orderNum;
     }
-    
-    public void setOrderNum(Integer orderNum) {
+
+    public void setOrderNum(int orderNum) {
         this.orderNum = orderNum;
     }
-    
-    public Integer getChildCount() {
+
+    public int getChildCount() {
         return childCount;
     }
-    
-    public void setChildCount(Integer childCount) {
+
+    public void setChildCount(int childCount) {
         this.childCount = childCount;
     }
-    
-    public Integer getVisible() {
+
+    public int getVisible() {
         return visible;
     }
-    
-    public void setVisible(Integer visible) {
+
+    public void setVisible(int visible) {
         this.visible = visible;
     }
-    
+
     @Override
     public String toString() {
         return new StringJoiner(", ", TsysPermission.class.getSimpleName() + "[", "]")
@@ -157,5 +136,5 @@ public class TsysPermission implements Serializable {
                 .add("childCount=" + childCount)
                 .toString();
     }
-    
+
 }
