@@ -304,23 +304,6 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
         return perms.length;
     }
 
-    /**
-     * 根据父id 以及类型查询权限子集
-     *
-     * @param pid
-     * @return
-     */
-    public List<TsysPermission> queryPid(String pid, int type) throws Exception {
-        TsysPermissionExample example = new TsysPermissionExample();
-        example.createCriteria().andPidEqualTo(pid).andTypeEqualTo(type);
-        List<TsysPermission> tsysPermissions = tsysPermissionMapper.selectByExample(example);
-//        return tsysPermissions;
-        Where[] ws = new Where[2];
-        ws[0] = new Where("pid", "=", pid);
-        ws[1] = new Where("type", "=", type);
-        TsysPermission[] perms = permissionDao.getList(ws, null);
-        return Arrays.asList(perms);
-    }
 
     /**
      * 根据用户id查询菜单栏
