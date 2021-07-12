@@ -5,7 +5,7 @@ import com.pikachu.common.annotations.ITable;
 
 import java.io.Serializable;
 
-@ITable(doc = "角色表", cache = true, history = true, table = "t_sys_role")
+@ITable(doc = "角色表", cache = true, history = false, table = "t_sys_role")
 public class TsysRole implements Serializable {
     
     private static final long serialVersionUID = 1L;

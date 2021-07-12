@@ -4,7 +4,7 @@ import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.auto.SysDepartment;
-import com.fc.v2.model.auto.SysDepartmentExample;
+// import com.fc.v2.model.auto.SysDepartmentExample;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.service.SysDepartmentService;
 import com.fc.v2.common.domain.ResuTree;
@@ -182,7 +182,7 @@ public class SysDepartmentController extends BaseController {
     public ResuTree selectParent() {
         List<SysDepartment> list = null;
         try {
-            list = sysDepartmentService.selectByExample(new SysDepartmentExample());
+            list = sysDepartmentService.selectByExample(null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -209,7 +209,7 @@ public class SysDepartmentController extends BaseController {
     @ApiOperation(value = "获取部门树状数据结构", notes = "获取部门树状数据结构")
     @ResponseBody
     public ResuTree tree() throws Exception {
-        List<SysDepartment> data = sysDepartmentService.selectByExample(new SysDepartmentExample());
+        List<SysDepartment> data = sysDepartmentService.selectByExample(null);
         return dataTree(data);
     }
     

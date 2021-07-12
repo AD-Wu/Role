@@ -5,7 +5,7 @@ import com.pikachu.common.annotations.ITable;
 
 import java.io.Serializable;
 
-@ITable(doc = "角色用户表", cache = true, history = true, table = "t_sys_role_user")
+@ITable(doc = "角色用户表", cache = false, history = false, table = "t_sys_role_user")
 public class TSysRoleUser implements Serializable {
     
     @IColumn(doc = "主键", pk = true)

@@ -65,7 +65,7 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "获取登录用户菜单栏", notes = "获取登录用户菜单栏")
     @GetMapping("/getUserMenu")
     @ResponseBody
-    public List<SysMenu> getUserMenu() {
+    public List<SysMenu> getUserMenu() throws Exception {
         List<SysMenu> sysMenus = sysPermissionService.getSysMenus(ShiroUtils.getUserId());
         return sysMenus;
     }

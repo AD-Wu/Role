@@ -134,7 +134,7 @@ public class PermissionController extends BaseController {
     @ApiOperation(value = "检查权限", notes = "检查权限")
     @PostMapping("/checkNameUnique")
     @ResponseBody
-    public int checkNameUnique(TsysPermission TsysPermission) {
+    public int checkNameUnique(TsysPermission TsysPermission) throws Exception {
         int b = sysPermissionService.checkNameUnique(TsysPermission);
         if (b > 0) {
             return 1;
@@ -151,7 +151,7 @@ public class PermissionController extends BaseController {
     @ApiOperation(value = "检查权限URL", notes = "检查权限URL")
     @PostMapping("/checkURLUnique")
     @ResponseBody
-    public int checkURLUnique(@RequestBody TsysPermission tsysPermission) {
+    public int checkURLUnique(@RequestBody TsysPermission tsysPermission) throws Exception {
         int b = sysPermissionService.checkURLUnique(tsysPermission);
         if (b > 0) {
             return 1;
@@ -168,7 +168,7 @@ public class PermissionController extends BaseController {
     @ApiOperation(value = "检查权限perms字段", notes = "检查权限perms字段")
     @PostMapping("/checkPermsUnique")
     @ResponseBody
-    public int checkPermsUnique(TsysPermission tsysPermission) {
+    public int checkPermsUnique(TsysPermission tsysPermission) throws Exception {
         int b = sysPermissionService.checkPermsUnique(tsysPermission);
         if (b > 0) {
             return 1;
@@ -205,7 +205,7 @@ public class PermissionController extends BaseController {
     @RequiresPermissions("system:permission:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(@RequestBody TsysPermission TsysPermission) {
+    public AjaxResult editSave(@RequestBody TsysPermission TsysPermission) throws Exception {
         return toAjax(sysPermissionService.updateByPrimaryKey(TsysPermission));
     }
     
@@ -219,7 +219,7 @@ public class PermissionController extends BaseController {
     @ApiOperation(value = "根据角色id获取所有打勾权限", notes = "根据角色id获取 所有打勾权限")
     @GetMapping("/getCheckPrem")
     @ResponseBody
-    public ResuTree getCheckPrem(String roleId) {
+    public ResuTree getCheckPrem(String roleId) throws Exception {
         
         return dataTree(sysPermissionService.getRolePower(roleId));
     }
@@ -255,7 +255,7 @@ public class PermissionController extends BaseController {
     
     @GetMapping("/selectParent")
     @ResponseBody
-    public ResuTree selectParent() {
+    public ResuTree selectParent() throws Exception {
         List<TsysPermission> list = sysPermissionService.getall(null);
         TsysPermission basePower = new TsysPermission();
         basePower.setName("顶级权限");
@@ -267,7 +267,7 @@ public class PermissionController extends BaseController {
     
     @PutMapping("/updateVisible")
     @ResponseBody
-    public AjaxResult updateVisible(@RequestBody TsysPermission TsysPermission) {
+    public AjaxResult updateVisible(@RequestBody TsysPermission TsysPermission) throws Exception {
         int i = sysPermissionService.updateVisible(TsysPermission);
         return toAjax(i);
     }

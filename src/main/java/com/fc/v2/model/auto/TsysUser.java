@@ -6,7 +6,7 @@ import com.pikachu.common.annotations.IColumn;
 import com.pikachu.common.annotations.ITable;
 import io.swagger.annotations.ApiModelProperty;
 
-@ITable(doc = "用户表", cache = true, history = true, table = "t_sys_user")
+@ITable(doc = "用户表", cache = false, history = false, table = "t_sys_user")
 public class TsysUser implements Serializable {
     
     private static final long serialVersionUID = 1L;

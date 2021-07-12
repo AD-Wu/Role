@@ -5,6 +5,7 @@ import com.fc.v2.common.base.IService;
 import com.fc.v2.common.support.ConvertUtil;
 import com.fc.v2.mapper.auto.SysDepartmentMapper;
 import com.fc.v2.model.auto.SysDepartment;
+// import com.fc.v2.model.auto.SysDepartmentExample;
 import com.fc.v2.model.auto.SysDepartmentExample;
 import com.fc.v2.model.auto.SysInterUrl;
 import com.fc.v2.model.custom.Tablepar;

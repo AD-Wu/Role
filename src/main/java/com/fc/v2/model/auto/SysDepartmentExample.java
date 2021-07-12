@@ -110,7 +110,7 @@ public class SysDepartmentExample {
             }
             criteria.add(new Criterion(condition, value1, value2));
         }
-				
+
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;
@@ -180,8 +180,8 @@ public class SysDepartmentExample {
             addCriterion("id not between", value1, value2, "id");
             return (Criteria) this;
         }
-        
-			
+
+
         public Criteria andParentIdIsNull() {
             addCriterion("parentID is null");
             return (Criteria) this;
@@ -251,8 +251,8 @@ public class SysDepartmentExample {
             addCriterion("parentID not between", value1, value2, "parentId");
             return (Criteria) this;
         }
-        
-			
+
+
         public Criteria andDeptNameIsNull() {
             addCriterion("deptName is null");
             return (Criteria) this;
@@ -322,8 +322,8 @@ public class SysDepartmentExample {
             addCriterion("deptName not between", value1, value2, "deptName");
             return (Criteria) this;
         }
-        
-			
+
+
         public Criteria andLeaderIsNull() {
             addCriterion("leader is null");
             return (Criteria) this;
@@ -393,8 +393,8 @@ public class SysDepartmentExample {
             addCriterion("leader not between", value1, value2, "leader");
             return (Criteria) this;
         }
-        
-			
+
+
         public Criteria andPhoneIsNull() {
             addCriterion("phone is null");
             return (Criteria) this;
@@ -464,8 +464,8 @@ public class SysDepartmentExample {
             addCriterion("phone not between", value1, value2, "phone");
             return (Criteria) this;
         }
-        
-			
+
+
         public Criteria andEmailIsNull() {
             addCriterion("email is null");
             return (Criteria) this;
@@ -535,8 +535,8 @@ public class SysDepartmentExample {
             addCriterion("email not between", value1, value2, "email");
             return (Criteria) this;
         }
-        
-			
+
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
@@ -606,8 +606,8 @@ public class SysDepartmentExample {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
-        
-			
+
+
         public Criteria andOrderNumIsNull() {
             addCriterion("orderNum is null");
             return (Criteria) this;
@@ -677,7 +677,7 @@ public class SysDepartmentExample {
             addCriterion("orderNum not between", value1, value2, "orderNum");
             return (Criteria) this;
         }
-        
+
 	}
 
     public static class Criteria extends GeneratedCriteria {
