@@ -111,7 +111,7 @@ public class BaseController
     /**
      * 返回object数据
      */
-    public AjaxResult retobject(int code, Object  data)
+    public AjaxResult reObject(int code, Object  data)
     {
         return AjaxResult.successData(code, data);
     }
