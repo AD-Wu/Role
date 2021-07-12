@@ -22,8 +22,8 @@ public class TsysPermission implements Serializable {
     private String icon;
     private Integer orderNum;
     private Integer visible;
-    // @IColumn(doc = "子菜单数量", ignore = true)
-    private Integer childCount;
+//    @IColumn(doc = "权限菜单",ignore = true)
+    private int childCount;
     
     public String getId() {
         return id;
@@ -105,11 +105,11 @@ public class TsysPermission implements Serializable {
         this.orderNum = orderNum;
     }
     
-    public Integer getChildCount() {
+    public int getChildCount() {
         return childCount;
     }
     
-    public void setChildCount(Integer childCount) {
+    public void setChildCount(int childCount) {
         this.childCount = childCount;
     }
     

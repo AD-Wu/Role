@@ -206,7 +206,8 @@ public class PermissionController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@RequestBody TsysPermission TsysPermission) throws Exception {
-        return toAjax(sysPermissionService.updateByPrimaryKey(TsysPermission));
+        int i = sysPermissionService.updateByPrimaryKey(TsysPermission);
+        return toAjax(i);
     }
     
     /**
