@@ -88,7 +88,7 @@ public class PermissionController extends BaseController {
     @RequiresPermissions("system:permission:add")
     @ResponseBody
     public AjaxResult add(@RequestBody TsysPermission tsysPermission) throws Exception {
-        int b = sysPermissionService.insertSelective(tsysPermission);
+        int b = sysPermissionService.add(tsysPermission);
         if (b > 0) {
             return success();
         } else {
@@ -110,7 +110,7 @@ public class PermissionController extends BaseController {
     @ResponseBody
     public AjaxResult remove(String ids) {
         int b = 0;
-        try {b = sysPermissionService.deleteByPrimaryKey(ids);} catch (Exception e) {
+        try {b = sysPermissionService.delete(ids);} catch (Exception e) {
             e.printStackTrace();
         }
         if (b == 1) {
@@ -189,9 +189,9 @@ public class PermissionController extends BaseController {
     @GetMapping("/edit/{roleId}")
     public String edit(@PathVariable("roleId") String id, ModelMap mmap) throws Exception {
         //获取自己的权限信息
-        TsysPermission mytsysPermission = mytsysPermission = sysPermissionService.selectByPrimaryKey(id);
+        TsysPermission mytsysPermission = mytsysPermission = sysPermissionService.getByPrimary(id);
         //获取父权限信息
-        TsysPermission pattsysPermission = pattsysPermission = sysPermissionService.selectByPrimaryKey(mytsysPermission.getPid());
+        TsysPermission pattsysPermission = pattsysPermission = sysPermissionService.getByPrimary(mytsysPermission.getPid());
         mmap.put("TsysPermission", mytsysPermission);
         mmap.put("pattsysPermission", pattsysPermission);
         return prefix + "/edit";
@@ -257,7 +257,7 @@ public class PermissionController extends BaseController {
     @GetMapping("/selectParent")
     @ResponseBody
     public ResuTree selectParent() throws Exception {
-        List<TsysPermission> list = sysPermissionService.getall(null);
+        List<TsysPermission> list = sysPermissionService.getAll(null);
         TsysPermission basePower = new TsysPermission();
         basePower.setName("顶级权限");
         basePower.setId("0");

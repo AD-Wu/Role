@@ -108,10 +108,10 @@ public class ShiroUtils {
     public static String getUserId()
     {
         TsysUser tsysUser = getUser();
-        if (tsysUser == null || tsysUser.getID() == null){
+        if (tsysUser == null || tsysUser.getId() == null){
             throw new RuntimeException("用户不存在！");
         }
-        return tsysUser.getID().trim();
+        return tsysUser.getId().trim();
     }
 
     /**

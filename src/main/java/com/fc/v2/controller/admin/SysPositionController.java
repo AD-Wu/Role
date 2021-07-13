@@ -66,7 +66,7 @@ public class SysPositionController extends BaseController {
     @ResponseBody
     public AjaxResult add(SysPosition sysPosition) {
         int b = 0;
-        try {b = sysPositionService.insertSelective(sysPosition);} catch (Exception e) {
+        try {b = sysPositionService.add(sysPosition);} catch (Exception e) {
             e.printStackTrace();
         }
         if (b > 0) {
@@ -90,7 +90,7 @@ public class SysPositionController extends BaseController {
     @ResponseBody
     public AjaxResult remove(String ids) {
         int b = 0;
-        try {b = sysPositionService.deleteByPrimaryKey(ids);} catch (Exception e) {
+        try {b = sysPositionService.delete(ids);} catch (Exception e) {
             e.printStackTrace();
         }
         if (b > 0) {
@@ -128,7 +128,7 @@ public class SysPositionController extends BaseController {
     @ApiOperation(value = "修改跳转", notes = "修改跳转")
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, ModelMap mmap) {
-        try {mmap.put("SysPosition", sysPositionService.selectByPrimaryKey(id));} catch (Exception e) {
+        try {mmap.put("SysPosition", sysPositionService.getByPrimary(id));} catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -145,7 +145,7 @@ public class SysPositionController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(SysPosition record) throws Exception {
         
-            return toAjax(sysPositionService.updateByPrimaryKeySelective(record));
+            return toAjax(sysPositionService.edit(record));
        
     }
     
@@ -160,7 +160,7 @@ public class SysPositionController extends BaseController {
     @ApiOperation(value = "根据id查询唯一", notes = "根据id查询唯一")
     public SysPosition edit(@PathVariable("id") String id) throws Exception {
         
-        return sysPositionService.selectByPrimaryKey(id);
+        return sysPositionService.getByPrimary(id);
         
     }
     

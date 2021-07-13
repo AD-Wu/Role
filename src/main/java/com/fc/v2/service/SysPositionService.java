@@ -2,11 +2,8 @@ package com.fc.v2.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.SysPositionMapper;
 import com.fc.v2.model.auto.SysNoticeUser;
 import com.fc.v2.model.auto.SysPosition;
-import com.fc.v2.model.auto.SysPositionExample;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.fc.v2.util.StringUtils;
@@ -27,7 +24,7 @@ import java.util.List;
  * 岗位表 SysPositionService
  **/
 @Service
-public class SysPositionService implements IService<SysPosition, SysPositionExample> {
+public class SysPositionService implements IService<SysPosition> {
     
     // @Autowired
     // private SysPositionMapper sysPositionMapper;
@@ -78,7 +75,7 @@ public class SysPositionService implements IService<SysPosition, SysPositionExam
     }
     
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
         
         // List<String> lista = ConvertUtil.toListStrArray(ids);
         // SysPositionExample example = new SysPositionExample();
@@ -92,7 +89,7 @@ public class SysPositionService implements IService<SysPosition, SysPositionExam
     }
     
     @Override
-    public SysPosition selectByPrimaryKey(String id) throws Exception {
+    public SysPosition getByPrimary(String id) throws Exception {
         
         // return sysPositionMapper.selectByPrimaryKey(id);
         SysPosition po = dao.getByPrimary(id);
@@ -100,7 +97,7 @@ public class SysPositionService implements IService<SysPosition, SysPositionExam
     }
     
     @Override
-    public int updateByPrimaryKeySelective(SysPosition record) throws Exception {
+    public int edit(SysPosition record) throws Exception {
         // return sysPositionMapper.updateByPrimaryKeySelective(record);
         int edit = dao.edit(record);
         return edit;
@@ -110,7 +107,7 @@ public class SysPositionService implements IService<SysPosition, SysPositionExam
      * 添加
      */
     @Override
-    public int insertSelective(SysPosition record) throws Exception {
+    public int add(SysPosition record) throws Exception {
         
         //添加雪花主键id
         record.setId(SnowflakeIdWorker.getUUID());
@@ -118,25 +115,9 @@ public class SysPositionService implements IService<SysPosition, SysPositionExam
         dao.add(record);
         return 1;
     }
-    
+
     @Override
-    public int updateByExampleSelective(SysPosition record, SysPositionExample example) throws Exception {
-        
-        // return sysPositionMapper.updateByExampleSelective(record, example);
-        int edit = dao.edit(record);
-        return edit;
-    }
-    
-    @Override
-    public int updateByExample(SysPosition record, SysPositionExample example) throws Exception {
-        
-        // return sysPositionMapper.updateByExample(record, example);
-        int edit = dao.edit(record);
-        return edit;
-    }
-    
-    @Override
-    public List<SysPosition> selectByExample(SysPositionExample example) throws Exception {
+    public List<SysPosition> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         
         // return sysPositionMapper.selectByExample(example);
         SysPosition[] positions = dao.getList(null, null);
@@ -144,17 +125,11 @@ public class SysPositionService implements IService<SysPosition, SysPositionExam
     }
     
     @Override
-    public long countByExample(SysPositionExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
         
         // return sysPositionMapper.countByExample(example);
-        return dao.getCount(null);
+        return dao.getCount(wheres);
     }
-    
-    // @Override
-    // public int deleteByExample(SysPositionExample example) throws Exception {
-    //
-    // 	return sysPositionMapper.deleteByExample(example);
-    // }
     
     /**
      * 检查name

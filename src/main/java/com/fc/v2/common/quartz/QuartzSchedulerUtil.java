@@ -1,7 +1,6 @@
 package com.fc.v2.common.quartz;
 
 import com.fc.v2.model.auto.SysQuartzJob;
-import com.fc.v2.model.auto.SysQuartzJobExample;
 import com.fc.v2.service.SysQuartzJobService;
 import com.fc.v2.util.StringUtils;
 import org.quartz.*;
@@ -41,7 +40,7 @@ public class QuartzSchedulerUtil {
     
         List<SysQuartzJob> quartzJobs= null;
         try {
-            quartzJobs = sysQuartzJobService.selectByExample(new SysQuartzJobExample());
+            quartzJobs = sysQuartzJobService.getList(null,null);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3,12 +3,7 @@ package com.fc.v2.service;
 import com.fc.v2.common.base.IService;
 import com.fc.v2.common.quartz.QuartzSchedulerUtil;
 import com.fc.v2.common.quartz.ScheduleConstants;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.SysQuartzJobMapper;
-import com.fc.v2.model.auto.SysNotice;
-import com.fc.v2.model.auto.SysNoticeUser;
 import com.fc.v2.model.auto.SysQuartzJob;
-import com.fc.v2.model.auto.SysQuartzJobExample;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
@@ -36,7 +31,7 @@ import java.util.List;
  * @date 2019-09-13 00:03:35
  **/
 @Service
-public class SysQuartzJobService implements IService<SysQuartzJob, SysQuartzJobExample> {
+public class SysQuartzJobService implements IService<SysQuartzJob> {
 
 //    @Autowired
 //    private SysQuartzJobMapper sysQuartzJobMapper;
@@ -83,7 +78,7 @@ public class SysQuartzJobService implements IService<SysQuartzJob, SysQuartzJobE
     }
 
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
 //        List<String> lista = ConvertUtil.toListStrArray(ids);
 //        SysQuartzJobExample example = new SysQuartzJobExample();
 //        example.createCriteria().andIdIn(lista);
@@ -95,7 +90,7 @@ public class SysQuartzJobService implements IService<SysQuartzJob, SysQuartzJobE
 
 
     @Override
-    public SysQuartzJob selectByPrimaryKey(String id) throws Exception {
+    public SysQuartzJob getByPrimary(String id) throws Exception {
 //        return sysQuartzJobMapper.selectByPrimaryKey(id);
         SysQuartzJob job = dao.getByPrimary(id);
         return job;
@@ -103,7 +98,7 @@ public class SysQuartzJobService implements IService<SysQuartzJob, SysQuartzJobE
 
 
     @Override
-    public int updateByPrimaryKeySelective(SysQuartzJob record) throws Exception {
+    public int edit(SysQuartzJob record) throws Exception {
 //        int i = sysQuartzJobMapper.updateByPrimaryKeySelective(record);
 //        if (i > 0) {
 //            //修改定时器
@@ -122,7 +117,7 @@ public class SysQuartzJobService implements IService<SysQuartzJob, SysQuartzJobE
      * 添加
      */
     @Override
-    public int insertSelective(SysQuartzJob record) throws Exception {
+    public int add(SysQuartzJob record) throws Exception {
 //        //添加雪花主键id
 //        record.setId(SnowflakeIdWorker.getUUID());
 //        return sysQuartzJobMapper.insertSelective(record);
@@ -133,24 +128,8 @@ public class SysQuartzJobService implements IService<SysQuartzJob, SysQuartzJobE
         return 1;
     }
 
-
     @Override
-    public int updateByExampleSelective(SysQuartzJob record, SysQuartzJobExample example) throws Exception {
-//        return sysQuartzJobMapper.updateByExampleSelective(record, example);
-        int edit = dao.edit(record);
-        return edit;
-    }
-
-
-    @Override
-    public int updateByExample(SysQuartzJob record, SysQuartzJobExample example) throws Exception {
-//        return sysQuartzJobMapper.updateByExample(record, example);
-        int edit = dao.edit(record);
-        return edit;
-    }
-
-    @Override
-    public List<SysQuartzJob> selectByExample(SysQuartzJobExample example) throws Exception {
+    public List<SysQuartzJob> getList(Where[] wheres, KeyValue[] orders) throws Exception {
 //        return sysQuartzJobMapper.selectByExample(example);
         SysQuartzJob[] jobs = dao.getList(null, null);
         return Arrays.asList(jobs);
@@ -158,18 +137,12 @@ public class SysQuartzJobService implements IService<SysQuartzJob, SysQuartzJobE
 
 
     @Override
-    public long countByExample(SysQuartzJobExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
 //        return sysQuartzJobMapper.countByExample(example);
-        int count = dao.getCount(null);
+        int count = dao.getCount(wheres);
         return count;
     }
 
-
-    // @Override
-    // public int deleteByExample(SysQuartzJobExample example) throws Exception {
-    //
-    // 	return sysQuartzJobMapper.deleteByExample(example);
-    // }
 
     /**
      * 检查name

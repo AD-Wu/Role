@@ -28,9 +28,9 @@ import java.util.Map;
  * @date 2019-12-06 21:11
  */
 @Configuration
-@MapperScan(basePackages = "com.fc.v2.mapper")
+//@MapperScan(basePackages = "com.fc.v2.mapper")
 public class MybatisConfig {
-	
+
 	@Bean
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource()
@@ -56,17 +56,6 @@ public class MybatisConfig {
         return new DynamicDataSource(masterDataSource(), targetDataSources);
     }
 
-    @Bean
-    public SqlSessionFactory sqlSessionFactory(DynamicDataSource dynamicDataSource) throws Exception {
-        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-        factoryBean.setDataSource(dynamicDataSource);
-//        factoryBean.setTypeAliasesPackage();
-        // 设置mapper.xml的位置路径
-        Resource[] resources = new PathMatchingResourcePatternResolver().getResources("classpath*:mybatis/*/*.xml");
-        factoryBean.setMapperLocations(resources);
-        return factoryBean.getObject();
-    }
-    
     /**
      * 配置@Transactional注解事务
      * @param dynamicDataSource

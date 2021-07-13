@@ -1,11 +1,7 @@
 package com.fc.v2.service;
 
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.TsysOperLogMapper;
-import com.fc.v2.model.auto.SysNoticeUser;
 import com.fc.v2.model.auto.TsysOperLog;
-import com.fc.v2.model.auto.TsysOperLogExample;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
@@ -22,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class SysOperLogService implements IService<TsysOperLog, TsysOperLogExample> {
+public class SysOperLogService implements IService<TsysOperLog> {
     
     //文件mapper
     // @Autowired
@@ -42,7 +38,7 @@ public class SysOperLogService implements IService<TsysOperLog, TsysOperLogExamp
      * @return PageInfo<TsysOperLog>
      */
     public PageInfo<TsysOperLog> list(Tablepar tablepar, String searchText) throws Exception {
-        TsysOperLogExample testExample = new TsysOperLogExample();
+//        TsysOperLogExample testExample = new TsysOperLogExample();
         // testExample.setOrderByClause("id+0 DESC");
         // if (searchText != null && !"".equals(searchText)) {
         //     testExample.createCriteria().andTitleLike("%" + searchText + "%");
@@ -79,7 +75,7 @@ public class SysOperLogService implements IService<TsysOperLog, TsysOperLogExamp
     }
     
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
         // List<String> lista = ConvertUtil.toListStrArray(ids);
         // TsysOperLogExample example = new TsysOperLogExample();
         // example.createCriteria().andIdIn(lista);
@@ -91,51 +87,33 @@ public class SysOperLogService implements IService<TsysOperLog, TsysOperLogExamp
     }
     
     @Override
-    public TsysOperLog selectByPrimaryKey(String id) throws Exception {
+    public TsysOperLog getByPrimary(String id) throws Exception {
         
         // return tsysOperLogMapper.selectByPrimaryKey(id);
         return dao.getByPrimary(id);
     }
     
     @Override
-    public int updateByPrimaryKeySelective(TsysOperLog record) throws Exception {
+    public int edit(TsysOperLog record) throws Exception {
         // return tsysOperLogMapper.updateByPrimaryKeySelective(record);
         return dao.edit(record);
     }
-    
+
     @Override
-    public int updateByExampleSelective(TsysOperLog record, TsysOperLogExample example) throws Exception {
-        // return tsysOperLogMapper.updateByExampleSelective(record, example);
-        return dao.edit(record);
-    }
-    
-    @Override
-    public int updateByExample(TsysOperLog record, TsysOperLogExample example) throws Exception {
-        // return tsysOperLogMapper.updateByExample(record, example);
-        return dao.edit(record);
-    }
-    
-    @Override
-    public List<TsysOperLog> selectByExample(TsysOperLogExample example) throws Exception {
+    public List<TsysOperLog> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         // return tsysOperLogMapper.selectByExample(example);
         TsysOperLog[] logs = dao.getList(null, null);
         return Arrays.asList(logs);
     }
     
     @Override
-    public long countByExample(TsysOperLogExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
         // return tsysOperLogMapper.countByExample(example);
-        return dao.getCount(null);
+        return dao.getCount(wheres);
     }
-    
-    // @Override
-    // public int deleteByExample(TsysOperLogExample example) throws Exception {
-    //
-    // 	return tsysOperLogMapper.deleteByExample(example);
-    // }
-    
+
     @Override
-    public int insertSelective(TsysOperLog record) throws Exception {
+    public int add(TsysOperLog record) throws Exception {
         record.setId(SnowflakeIdWorker.getUUID());
         // return tsysOperLogMapper.insertSelective(record);
         TsysOperLog add = dao.add(record);

@@ -1,10 +1,10 @@
 package com.fc.v2.shiro.service;
 
-import com.fc.v2.mapper.custom.PermissionDao;
-import com.fc.v2.mapper.custom.RoleDao;
 import com.fc.v2.model.auto.TsysPermission;
 import com.fc.v2.model.auto.TsysRole;
 import com.fc.v2.model.auto.TsysUser;
+import com.fc.v2.service.SysPermissionService;
+import com.fc.v2.service.SysRoleService;
 import com.fc.v2.util.StringUtils;
 import com.pikachu.framework.database.DaoManager;
 import com.pikachu.framework.database.IDao;
@@ -21,6 +21,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,11 +33,13 @@ import java.util.List;
  */
 @Service
 public class MyShiroRealm extends AuthorizingRealm {
-    
+
     @Autowired
-    private PermissionDao permissionDao;//权限dao
+    private SysPermissionService permissionService;
+
     @Autowired
-    private RoleDao roleDao;//角色dao
+    private SysRoleService roleService;
+
     @Autowired
     private DaoManager daoManager;
     
@@ -88,13 +91,24 @@ public class MyShiroRealm extends AuthorizingRealm {
         }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         TsysUser userinfo = (TsysUser) principals.getPrimaryPrincipal();
-        String uid = userinfo.getID();
-        List<TsysRole> tsysRoles = roleDao.queryUserRole(uid);
-        for (TsysRole userrole : tsysRoles) {
+        String uid = userinfo.getId();
+        List<TsysRole> tsysRoles = null;
+        try {
+            tsysRoles = roleService.queryUserRole(uid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (TsysRole userRole : tsysRoles) {
             //System.out.println("角色名字:"+gson.toJson(userrole));
-            String rolid = userrole.getID();//角色id
-            authorizationInfo.addRole(userrole.getName());//添加角色名字
-            List<TsysPermission> permissions = permissionDao.queryRoleId(rolid);
+            String rolid = userRole.getId();//角色id
+            authorizationInfo.addRole(userRole.getName());//添加角色名字
+            List<TsysPermission> permissions = null;
+            try {
+                TsysPermission[] perms = permissionService.queryRoleId(rolid);
+                permissions = Arrays.asList(perms);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             for (TsysPermission p : permissions) {
                 //System.out.println("角色下面的权限:"+gson.toJson(p));
                 if (StringUtils.isNotEmpty(p.getPerms())) {

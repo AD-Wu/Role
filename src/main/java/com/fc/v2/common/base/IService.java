@@ -2,6 +2,8 @@ package com.fc.v2.common.base;
 
 import java.util.List;
 
+import com.pikachu.common.collection.KeyValue;
+import com.pikachu.common.collection.Where;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -12,24 +14,19 @@ import org.apache.ibatis.annotations.Param;
  * @Description: Service实现这个
  * @date 2018年6月3日
  */
-public interface IService<T, T2> {
-    
-    int deleteByPrimaryKey(String id)throws Exception;
-    
-    int insertSelective(T record)throws Exception;
-    
-    T selectByPrimaryKey(String id)throws Exception;
-    
-    int updateByPrimaryKeySelective(T record)throws Exception;
-    
-    int updateByExampleSelective(@Param("record") T record, @Param("example") T2 example)throws Exception;
-    
-    int updateByExample(@Param("record") T record, @Param("example") T2 example)throws Exception;
-    
-    List<T> selectByExample(T2 example)throws Exception;
-    
-    long countByExample(T2 example)throws Exception;
-    
-    // int deleteByExample(T2 example)throws Exception;
-    
+public interface IService<T> {
+
+
+    int add(T record) throws Exception;
+
+    int delete(String id) throws Exception;
+
+    int edit(T record) throws Exception;
+
+    T getByPrimary(String id) throws Exception;
+
+    List<T> getList(Where[] wheres, KeyValue[] orders) throws Exception;
+
+    long getCount(Where[] wheres) throws Exception;
+
 }

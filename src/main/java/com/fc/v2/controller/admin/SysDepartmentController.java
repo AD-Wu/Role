@@ -92,7 +92,7 @@ public class SysDepartmentController extends BaseController {
     @ResponseBody
     public AjaxResult add(@RequestBody SysDepartment sysDepartment) {
         int b = 0;
-        try {b = sysDepartmentService.insertSelective(sysDepartment);} catch (Exception e) {
+        try {b = sysDepartmentService.add(sysDepartment);} catch (Exception e) {
             e.printStackTrace();
         }
         if (b > 0) {
@@ -116,7 +116,7 @@ public class SysDepartmentController extends BaseController {
     @ResponseBody
     public AjaxResult remove(String ids) {
         int b = 0;
-        try {b = sysDepartmentService.deleteByPrimaryKey(ids);} catch (Exception e) {
+        try {b = sysDepartmentService.delete(ids);} catch (Exception e) {
             e.printStackTrace();
         }
         if (b > 0) {
@@ -156,7 +156,7 @@ public class SysDepartmentController extends BaseController {
     public String edit(@PathVariable("id") String id, ModelMap mmap) {
         //获取自己的权限信息
         SysDepartment mytsysPermission = null;
-        try {mytsysPermission = sysDepartmentService.selectByPrimaryKey(id);} catch (Exception e) {
+        try {mytsysPermission = sysDepartmentService.getByPrimary(id);} catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -173,7 +173,7 @@ public class SysDepartmentController extends BaseController {
     @PutMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@RequestBody SysDepartment record) throws Exception {
-        return toAjax(sysDepartmentService.updateByPrimaryKeySelective(record));
+        return toAjax(sysDepartmentService.edit(record));
         
     }
     
@@ -182,7 +182,7 @@ public class SysDepartmentController extends BaseController {
     public ResuTree selectParent() {
         List<SysDepartment> list = null;
         try {
-            list = sysDepartmentService.selectByExample(null);
+            list = sysDepartmentService.getList(null,null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -199,7 +199,7 @@ public class SysDepartmentController extends BaseController {
     @PostMapping("/get/{id}")
     @ApiOperation(value = "根据id查询唯一", notes = "根据id查询唯一")
     public SysDepartment edit(@PathVariable("id") String id) throws Exception {
-        return sysDepartmentService.selectByPrimaryKey(id);
+        return sysDepartmentService.getByPrimary(id);
     }
     
     /**
@@ -209,7 +209,7 @@ public class SysDepartmentController extends BaseController {
     @ApiOperation(value = "获取部门树状数据结构", notes = "获取部门树状数据结构")
     @ResponseBody
     public ResuTree tree() throws Exception {
-        List<SysDepartment> data = sysDepartmentService.selectByExample(null);
+        List<SysDepartment> data = sysDepartmentService.getList(null,null);
         return dataTree(data);
     }
     

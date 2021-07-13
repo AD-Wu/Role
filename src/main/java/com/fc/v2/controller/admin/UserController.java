@@ -12,9 +12,7 @@ import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.log.Log;
 import com.fc.v2.model.auto.SysDepartment;
-import com.fc.v2.model.auto.SysDepartmentExample;
 import com.fc.v2.model.auto.SysPosition;
-import com.fc.v2.model.auto.SysPositionExample;
 import com.fc.v2.model.auto.TsysRole;
 import com.fc.v2.model.auto.TsysUser;
 import com.fc.v2.model.custom.RoleVo;
@@ -36,7 +34,7 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @RequestMapping("/UserController")
 public class UserController extends BaseController {
-    
+
     private final String prefix = "admin/user";
     //部门
     @Autowired
@@ -44,14 +42,12 @@ public class UserController extends BaseController {
     //岗位
     @Autowired
     private SysPositionService positionService;
-    
+
     /**
      * 展示跳转页面
      *
      * @param model
-     *
      * @return
-     *
      * @author fuce
      * @Date 2019年11月11日 下午4:14:34
      */
@@ -61,14 +57,12 @@ public class UserController extends BaseController {
     public String view(ModelMap model) {
         return prefix + "/list";
     }
-    
+
     /**
      * list集合
      *
      * @param tablepar
-     *
      * @return
-     *
      * @author fuce
      * @Date 2019年11月11日 下午4:14:40
      */
@@ -86,14 +80,12 @@ public class UserController extends BaseController {
         }
         return pageTable(page.getList(), page.getTotal());
     }
-    
+
     /**
      * 新增跳转
      *
      * @param modelMap
-     *
      * @return
-     *
      * @author fuce
      * @Date 2019年11月11日 下午4:14:51
      */
@@ -104,12 +96,16 @@ public class UserController extends BaseController {
         List<TsysRole> tsysRoleList = sysRoleService.queryList();
         //部门列表
         List<SysDepartment> departments = null;
-        try {departments = departmentService.selectByExample(new SysDepartmentExample());} catch (Exception e) {
+        try {
+            departments = departmentService.getList(null, null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //岗位列表
         List<SysPosition> sysPositions = null;
-        try {sysPositions = positionService.selectByExample(new SysPositionExample());} catch (Exception e) {
+        try {
+            sysPositions = positionService.getList(null, null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //角色
@@ -120,14 +116,12 @@ public class UserController extends BaseController {
         modelMap.put("sysPositionsList", sysPositions);
         return prefix + "/add";
     }
-    
+
     /**
      * 新增保存
      *
      * @param user
-     *
      * @return
-     *
      * @author fuce
      * @Date 2019年11月11日 下午4:14:57
      */
@@ -144,12 +138,11 @@ public class UserController extends BaseController {
             return error();
         }
     }
-    
+
     /**
      * 删除用户
      *
      * @param ids
-     *
      * @return
      */
     //@Log(title = "删除用户", action = "1")
@@ -159,7 +152,9 @@ public class UserController extends BaseController {
     @ResponseBody
     public AjaxResult remove(String ids) {
         int b = 0;
-        try {b = sysUserService.deleteByPrimaryKey(ids);} catch (Exception e) {
+        try {
+            b = sysUserService.delete(ids);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (b > 0) {
@@ -168,12 +163,11 @@ public class UserController extends BaseController {
             return error();
         }
     }
-    
+
     /**
      * 检查用户
      *
      * @param tsysUser
-     *
      * @return
      */
     @ApiOperation(value = "检查Name唯一", notes = "检查Name唯一")
@@ -187,13 +181,12 @@ public class UserController extends BaseController {
             return 0;
         }
     }
-    
+
     /**
      * 修改用户跳转
      *
      * @param id
      * @param mmap
-     *
      * @return
      */
     @ApiOperation(value = "修改跳转", notes = "修改跳转")
@@ -203,18 +196,22 @@ public class UserController extends BaseController {
         List<RoleVo> roleVos = sysUserService.getUserIsRole(id);
         //岗位列表
         List<SysPosition> sysPositions = null;
-        try {sysPositions = positionService.selectByExample(new SysPositionExample());} catch (Exception e) {
+        try {
+            sysPositions = positionService.getList(null, null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         mmap.put("roleVos", roleVos);
-        try {mmap.put("TsysUser", sysUserService.selectByPrimaryKey(id));} catch (Exception e) {
+        try {
+            mmap.put("TsysUser", sysUserService.getByPrimary(id));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //岗位
         mmap.put("sysPositionsList", sysPositions);
         return prefix + "/edit";
     }
-    
+
     /**
      * 修改保存用户
      */
@@ -227,25 +224,26 @@ public class UserController extends BaseController {
             throws Exception {
         return toAjax(sysUserService.updateUserRoles(tsysUser, roleIds));
     }
-    
+
     /**
      * 修改用户密码跳转
      *
      * @param id
      * @param mmap
-     *
      * @return
      */
     //@Log(title = "修改用户密码", action = "1")
     @ApiOperation(value = "修改用户密码跳转", notes = "修改用户密码跳转")
     @GetMapping("/editPwd/{id}")
     public String editPwd(@PathVariable("id") String id, ModelMap mmap) {
-        try {mmap.put("TsysUser", sysUserService.selectByPrimaryKey(id));} catch (Exception e) {
+        try {
+            mmap.put("TsysUser", sysUserService.getByPrimary(id));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return prefix + "/editPwd";
     }
-    
+
     /**
      * 修改保存用户
      */
@@ -257,5 +255,5 @@ public class UserController extends BaseController {
     public AjaxResult editPwdSave(TsysUser tsysUser) throws Exception {
         return toAjax(sysUserService.updateUserPassword(tsysUser));
     }
-    
+
 }

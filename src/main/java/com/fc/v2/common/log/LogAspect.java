@@ -121,7 +121,7 @@ public class LogAspect
             //System.out.println("-----------------");
             //System.out.println(new Gson().toJson(operLog));
             //System.out.println("-----------------");
-            operLogService.insertSelective(operLog);
+            operLogService.add(operLog);
         }
         catch (Exception exp)
         {

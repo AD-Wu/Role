@@ -1,11 +1,7 @@
 package com.fc.v2.service;
 
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.SysNoticeUserMapper;
-import com.fc.v2.model.auto.SysInterUrl;
 import com.fc.v2.model.auto.SysNoticeUser;
-import com.fc.v2.model.auto.SysNoticeUserExample;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
@@ -31,7 +27,7 @@ import java.util.List;
  * @date 2019-09-08 02:12:54
  **/
 @Service
-public class SysNoticeUserService implements IService<SysNoticeUser, SysNoticeUserExample> {
+public class SysNoticeUserService implements IService<SysNoticeUser> {
     
     // @Autowired
     // private SysNoticeUserMapper sysNoticeUserMapper;
@@ -72,7 +68,7 @@ public class SysNoticeUserService implements IService<SysNoticeUser, SysNoticeUs
     }
     
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
         // List<String> lista = ConvertUtil.toListStrArray(ids);
         // SysNoticeUserExample example = new SysNoticeUserExample();
         // example.createCriteria().andIdIn(lista);
@@ -83,7 +79,7 @@ public class SysNoticeUserService implements IService<SysNoticeUser, SysNoticeUs
     }
     
     @Override
-    public SysNoticeUser selectByPrimaryKey(String id) throws Exception {
+    public SysNoticeUser getByPrimary(String id) throws Exception {
         
         // return sysNoticeUserMapper.selectByPrimaryKey(id);
         SysNoticeUser user = dao.getByPrimary(id);
@@ -92,7 +88,7 @@ public class SysNoticeUserService implements IService<SysNoticeUser, SysNoticeUs
     }
     
     @Override
-    public int updateByPrimaryKeySelective(SysNoticeUser record) throws Exception {
+    public int edit(SysNoticeUser record) throws Exception {
         // return sysNoticeUserMapper.updateByPrimaryKeySelective(record);
         return dao.edit(record);
     }
@@ -101,7 +97,7 @@ public class SysNoticeUserService implements IService<SysNoticeUser, SysNoticeUs
      * 添加
      */
     @Override
-    public int insertSelective(SysNoticeUser record) throws Exception {
+    public int add(SysNoticeUser record) throws Exception {
         // //添加雪花主键id
         // record.setId(SnowflakeIdWorker.getUUID());
         // return sysNoticeUserMapper.insertSelective(record);
@@ -110,42 +106,22 @@ public class SysNoticeUserService implements IService<SysNoticeUser, SysNoticeUs
         SysNoticeUser add = dao.add(record);
         return 1;
     }
-    
+
     @Override
-    public int updateByExampleSelective(SysNoticeUser record, SysNoticeUserExample example) throws Exception {
-        
-        // return sysNoticeUserMapper.updateByExampleSelective(record, example);
-        return dao.edit(record);
-    }
-    
-    @Override
-    public int updateByExample(SysNoticeUser record, SysNoticeUserExample example) throws Exception {
-        
-        // return sysNoticeUserMapper.updateByExample(record, example);
-        return dao.edit(record);
-    }
-    
-    @Override
-    public List<SysNoticeUser> selectByExample(SysNoticeUserExample example) throws Exception {
+    public List<SysNoticeUser> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         
         // return sysNoticeUserMapper.selectByExample(example);
-        SysNoticeUser[] users = dao.getList(null, null);
+        SysNoticeUser[] users = dao.getList(wheres, orders);
         return Arrays.asList(users);
     }
     
     @Override
-    public long countByExample(SysNoticeUserExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
         
         // return sysNoticeUserMapper.countByExample(example);
-        return dao.getCount(null);
+        return dao.getCount(wheres);
     }
-    
-    // @Override
-    // public int deleteByExample(SysNoticeUserExample example) throws Exception {
-    //
-    //     return sysNoticeUserMapper.deleteByExample(example);
-    // }
-    
+
     /**
      * 检查name
      *

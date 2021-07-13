@@ -34,7 +34,7 @@ public class SysNoticeActor {
         // 查询未阅读的公告用户外键
         IDao<SysNoticeUser> noticeUserDao = daoManager.getDao(SysNoticeUser.class);
         Where[] wheres = new Where[2];
-        wheres[0] = new Where("userID", "=", user.getID());
+        wheres[0] = new Where("userID", "=", user.getId());
         wheres[1] = new Where("state", "=", readState);
         SysNoticeUser[] noticeUsers = noticeUserDao.getList(wheres, null);
         

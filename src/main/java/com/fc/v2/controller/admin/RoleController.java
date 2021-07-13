@@ -79,7 +79,7 @@ public class RoleController extends BaseController{
 	@ResponseBody
 	public AjaxResult add(@RequestBody TsysRole role){
 		int b= 0;
-		try {b = sysRoleService.insertSelective(role);} catch (Exception e) {
+		try {b = sysRoleService.add(role);} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if(b>0){
@@ -101,7 +101,7 @@ public class RoleController extends BaseController{
 	@ResponseBody
 	public AjaxResult remove(String ids){
         int b= 0;
-        try {b = sysRoleService.deleteByPrimaryKey(ids);} catch (Exception e) {
+        try {b = sysRoleService.delete(ids);} catch (Exception e) {
             e.printStackTrace();
         }
         if(b>0){
@@ -138,7 +138,7 @@ public class RoleController extends BaseController{
 	@GetMapping("/edit/{roleId}")
     public String edit(@PathVariable("roleId") String id, ModelMap mmap)
     {
-	    try {mmap.put("sysRole", sysRoleService.selectByPrimaryKey(id));} catch (Exception e) {
+	    try {mmap.put("sysRole", sysRoleService.getByPrimary(id));} catch (Exception e) {
 		    e.printStackTrace();
 	    }
 	    return prefix + "/edit";
@@ -157,7 +157,7 @@ public class RoleController extends BaseController{
     public AjaxResult editSave(@RequestBody TsysRole tsysRole)
     {
 	    int i= 0;
-	    try {i = sysRoleService.updateByPrimaryKeySelective(tsysRole);} catch (Exception e) {
+	    try {i = sysRoleService.edit(tsysRole);} catch (Exception e) {
 		    e.printStackTrace();
 	    }
 	    return toAjax(i);

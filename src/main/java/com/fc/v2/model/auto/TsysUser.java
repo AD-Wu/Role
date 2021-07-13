@@ -9,13 +9,13 @@ import io.swagger.annotations.ApiModelProperty;
 @ITable(doc = "用户表", cache = false, history = false, table = "t_sys_user")
 public class TsysUser implements Serializable {
     
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUId = 1L;
     /**
      * 主键
      **/
-    @ApiModelProperty(value = "主键")
     @IColumn(doc = "主键", pk = true)
-    private String id;
+    @ApiModelProperty(value = "主键")
+    private String Id;
     /**
      * 用户账号
      **/
@@ -32,15 +32,15 @@ public class TsysUser implements Serializable {
     @ApiModelProperty(value = "昵称")
     private String nickname;
     /**
-     * 部门id
+     * 部门Id
      **/
-    @ApiModelProperty(value = "部门id")
-    private Integer depID;
+    @ApiModelProperty(value = "部门Id")
+    private Integer depId;
     /**
-     * 岗位id
+     * 岗位Id
      **/
-    @ApiModelProperty(value = "岗位id")
-    private String posID;
+    @ApiModelProperty(value = "岗位Id")
+    private String posId;
     /**
      * 部门名称
      **/
@@ -50,26 +50,26 @@ public class TsysUser implements Serializable {
      **/
     private String posName;
     
-    public TsysUser(String id, String username, String password, String nickname, Integer depID, String posID) {
+    public TsysUser(String Id, String username, String password, String nickname, Integer depId, String posId) {
         super();
-        this.id = id;
+        this.Id = Id;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.depID = depID;
-        this.posID = posID;
+        this.depId = depId;
+        this.posId = posId;
     }
     
     public TsysUser() {
         super();
     }
     
-    public String getID() {
-        return id;
+    public String getId() {
+        return Id;
     }
     
-    public void setID(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(String Id) {
+        this.Id = Id == null ? null : Id.trim();
     }
     
     public String getUsername() {
@@ -96,20 +96,20 @@ public class TsysUser implements Serializable {
         this.nickname = nickname == null ? null : nickname.trim();
     }
     
-    public Integer getDepID() {
-        return depID;
+    public Integer getDepId() {
+        return depId;
     }
     
-    public void setDepID(Integer depID) {
-        this.depID = depID;
+    public void setDepId(Integer depId) {
+        this.depId = depId;
     }
     
-    public String getPosID() {
-        return posID;
+    public String getPosId() {
+        return posId;
     }
     
-    public void setPosID(String posID) {
-        this.posID = posID;
+    public void setPosId(String posId) {
+        this.posId = posId;
     }
     
     public String getDepName() {

@@ -1,10 +1,7 @@
 package com.fc.v2.service;
 
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.SysInterUrlMapper;
 import com.fc.v2.model.auto.SysInterUrl;
-import com.fc.v2.model.auto.SysInterUrlExample;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
@@ -30,7 +27,7 @@ import java.util.List;
  * @date 2020-01-05 01:48:22
  **/
 @Service
-public class SysInterUrlService implements IService<SysInterUrl, SysInterUrlExample> {
+public class SysInterUrlService implements IService<SysInterUrl> {
     
     // @Autowired
     // private SysInterUrlMapper sysInterUrlMapper;
@@ -72,7 +69,7 @@ public class SysInterUrlService implements IService<SysInterUrl, SysInterUrlExam
     }
     
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
         
         // List<String> lista = ConvertUtil.toListStrArray(ids);
         // SysInterUrlExample example = new SysInterUrlExample();
@@ -84,7 +81,7 @@ public class SysInterUrlService implements IService<SysInterUrl, SysInterUrlExam
     }
     
     @Override
-    public SysInterUrl selectByPrimaryKey(String id) throws Exception {
+    public SysInterUrl getByPrimary(String id) throws Exception {
         
         // return sysInterUrlMapper.selectByPrimaryKey(id);
         
@@ -93,7 +90,7 @@ public class SysInterUrlService implements IService<SysInterUrl, SysInterUrlExam
     }
     
     @Override
-    public int updateByPrimaryKeySelective(SysInterUrl record) throws Exception {
+    public int edit(SysInterUrl record) throws Exception {
         // return sysInterUrlMapper.updateByPrimaryKeySelective(record);
         return dao.edit(record);
     }
@@ -102,7 +99,7 @@ public class SysInterUrlService implements IService<SysInterUrl, SysInterUrlExam
      * 添加
      */
     @Override
-    public int insertSelective(SysInterUrl record) throws Exception {
+    public int add(SysInterUrl record) throws Exception {
         //添加雪花主键id
         // record.setId(SnowflakeIdWorker.getUUID());
         // return sysInterUrlMapper.insertSelective(record);
@@ -111,41 +108,22 @@ public class SysInterUrlService implements IService<SysInterUrl, SysInterUrlExam
         SysInterUrl add = dao.add(record);
         return 1;
     }
-    
+
     @Override
-    public int updateByExampleSelective(SysInterUrl record, SysInterUrlExample example) throws Exception {
-        
-        // return sysInterUrlMapper.updateByExampleSelective(record, example);
-        return dao.edit(record);
-    }
-    
-    @Override
-    public int updateByExample(SysInterUrl record, SysInterUrlExample example) throws Exception {
-        
-        // return sysInterUrlMapper.updateByExample(record, example);
-        return dao.edit(record);
-    }
-    
-    @Override
-    public List<SysInterUrl> selectByExample(SysInterUrlExample example) throws Exception {
+    public List<SysInterUrl> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         
         // return sysInterUrlMapper.selectByExample(example);
-        SysInterUrl[] urls = dao.getList(null, null);
+        SysInterUrl[] urls = dao.getList(wheres, orders);
         return Arrays.asList(urls);
     }
     
     @Override
-    public long countByExample(SysInterUrlExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
         
         // return sysInterUrlMapper.countByExample(example);
-        return dao.getCount(null);
+        return dao.getCount(wheres);
     }
-    
-    // @Override
-    // public int deleteByExample(SysInterUrlExample example) throws Exception {
-    //
-    // 	return sysInterUrlMapper.deleteByExample(example);
-    // }
+
     
     /**
      * 检查name

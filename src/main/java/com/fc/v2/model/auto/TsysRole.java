@@ -19,7 +19,7 @@ public class TsysRole implements Serializable {
     
     }
     
-    public String getID() {
+    public String getId() {
         return id;
     }
     

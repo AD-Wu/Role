@@ -1,10 +1,6 @@
 package com.fc.v2.service;
 
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.TsysPermissionMapper;
-import com.fc.v2.mapper.auto.TsysPermissionRoleMapper;
-import com.fc.v2.mapper.custom.PermissionDao;
 import com.fc.v2.model.auto.*;
 import com.fc.v2.model.custom.SysMenu;
 import com.fc.v2.model.custom.SysPower;
@@ -15,7 +11,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pikachu.common.collection.KeyValue;
 import com.pikachu.common.collection.Where;
-import com.pikachu.common.database.core.IDataReader;
 import com.pikachu.common.database.core.IDatabase;
 import com.pikachu.framework.caching.methods.MethodManager;
 import com.pikachu.framework.database.DaoManager;
@@ -30,17 +25,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class SysPermissionService implements IService<TsysPermission, TsysPermissionExample> {
+public class SysPermissionService implements IService<TsysPermission> {
 
-    //权限mapper
-    @Autowired
-    private TsysPermissionMapper tsysPermissionMapper;
-    //权限角色关联表
-    @Autowired
-    private TsysPermissionRoleMapper permissionRoleMapper;
-    //权限自定义dao
-    @Autowired
-    private PermissionDao permDao;
+    //    //权限mapper
+//    @Autowired
+//    private TsysPermissionMapper tsysPermissionMapper;
+//    //权限角色关联表
+//    @Autowired
+//    private TsysPermissionRoleMapper permissionRoleMapper;
+//    //权限自定义dao
+//    @Autowired
+//    private PermissionDao permDao;
     @Autowired
     private DaoManager daoManager;
     //权限表
@@ -60,19 +55,19 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
      * @return
      */
     public PageInfo<TsysPermission> list(Tablepar tablepar, String searchText) throws Exception {
-        TsysPermissionExample testExample = new TsysPermissionExample();
-        testExample.setOrderByClause("orderNum  is null  ASC,orderNum  ASC");
-        if (searchText != null && !"".equals(searchText)) {
-            testExample.createCriteria().andNameLike("%" + searchText + "%");
-        }
-        List<TsysPermission> list = tsysPermissionMapper.selectByExample(testExample);
+//        TsysPermissionExample testExample = new TsysPermissionExample();
+//        testExample.setOrderByClause("orderNum  is null  ASC,orderNum  ASC");
+//        if (searchText != null && !"".equals(searchText)) {
+//            testExample.createCriteria().andNameLike("%" + searchText + "%");
+//        }
+//        List<TsysPermission> list = tsysPermissionMapper.selectByExample(testExample);
 
         Where[] wheres = null;
         if (searchText != null && !"".equals(searchText)) {
             wheres = Where.getLikeWhere("name", searchText);
         }
         KeyValue[] orders = new KeyValue[]{new KeyValue("orderNum", "asc")};
-        TsysPermission[] permissions = permissionDao.getList(wheres, orders);
+        TsysPermission[] permissions = getPermission(wheres, orders);
 
         PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
         PageInfo<TsysPermission> pageInfo = new PageInfo<>(Arrays.asList(permissions));
@@ -80,28 +75,28 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
     }
 
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
-        //转成集合
-        List<String> lista = ConvertUtil.toListStrArray(ids);
-
-        //判断角色是否删除去除
-        TsysPermissionRoleExample permissionRoleExample = new TsysPermissionRoleExample();
-        permissionRoleExample.createCriteria().andPermissionIdIn(lista);
-        List<TsysPermissionRole> tsysPermissionRoles = permissionRoleMapper.selectByExample(permissionRoleExample);
-        if (tsysPermissionRoles.size() > 0) {//有角色外键
-            return -2;
-        }
-
-        //判断是否有子集
-        TsysPermissionExample example = new TsysPermissionExample();
-        example.createCriteria().andIdIn(lista);
-        List<TsysPermission> tsysPermissions = tsysPermissionMapper.selectByExample(example);
-        boolean lag = false;
-        for (TsysPermission tsysPermission : tsysPermissions) {
-            if (tsysPermission.getChildCount() > 0) {
-                lag = true;
-            }
-        }
+    public int delete(String ids) throws Exception {
+//        //转成集合
+//        List<String> lista = ConvertUtil.toListStrArray(ids);
+//
+//        //判断角色是否删除去除
+//        TsysPermissionRoleExample permissionRoleExample = new TsysPermissionRoleExample();
+//        permissionRoleExample.createCriteria().andPermissionIdIn(lista);
+//        List<TsysPermissionRole> tsysPermissionRoles = permissionRoleMapper.selectByExample(permissionRoleExample);
+//        if (tsysPermissionRoles.size() > 0) {//有角色外键
+//            return -2;
+//        }
+//
+//        //判断是否有子集
+//        TsysPermissionExample example = new TsysPermissionExample();
+//        example.createCriteria().andIdIn(lista);
+//        List<TsysPermission> tsysPermissions = tsysPermissionMapper.selectByExample(example);
+//        boolean lag = false;
+//        for (TsysPermission tsysPermission : tsysPermissions) {
+//            if (tsysPermission.getChildCount() > 0) {
+//                lag = true;
+//            }
+//        }
 //                if (lag) {//有子集 无法删除
 //                    return -1;
 //                } else {//删除操作
@@ -125,20 +120,18 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
 
         //判断是否有子集
         Where[] idWheres = Where.getInWhere("id", idArr);
-        TsysPermission[] perms = permissionDao.getList(idWheres, null);
-//        boolean lag = false;
+        TsysPermission[] perms = getPermission(idWheres, null);
+        boolean lag = false;
 
         for (TsysPermission perm : perms) {
-            Where[] countWheres = Where.getEqualsWhere("pid", perm.getId());
-            int childCount = permissionDao.getCount(countWheres);
-            if (childCount > 0) {
+            if (perm.getChildCount() > 0) {
                 lag = true;
                 break;
             }
-//            if (perm.getChildCount() > 0) {
-//                lag = true;
-//                break;
-//            }
+            if (perm.getChildCount() > 0) {
+                lag = true;
+                break;
+            }
         }
         if (lag) {//有子集 无法删除
             return -1;
@@ -150,7 +143,7 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
     }
 
     @Override
-    public int insertSelective(TsysPermission record) throws Exception {
+    public int add(TsysPermission record) throws Exception {
         //添加雪花主键id
         //        record.setId(SnowflakeIdWorker.getUUID());
         //判断为目录的时候添加父id为0
@@ -170,7 +163,7 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
     }
 
     @Override
-    public TsysPermission selectByPrimaryKey(String id) throws Exception {
+    public TsysPermission getByPrimary(String id) throws Exception {
 
         //        return tsysPermissionMapper.selectByPrimaryKey(id);
         TsysPermission perm = permissionDao.getByPrimary(id);
@@ -178,7 +171,7 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
     }
 
     @Override
-    public int updateByPrimaryKeySelective(TsysPermission record) throws Exception {
+    public int edit(TsysPermission record) throws Exception {
         //默认设置不跳转
         //        if (record.getIsBlank() == null) {
         //            record.setIsBlank(0);
@@ -214,49 +207,22 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
     }
 
     @Override
-    public int updateByExampleSelective(TsysPermission record, TsysPermissionExample example) throws Exception {
-        //默认设置不跳转
-        //        if (record.getIsBlank() == null) {
-        //            record.setIsBlank(0);
-        //        }
-        //        return tsysPermissionMapper.updateByExampleSelective(record, example);
-        int edit = permissionDao.edit(record);
-        return edit;
-    }
+    public List<TsysPermission> getList(Where[] wheres, KeyValue[] orders) throws Exception {
 
-    @Override
-    public int updateByExample(TsysPermission record, TsysPermissionExample example) throws Exception {
-        //默认设置不跳转
-        //        if (record.getIsBlank() == null) {
-        //            record.setIsBlank(0);
-        //        }
-        //        return tsysPermissionMapper.updateByExample(record, example);
-        int edit = permissionDao.edit(record);
-        return edit;
-    }
-
-    @Override
-    public List<TsysPermission> selectByExample(TsysPermissionExample example) throws Exception {
-
-        List<TsysPermission> tsysPermissions = tsysPermissionMapper.selectByExample(example);
+//        List<TsysPermission> tsysPermissions = tsysPermissionMapper.selectByExample(example);
 //        return tsysPermissions;
-        TsysPermission[] perms = permissionDao.getList(null, null);
+        TsysPermission[] perms = getPermission(null, null);
         return Arrays.asList(perms);
     }
 
     @Override
-    public long countByExample(TsysPermissionExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
 
         //        return tsysPermissionMapper.countByExample(example);
-        int count = permissionDao.getCount(null);
+        int count = permissionDao.getCount(wheres);
         return count;
     }
 
-    // @Override
-    // public int deleteByExample(TsysPermissionExample example) throws Exception {
-    //
-    // 	return tsysPermissionMapper.deleteByExample(example);
-    // }
 
     /**
      * 检查权限名字
@@ -264,12 +230,12 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
      * @return
      */
     public int checkNameUnique(TsysPermission tsysPermission) throws Exception {
-        TsysPermissionExample example = new TsysPermissionExample();
-        example.createCriteria().andNameEqualTo(tsysPermission.getName());
-        List<TsysPermission> list = tsysPermissionMapper.selectByExample(example);
+//        TsysPermissionExample example = new TsysPermissionExample();
+//        example.createCriteria().andNameEqualTo(tsysPermission.getName());
+//        List<TsysPermission> list = tsysPermissionMapper.selectByExample(example);
 //                return list.size();
         Where[] wheres = Where.getEqualsWhere("name", tsysPermission.getName());
-        TsysPermission[] perms = permissionDao.getList(wheres, null);
+        TsysPermission[] perms = getPermission(wheres, null);
         return perms.length;
     }
 
@@ -279,12 +245,12 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
      * @return
      */
     public int checkURLUnique(TsysPermission tsysPermission) throws Exception {
-        TsysPermissionExample example = new TsysPermissionExample();
-        example.createCriteria().andUrlEqualTo(tsysPermission.getUrl());
-        List<TsysPermission> list = tsysPermissionMapper.selectByExample(example);
+//        TsysPermissionExample example = new TsysPermissionExample();
+//        example.createCriteria().andUrlEqualTo(tsysPermission.getUrl());
+//        List<TsysPermission> list = tsysPermissionMapper.selectByExample(example);
 //                return list.size();
         Where[] wheres = Where.getEqualsWhere("url", tsysPermission.getName());
-        TsysPermission[] perms = permissionDao.getList(wheres, null);
+        TsysPermission[] perms = getPermission(wheres, null);
         return perms.length;
     }
 
@@ -294,13 +260,13 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
      * @return
      */
     public int checkPermsUnique(TsysPermission tsysPermission) throws Exception {
-        TsysPermissionExample example = new TsysPermissionExample();
-        example.createCriteria().andPermsEqualTo(tsysPermission.getPerms());
-        List<TsysPermission> list = tsysPermissionMapper.selectByExample(example);
+//        TsysPermissionExample example = new TsysPermissionExample();
+//        example.createCriteria().andPermsEqualTo(tsysPermission.getPerms());
+//        List<TsysPermission> list = tsysPermissionMapper.selectByExample(example);
 //                return list.size();
 
         Where[] wheres = Where.getEqualsWhere("perms", tsysPermission.getName());
-        TsysPermission[] perms = permissionDao.getList(wheres, null);
+        TsysPermission[] perms = getPermission(wheres, null);
         return perms.length;
     }
 
@@ -311,9 +277,8 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
      * @return
      */
     public List<SysMenu> getSysMenus(String userID) throws Exception {
-        List<SysMenu> treeList = new ArrayList<>();
-        List<TsysPermission> menuList = getall(userID);
-        treeList = getSysMenus(menuList, "0");
+        List<TsysPermission> menuList = getAll(userID);
+        List<SysMenu> treeList = getSysMenus(menuList, "0");
         return treeList;
     }
 
@@ -329,7 +294,11 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
         if (StringUtils.isNotNull(parentId) && treeList != null && treeList.size() > 0) {
             List<SysMenu> childList = null;
             for (TsysPermission perm : treeList) {
-                if (perm.getPid().equals(parentId)) {
+                String pid = perm.getPid();
+                if (pid == null) {
+                    continue;
+                }
+                if (pid.equals(parentId)) {
                     if (perm.getChildCount() > 0) {
                         childList = getSysMenus(treeList, perm.getId());
                     }
@@ -343,14 +312,7 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
         return SysMenus;
     }
 
-    /**
-     * 根据角色id查询所有权限，权限有会有标识表示
-     *
-     * @return
-     */
-    public List<SysPower> getRolePower(String roleId) throws Exception {
-        //所有权限
-        List<TsysPermission> allPower = getall(null);
+    public TsysPermission[] queryRoleId(String roleId) throws Exception {
         //角色权限
         String queryRoleIdSQL = "select p.* from t_sys_permission p " +
                 "left join t_sys_permission_role pr on p.id=pr.permissionID " +
@@ -360,9 +322,21 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
                 MethodManager.getMethodData(TsysPermission.class)
                         .getMethodsSetMap());
         db.executeReader(reader, queryRoleIdSQL, new Object[]{roleId}, null);
-        TsysPermission[] rolePower = reader.getDatas();
+        TsysPermission[] rolePowers = reader.getDatas();
+        return rolePowers;
+    }
 
-        // List<TsysPermission> rolePower = permDao.queryRoleId(roleId);
+    /**
+     * 根据角色id查询所有权限，权限有会有标识表示
+     *
+     * @return
+     */
+    public List<SysPower> getRolePower(String roleId) throws Exception {
+        //所有权限
+        List<TsysPermission> allPower = getAll(null);
+        //角色权限
+        TsysPermission[] rolePowers = queryRoleId(roleId);
+//         List<TsysPermission> rolePower = permDao.queryRoleId(roleId);
 
         List<SysPower> sysPowerList = new ArrayList<>();
 
@@ -372,7 +346,7 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
                             .getUrl(), sysPower.getIsBlank(), sysPower.getPid(), sysPower.getIcon(), sysPower.getOrderNum(),
                     sysPower
                             .getVisible(), "0");
-            Arrays.asList(rolePower).forEach(sysRolePower -> {
+            Arrays.asList(rolePowers).forEach(sysRolePower -> {
                 if (sysRolePower.getId().equals(sysPower.getId())) {
                     sysPower1.setCheckArr("1");
                     return;
@@ -390,21 +364,22 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
      *
      * @return
      */
-    public List<TsysPermission> getall(String userId) throws Exception {
-        if (StringUtils.isEmpty(userId)) {
-            TsysPermissionExample example = new TsysPermissionExample();
-            example.createCriteria().andVisibleEqualTo(0);
-            example.setOrderByClause("orderNum  is null  ASC,orderNum  ASC");
-            List<TsysPermission> tsysPermissions = tsysPermissionMapper.selectByExample(example);
-            return tsysPermissions;
-        }
-        List<TsysPermission> byAdminUserId = permDao.findByAdminUserId(userId);
-
+    public List<TsysPermission> getAll(String userId) throws Exception {
+//        if (StringUtils.isEmpty(userId)) {
+//            TsysPermissionExample example = new TsysPermissionExample();
+//            example.createCriteria().andVisibleEqualTo(0);
+//            example.setOrderByClause("orderNum  is null  ASC,orderNum  ASC");
+//            List<TsysPermission> tsysPermissions = tsysPermissionMapper.selectByExample(example);
+//            return tsysPermissions;
+//        }
+//        List<TsysPermission> byAdminUserId = permDao.findByAdminUserId(userId);
 //        return byAdminUserId;
+
+
         if (StringUtils.isEmpty(userId)) {
             Where[] wheres = Where.getEqualsWhere("visible", 0);
             KeyValue[] orders = new KeyValue[]{new KeyValue("orderNum", "asc")};
-            TsysPermission[] perms = permissionDao.getList(wheres, orders);
+            TsysPermission[] perms = getPermission(wheres, orders);
             List<TsysPermission> permList = new ArrayList<>();
             for (TsysPermission perm : perms) {
                 permList.add(perm);
@@ -412,7 +387,7 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
             return permList;
         }
 
-        String findByAdminUserIdSQL = "select distinct p.*,(select count(1) from t_sys_permission where pid=p.id) childcount " +
+        String findByAdminUserIdSQL = "select distinct p.*,(select count(1) from t_sys_permission where pid=p.id) childCount " +
                 "from t_sys_permission_role spr,t_sys_role_user sru,t_sys_permission p " +
                 "where spr.roleID = sru.sysRoleID AND spr.permissionID = p.id and visible=0  AND sru.sysUserID=? " +
                 "GROUP BY p.id " +
@@ -421,10 +396,26 @@ public class SysPermissionService implements IService<TsysPermission, TsysPermis
         DaoListReader<TsysPermission> reader = new DaoListReader<>(TsysPermission.class, MethodManager.getMethodData(TsysPermission.class)
                 .getMethodsSetMap());
         db.executeReader(reader, findByAdminUserIdSQL, new Object[]{userId}, null);
-        TsysPermission[] rolePower = reader.getDatas();
-
-        return Arrays.asList(rolePower);
+        TsysPermission[] rolePowers = reader.getDatas();
+        for (TsysPermission rolePower : rolePowers) {
+            rolePower.setChildCount(getPermissionChildCount(rolePower));
+        }
+        return Arrays.asList(rolePowers);
         // return permDao.findByAdminUserId(userId);
+    }
+
+    private TsysPermission[] getPermission(Where[] wheres, KeyValue[] orders) throws Exception {
+        TsysPermission[] perms = permissionDao.getList(wheres, orders);
+        for (TsysPermission perm : perms) {
+            perm.setChildCount(getPermissionChildCount(perm));
+        }
+        return perms;
+    }
+
+    private int getPermissionChildCount(TsysPermission perm) throws Exception {
+        Where[] countWheres = Where.getEqualsWhere("pid", perm.getId());
+        int childCount = permissionDao.getCount(countWheres);
+        return childCount;
     }
 
 }

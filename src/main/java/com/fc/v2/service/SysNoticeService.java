@@ -1,11 +1,7 @@
 package com.fc.v2.service;
 
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.SysNoticeMapper;
-import com.fc.v2.mapper.auto.SysNoticeUserMapper;
 import com.fc.v2.model.auto.*;
-import com.fc.v2.model.auto.SysNoticeUserExample.Criteria;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.shiro.util.ShiroUtils;
 import com.fc.v2.util.SnowflakeIdWorker;
@@ -35,7 +31,7 @@ import java.util.List;
  * @date 2019-09-08 01:38:44
  **/
 @Service
-public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
+public class SysNoticeService implements IService<SysNotice> {
 
 //    @Autowired
 //    private SysNoticeMapper sysNoticeMapper;
@@ -93,7 +89,7 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
 //        //查询未阅读的公告用户外键
 //        SysNoticeUserExample sysNoticeUserExample = new SysNoticeUserExample();
 //        Criteria criteria = sysNoticeUserExample.createCriteria();
-//        criteria.andUserIdEqualTo(tsysUser.getID());
+//        criteria.andUserIdEqualTo(tsysUser.getId());
 //        List<SysNoticeUser> noticeUsers = sysNoticeUserMapper.selectByExample(sysNoticeUserExample);
 //        if (noticeUsers != null && noticeUsers.size() > 0) {
 //            //查询对应的公告列表
@@ -115,7 +111,7 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
 //            PageInfo<SysNotice> pageInfo = new PageInfo<SysNotice>(list);
 //            return pageInfo;
 
-        SysNoticeUser[] noticeUsers = noticeUserDao.getList(Where.getEqualsWhere("userID", tsysUser.getID()), null);
+        SysNoticeUser[] noticeUsers = noticeUserDao.getList(Where.getEqualsWhere("userID", tsysUser.getId()), null);
         //查询对应的公告列表
         List<String> ids = new ArrayList<>();
         for (SysNoticeUser noticeUser : noticeUsers) {
@@ -134,7 +130,7 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
     }
 
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
 //        List<String> lista = ConvertUtil.toListStrArray(ids);
 //        SysNoticeExample example = new SysNoticeExample();
 //        example.createCriteria().andIdIn(lista);
@@ -145,7 +141,7 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
     }
 
     @Override
-    public SysNotice selectByPrimaryKey(String id) throws Exception {
+    public SysNotice getByPrimary(String id) throws Exception {
 
 //        return sysNoticeMapper.selectByPrimaryKey(id);
         SysNotice notice = noticeDao.getByPrimary(id);
@@ -153,7 +149,7 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
     }
 
     @Override
-    public int updateByPrimaryKeySelective(SysNotice record) throws Exception {
+    public int edit(SysNotice record) throws Exception {
 //        return sysNoticeMapper.updateByPrimaryKeySelective(record);
         int edit = noticeDao.edit(record);
         return edit;
@@ -164,7 +160,7 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
      */
     @Override
     @Transactional
-    public int insertSelective(SysNotice record) throws Exception {
+    public int add(SysNotice record) throws Exception {
 //        // 添加雪花主键id
 //        record.setId(SnowflakeIdWorker.getUUID());
 //        // 添加创建人id
@@ -177,7 +173,7 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
 //        // 给所有人添加公告状态
 //        List<TsysUser> list = userService.selectByExample(new TsysUserExample());
 //        for (TsysUser tsysUser : list) {
-//            SysNoticeUser noticeUser = new SysNoticeUser(null, record.getId(), tsysUser.getID(), 0);
+//            SysNoticeUser noticeUser = new SysNoticeUser(null, record.getId(), tsysUser.getId(), 0);
 //            noticeUserService.insertSelective(noticeUser);
 //        }
 //        return 1;
@@ -191,53 +187,29 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
         record.setCreateTime(new Date());
         noticeDao.add(record);
         // 给所有人添加公告状态
-        List<TsysUser> users = userService.selectByExample(null);
+        List<TsysUser> users = userService.getList(null,null);
         for (TsysUser user : users) {
-            SysNoticeUser noticeUser = new SysNoticeUser(null, record.getId(), user.getID(), 0);
-            noticeUserService.insertSelective(noticeUser);
+            SysNoticeUser noticeUser = new SysNoticeUser(null, record.getId(), user.getId(), 0);
+            noticeUserService.add(noticeUser);
         }
         return 1;
     }
 
     @Override
-    public int updateByExampleSelective(SysNotice record, SysNoticeExample example) throws Exception {
-
-//        return sysNoticeMapper.updateByExampleSelective(record, example);
-        int edit = noticeDao.edit(record);
-        return edit;
-
-    }
-
-    @Override
-    public int updateByExample(SysNotice record, SysNoticeExample example) throws Exception {
-
-//        return sysNoticeMapper.updateByExample(record, example);
-        int edit = noticeDao.edit(record);
-        return edit;
-    }
-
-    @Override
-    public List<SysNotice> selectByExample(SysNoticeExample example) throws Exception {
+    public List<SysNotice> getList(Where[] wheres, KeyValue[] orders) throws Exception {
 
 //        return sysNoticeMapper.selectByExample(example);
-        SysNotice[] notices = noticeDao.getList(null, null);
+        SysNotice[] notices = noticeDao.getList(wheres, orders);
         return Arrays.asList(notices);
     }
 
     @Override
-    public long countByExample(SysNoticeExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
 
 //        return sysNoticeMapper.countByExample(example);
-        int count = noticeDao.getCount(null);
+        int count = noticeDao.getCount(wheres);
         return count;
     }
-
-
-    // @Override
-    // public int deleteByExample(SysNoticeExample example) throws Exception {
-    //
-    //     return sysNoticeMapper.deleteByExample(example);
-    // }
 
     /**
      * 检查name
@@ -268,7 +240,7 @@ public class SysNoticeService implements IService<SysNotice, SysNoticeExample> {
 //        //查询未阅读的公告用户外键
 //        SysNoticeUserExample sysNoticeUserExample = new SysNoticeUserExample();
 //        Criteria criteria = sysNoticeUserExample.createCriteria();
-//        criteria.andUserIdEqualTo(tsysUser.getID());
+//        criteria.andUserIdEqualTo(tsysUser.getId());
 //        if (-1 != state) {
 //            criteria.andStateEqualTo(state);
 //        }

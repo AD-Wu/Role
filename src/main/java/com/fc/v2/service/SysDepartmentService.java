@@ -3,10 +3,7 @@ package com.fc.v2.service;
 import cn.hutool.core.util.StrUtil;
 import com.fc.v2.common.base.IService;
 import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.SysDepartmentMapper;
 import com.fc.v2.model.auto.SysDepartment;
-// import com.fc.v2.model.auto.SysDepartmentExample;
-import com.fc.v2.model.auto.SysDepartmentExample;
 import com.fc.v2.model.auto.SysInterUrl;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.StringUtils;
@@ -27,15 +24,13 @@ import java.util.List;
  * 部门表 SysDepartmentService
  */
 @Service
-public class SysDepartmentService implements IService<SysDepartment, SysDepartmentExample> {
-    
+public class SysDepartmentService implements IService<SysDepartment> {
+
     // @Autowired
     // private SysDepartmentMapper sysDepartmentMapper;
     @Autowired
     private DaoManager daoManager;
-    
     private IDao<SysDepartment> dao;
-    
     @PostConstruct
     private void init() {
         this.dao = daoManager.getDao(SysDepartment.class);
@@ -78,7 +73,7 @@ public class SysDepartmentService implements IService<SysDepartment, SysDepartme
     }
     
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
         
         // Integer[] integers = ConvertUtil.toIntArray(",", ids);
         // List<Integer> stringB = Arrays.asList(integers);
@@ -93,7 +88,7 @@ public class SysDepartmentService implements IService<SysDepartment, SysDepartme
     }
     
     @Override
-    public SysDepartment selectByPrimaryKey(String id) throws Exception {
+    public SysDepartment getByPrimary(String id) throws Exception {
         
         // Integer id1 = Integer.valueOf(id);
         // return sysDepartmentMapper.selectByPrimaryKey(id1);
@@ -103,7 +98,7 @@ public class SysDepartmentService implements IService<SysDepartment, SysDepartme
     }
     
     @Override
-    public int updateByPrimaryKeySelective(SysDepartment record) throws Exception {
+    public int edit(SysDepartment record) throws Exception {
         // return sysDepartmentMapper.updateByPrimaryKeySelective(record);
         int edit = dao.edit(record);
         return edit;
@@ -113,7 +108,7 @@ public class SysDepartmentService implements IService<SysDepartment, SysDepartme
      * 添加
      */
     @Override
-    public int insertSelective(SysDepartment record) throws Exception {
+    public int add(SysDepartment record) throws Exception {
         
         // record.setId(null);
         //
@@ -123,46 +118,24 @@ public class SysDepartmentService implements IService<SysDepartment, SysDepartme
         SysDepartment add = dao.add(record);
         return 1;
     }
-    
+
     @Override
-    public int updateByExampleSelective(SysDepartment record, SysDepartmentExample example) throws Exception {
-        
-        // return sysDepartmentMapper.updateByExampleSelective(record, example);
-        int edit = dao.edit(record);
-        return edit;
-    }
-    
-    @Override
-    public int updateByExample(SysDepartment record, SysDepartmentExample example) throws Exception {
-        
-        // return sysDepartmentMapper.updateByExample(record, example);
-    
-        int edit = dao.edit(record);
-        return edit;
-    }
-    
-    @Override
-    public List<SysDepartment> selectByExample(SysDepartmentExample example) throws Exception {
+    public List<SysDepartment> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         
         // return sysDepartmentMapper.selectByExample(example);
-        SysDepartment[] departments = dao.getList(null, null);
+        SysDepartment[] departments = dao.getList(wheres, orders);
         return Arrays.asList(departments);
     
     }
     
     @Override
-    public long countByExample(SysDepartmentExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
         
         // return sysDepartmentMapper.countByExample(example);
-        int count = dao.getCount(null);
+        int count = dao.getCount(wheres);
         return count;
     }
-    
-    // @Override
-    // public int deleteByExample(SysDepartmentExample example) throws Exception {
-    //
-    // 	return sysDepartmentMapper.deleteByExample(example);
-    // }
+
     
     /**
      * 检查name

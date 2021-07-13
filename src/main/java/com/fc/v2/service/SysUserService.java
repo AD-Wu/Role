@@ -2,10 +2,6 @@ package com.fc.v2.service;
 
 import com.fc.v2.common.base.IService;
 import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.TSysRoleUserMapper;
-import com.fc.v2.mapper.auto.TsysRoleMapper;
-import com.fc.v2.mapper.auto.TsysUserMapper;
-import com.fc.v2.mapper.custom.RoleDao;
 import com.fc.v2.model.auto.*;
 import com.fc.v2.model.custom.RoleVo;
 import com.fc.v2.model.custom.Tablepar;
@@ -37,7 +33,7 @@ import java.util.List;
  * @date 2018年8月26日
  */
 @Service
-public class SysUserService implements IService<TsysUser, TsysUserExample> {
+public class SysUserService implements IService<TsysUser> {
     
     // // 生成的用户dao
     // @Autowired
@@ -83,11 +79,11 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
                     new KeyValue[]{new KeyValue("id", "desc")});
         }
         for (TsysUser user : users) {
-            SysPosition pos = posDao.getByPrimary(user.getPosID());
+            SysPosition pos = posDao.getByPrimary(user.getPosId());
             if (pos != null) {
                 user.setPosName(pos.getPostName());
             }
-            SysDepartment dept = deptDao.getByPrimary(user.getDepID());
+            SysDepartment dept = deptDao.getByPrimary(user.getDepId());
             if (dept != null) {
                 user.setDepName(dept.getDeptName());
             }
@@ -101,7 +97,7 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
     
     @Override
     @Transactional
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
         // List<String> lista = ConvertUtil.toListStrArray(ids);
         // TsysUserExample example = new TsysUserExample();
         // example.createCriteria().andIdIn(lista);
@@ -126,7 +122,7 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
      * 添加用户
      */
     @Override
-    public int insertSelective(TsysUser record) throws Exception {
+    public int add(TsysUser record) throws Exception {
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
         TsysUser add = userDao.add(record);
         return 1;
@@ -144,7 +140,7 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
     @Transactional
     public int insertUserRoles(TsysUser record, String roles) throws Exception {
         String userID = SnowflakeIdWorker.getUUID();
-        record.setID(userID);
+        record.setId(userID);
         if (StringUtils.isNotEmpty(roles)) {
             // 获取数据库操作对象
             IDao<TSysRoleUser> roleUserDao = daoManager.getDao(TSysRoleUser.class);
@@ -167,15 +163,15 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
     }
     
     @Override
-    public TsysUser selectByPrimaryKey(String id) throws Exception {
+    public TsysUser getByPrimary(String id) throws Exception {
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
         
         TsysUser user = userDao.getByPrimary(id);
         if (user != null) {
             IDao<SysDepartment> deptDao = daoManager.getDao(SysDepartment.class);
             IDao<SysPosition> posDao = daoManager.getDao(SysPosition.class);
-            SysDepartment dept = deptDao.getByPrimary(user.getDepID());
-            SysPosition pos = posDao.getByPrimary(user.getPosID());
+            SysDepartment dept = deptDao.getByPrimary(user.getDepId());
+            SysPosition pos = posDao.getByPrimary(user.getPosId());
             if (dept != null) {
                 user.setDepName(dept.getDeptName());
             }
@@ -189,46 +185,30 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
     }
     
     @Override
-    public int updateByPrimaryKeySelective(TsysUser record) throws Exception {
+    public int edit(TsysUser record) throws Exception {
         String pwd = MD5Util.encode(record.getPassword());
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
         
         int update = userDao.update(new String[]{"password"}, new Object[]{pwd},
-                new String[]{"id"}, new Object[]{record.getID()});
+                new String[]{"id"}, new Object[]{record.getId()});
         return update;
         
         // record.setPassword(MD5Util.encode(record.getPassword()));
         // return tsysUserMapper.updateByPrimaryKeySelective(record);
     }
-    
+
     @Override
-    public int updateByExampleSelective(TsysUser record, TsysUserExample example) throws Exception {
+    public List<TsysUser> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
-        int edit = userDao.edit(record);
-        return edit;
-        // return tsysUserMapper.updateByExampleSelective(record, example);
-    }
-    
-    @Override
-    public int updateByExample(TsysUser record, TsysUserExample example) throws Exception {
-        IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
-        int edit = userDao.edit(record);
-        return edit;
-        // return tsysUserMapper.updateByExample(record, example);
-    }
-    
-    @Override
-    public List<TsysUser> selectByExample(TsysUserExample example) throws Exception {
-        IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
-        TsysUser[] users = userDao.getList(null, null);
+        TsysUser[] users = userDao.getList(wheres, orders);
         return Arrays.asList(users);
         // return tsysUserMapper.selectByExample(example);
     }
     
     @Override
-    public long countByExample(TsysUserExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
-        int count = userDao.getCount(null);
+        int count = userDao.getCount(wheres);
         return count;
         // return tsysUserMapper.countByExample(example);
     }
@@ -271,9 +251,9 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
         // if (StringUtils.isNotEmpty(tsysRoles)) {
         //     for (TsysRole tsysRole : tsysRoles) {
         //         Boolean isflag = false;
-        //         RoleVo roleVo = new RoleVo(tsysRole.getID(), tsysRole.getName(), isflag);
+        //         RoleVo roleVo = new RoleVo(tsysRole.getId(), tsysRole.getName(), isflag);
         //         for (TsysRole myRole : myRoles) {
-        //             if (tsysRole.getID().equals(myRole.getID())) {
+        //             if (tsysRole.getId().equals(myRole.getId())) {
         //                 isflag = true;
         //                 break;
         //             }
@@ -306,9 +286,9 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
         if (StringUtils.isNotEmpty(roles)) {
             for (TsysRole role : roles) {
                 Boolean isFlag = false;
-                RoleVo roleVo = new RoleVo(role.getID(), role.getName(), isFlag);
+                RoleVo roleVo = new RoleVo(role.getId(), role.getName(), isFlag);
                 for (TsysRole myRole : myRoles) {
-                    if (role.getID().equals(myRole.getID())) {
+                    if (role.getId().equals(myRole.getId())) {
                         isFlag = true;
                         break;
                     }
@@ -352,13 +332,13 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
     public int updateUserRoles(TsysUser record, String roleIds) throws Exception {
         // //先删除这个用户的所有角色
         // TSysRoleUserExample tSysRoleUserExample = new TSysRoleUserExample();
-        // tSysRoleUserExample.createCriteria().andSysUserIdEqualTo(record.getID());
+        // tSysRoleUserExample.createCriteria().andSysUserIdEqualTo(record.getId());
         // tSysRoleUserMapper.deleteByExample(tSysRoleUserExample);
         // if (StringUtils.isNotEmpty(roleIds)) {
         //     List<String> list_roles = ConvertUtil.toListStrArray(roleIds);
         //     //添加新的角色信息
         //     for (String role : list_roles) {
-        //         TSysRoleUser tSysRoleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID(), record.getID(), role);
+        //         TSysRoleUser tSysRoleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID(), record.getId(), role);
         //         tSysRoleUserMapper.insertSelective(tSysRoleUser);
         //     }
         // }
@@ -367,13 +347,13 @@ public class SysUserService implements IService<TsysUser, TsysUserExample> {
         
         //先删除这个用户的所有角色
         IDao<TSysRoleUser> roleUserDao = daoManager.getDao(TSysRoleUser.class);
-        roleUserDao.delete(new Where[]{new Where("sysUserID", "=", record.getID())});
+        roleUserDao.delete(new Where[]{new Where("sysUserID", "=", record.getId())});
         
         if (StringUtils.isNotEmpty(roleIds)) {
             String[] roles = roleIds.split(",");
             //添加新的角色信息
             for (String role : roles) {
-                TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID(), record.getID(), role);
+                TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID(), record.getId(), role);
                 roleUserDao.add(roleUser);
             }
         }

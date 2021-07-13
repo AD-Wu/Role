@@ -1,11 +1,7 @@
 package com.fc.v2.service;
 
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.SysQuartzJobLogMapper;
-import com.fc.v2.model.auto.SysPosition;
 import com.fc.v2.model.auto.SysQuartzJobLog;
-import com.fc.v2.model.auto.SysQuartzJobLogExample;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
@@ -31,7 +27,7 @@ import java.util.List;
  * @date 2019-09-13 00:03:42
  **/
 @Service
-public class SysQuartzJobLogService implements IService<SysQuartzJobLog, SysQuartzJobLogExample> {
+public class SysQuartzJobLogService implements IService<SysQuartzJobLog> {
     
     // @Autowired
     // private SysQuartzJobLogMapper sysQuartzJobLogMapper;
@@ -72,7 +68,7 @@ public class SysQuartzJobLogService implements IService<SysQuartzJobLog, SysQuar
     }
     
     @Override
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
         // List<String> lista = ConvertUtil.toListStrArray(ids);
         // SysQuartzJobLogExample example = new SysQuartzJobLogExample();
         // example.createCriteria().andIdIn(lista);
@@ -84,14 +80,14 @@ public class SysQuartzJobLogService implements IService<SysQuartzJobLog, SysQuar
     }
     
     @Override
-    public SysQuartzJobLog selectByPrimaryKey(String id) throws Exception {
+    public SysQuartzJobLog getByPrimary(String id) throws Exception {
         // return sysQuartzJobLogMapper.selectByPrimaryKey(id);
         SysQuartzJobLog log = dao.getByPrimary(id);
         return log;
     }
     
     @Override
-    public int updateByPrimaryKeySelective(SysQuartzJobLog record) throws Exception {
+    public int edit(SysQuartzJobLog record) throws Exception {
         // return sysQuartzJobLogMapper.updateByPrimaryKeySelective(record);
         int edit = dao.edit(record);
         return edit;
@@ -101,46 +97,26 @@ public class SysQuartzJobLogService implements IService<SysQuartzJobLog, SysQuar
      * 添加
      */
     @Override
-    public int insertSelective(SysQuartzJobLog record) throws Exception {
+    public int add(SysQuartzJobLog record) throws Exception {
         //添加雪花主键id
         record.setId(SnowflakeIdWorker.getUUID());
         // return sysQuartzJobLogMapper.insertSelective(record);
         SysQuartzJobLog add = dao.add(record);
         return 1;
     }
-    
+
     @Override
-    public int updateByExampleSelective(SysQuartzJobLog record, SysQuartzJobLogExample example) throws Exception {
-        // return sysQuartzJobLogMapper.updateByExampleSelective(record, example);
-        int edit = dao.edit(record);
-        return edit;
-    }
-    
-    @Override
-    public int updateByExample(SysQuartzJobLog record, SysQuartzJobLogExample example) throws Exception {
-        // return sysQuartzJobLogMapper.updateByExample(record, example);
-        int edit = dao.edit(record);
-        return edit;
-    }
-    
-    @Override
-    public List<SysQuartzJobLog> selectByExample(SysQuartzJobLogExample example) throws Exception {
+    public List<SysQuartzJobLog> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         // return sysQuartzJobLogMapper.selectByExample(example);
         SysQuartzJobLog[] logs = dao.getList(null, null);
         return Arrays.asList(logs);
     }
     
     @Override
-    public long countByExample(SysQuartzJobLogExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
         // return sysQuartzJobLogMapper.countByExample(example);
-        return dao.getCount(null);
+        return dao.getCount(wheres);
     }
-    
-    // @Override
-    // public int deleteByExample(SysQuartzJobLogExample example) throws Exception {
-    //
-    // 	return sysQuartzJobLogMapper.deleteByExample(example);
-    // }
     
     /**
      * 检查name

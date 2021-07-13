@@ -1,8 +1,7 @@
 package com.fc.v2.common.quartz.task;
 import cn.hutool.core.date.DateUtil;
-import com.fc.v2.mapper.auto.TsysUserMapper;
 import com.fc.v2.model.auto.TsysUser;
-import com.fc.v2.model.auto.TsysUserExample;
+import com.fc.v2.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +16,9 @@ import java.util.List;
  */
 @Component("v2Task")
 public class V2Task {
-	@Autowired
-	private TsysUserMapper tsysUserMapper;
+
+    @Autowired
+    private SysUserService userService;
     /**
      * 无参的任务
      */
@@ -33,9 +33,8 @@ public class V2Task {
      * @param a
      * @param b
      */
-    public void runTask2(Integer a,Long b,String c,Boolean d,Double e)
-    {
-    	List<TsysUser> list=  tsysUserMapper.selectByExample(new TsysUserExample());
+    public void runTask2(Integer a,Long b,String c,Boolean d,Double e) throws Exception {
+    	List<TsysUser> list=  userService.getList(null,null);
     	System.err.println("用户查询num："+list.size());
         System.out.println("正在执行定时任务，带多个参数的方法"+a+"   "+b+" "+c+"  "+d+" "+e+"执行时间:"+DateUtil.now());
     }

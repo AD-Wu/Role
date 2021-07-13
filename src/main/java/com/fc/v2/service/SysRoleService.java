@@ -2,10 +2,6 @@ package com.fc.v2.service;
 
 import cn.hutool.core.util.RandomUtil;
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
-import com.fc.v2.mapper.auto.TsysPermissionRoleMapper;
-import com.fc.v2.mapper.auto.TsysRoleMapper;
-import com.fc.v2.mapper.custom.RoleDao;
 import com.fc.v2.model.auto.*;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.SnowflakeIdWorker;
@@ -27,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
+public class SysRoleService implements IService<TsysRole> {
     
     //    //角色mapper
     //    @Autowired
@@ -94,7 +90,7 @@ public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
      */
     @Override
     @Transactional
-    public int deleteByPrimaryKey(String ids) throws Exception {
+    public int delete(String ids) throws Exception {
         // List<String> lista = ConvertUtil.toListStrArray(ids);
         // // 先删除角色下面的所有权限
         // TsysPermissionRoleExample permissionRoleExample = new TsysPermissionRoleExample();
@@ -114,7 +110,7 @@ public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
     }
     
     @Override
-    public int insertSelective(TsysRole record) throws Exception {
+    public int add(TsysRole record) throws Exception {
         // //添加雪花主键id
         // record.setID(SnowflakeIdWorker.getUUID());
         // return tsysRoleMapper.insertSelective(record);
@@ -122,47 +118,9 @@ public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
         TsysRole add = roleDao.add(record);
         return 1;
     }
-    
-    /**
-     * 添加角色绑定权限
-     *
-     * @param record     角色信息
-     * @param permission 权限id集合
-     *
-     * @return
-     */
-    @Transactional
-    public int insertRoleAndPrem(TsysRole record, String permission) throws Exception {
-        // //添加雪花主键id
-        // String roleid = SnowflakeIdWorker.getUUID();
-        // record.setID(roleid);
-        // //添加权限
-        // List<String> prems = ConvertUtil.toListStrArray(prem);
-        // for (String premid : prems) {
-        //     TsysPermissionRole tsysPermissionRole = new TsysPermissionRole(RandomUtil.randomUUID(), roleid, premid);
-        //     tsysPermissionRoleMapper.insertSelective(tsysPermissionRole);
-        // }
-        // return tsysRoleMapper.insertSelective(record);
-        
-        //添加雪花主键id
-        String roleID = SnowflakeIdWorker.getUUID();
-        record.setID(roleID);
-        //添加权限
-        String[] permissions = permission.split(",");
-        for (String permissionID : permissions) {
-            TsysPermissionRole permissionRole = new TsysPermissionRole();
-            permissionRole.setId(RandomUtil.randomUUID());
-            permissionRole.setRoleId(roleID);
-            permissionRole.setPermissionId(permissionID);
-            permissionRoleDao.add(permissionRole);
-        }
-        IDao<TsysRole> roleDao = daoManager.getDao(TsysRole.class);
-        TsysRole add = roleDao.add(record);
-        return 1;
-    }
-    
+
     @Override
-    public TsysRole selectByPrimaryKey(String id) throws Exception {
+    public TsysRole getByPrimary(String id) throws Exception {
         // return tsysRoleMapper.selectByPrimaryKey(id);
         TsysRole role = roleDao.getByPrimary(id);
         return role;
@@ -170,7 +128,7 @@ public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
     }
     
     @Override
-    public int updateByPrimaryKeySelective(TsysRole record) throws Exception {
+    public int edit(TsysRole record) throws Exception {
         // return tsysRoleMapper.updateByPrimaryKeySelective(record);
         int edit = roleDao.edit(record);
         return edit;
@@ -212,43 +170,21 @@ public class SysRoleService implements IService<TsysRole, TsysRoleExample> {
         }
         return i;
     }
-    
+
     @Override
-    public int updateByExampleSelective(TsysRole record, TsysRoleExample example) throws Exception {
-        // 更新，进行非空判断
-        // return tsysRoleMapper.updateByExampleSelective(record, example);
-        int edit = roleDao.edit(record);
-        return edit;
-    }
-    
-    @Override
-    public int updateByExample(TsysRole record, TsysRoleExample example) throws Exception {
-        // 更新，未进行非空判断
-        // return tsysRoleMapper.updateByExample(record, example);
-        int edit = roleDao.edit(record);
-        return edit;
-    }
-    
-    @Override
-    public List<TsysRole> selectByExample(TsysRoleExample example) throws Exception {
+    public List<TsysRole> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         //        return tsysRoleMapper.selectByExample(example);
-        TsysRole[] roles = roleDao.getList(null, null);
+        TsysRole[] roles = roleDao.getList(wheres, orders);
         return Arrays.asList(roles);
     }
     
     @Override
-    public long countByExample(TsysRoleExample example) throws Exception {
+    public long getCount(Where[] wheres) throws Exception {
         //        return tsysRoleMapper.countByExample(example);
-        int count = roleDao.getCount(null);
+        int count = roleDao.getCount(wheres);
         return count;
     }
-    
-    // @Override
-    // public int deleteByExample(TsysRoleExample example) throws Exception {
-    //
-    //     return tsysRoleMapper.deleteByExample(example);
-    // }
-    
+
     /**
      * 检查角色name
      *
