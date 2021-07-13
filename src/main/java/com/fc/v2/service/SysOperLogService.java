@@ -20,9 +20,7 @@ import java.util.List;
 @Service
 public class SysOperLogService implements IService<TsysOperLog> {
     
-    //文件mapper
-    // @Autowired
-    // private TsysOperLogMapper tsysOperLogMapper;
+   
     @Autowired
     private DaoManager daoManager;
     private IDao<TsysOperLog> dao;
@@ -38,15 +36,6 @@ public class SysOperLogService implements IService<TsysOperLog> {
      * @return PageInfo<TsysOperLog>
      */
     public PageInfo<TsysOperLog> list(Tablepar tablepar, String searchText) throws Exception {
-//        TsysOperLogExample testExample = new TsysOperLogExample();
-        // testExample.setOrderByClause("id+0 DESC");
-        // if (searchText != null && !"".equals(searchText)) {
-        //     testExample.createCriteria().andTitleLike("%" + searchText + "%");
-        // }
-        // List<TsysOperLog> list = tsysOperLogMapper.selectByExample(testExample);
-        //
-        // PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
-        // return new PageInfo<>(list);
         KeyValue[] orders = new KeyValue[]{new KeyValue("id", "desc")};
         Where[] wheres = null;
         if (searchText != null && !"".equals(searchText)) {
@@ -63,11 +52,6 @@ public class SysOperLogService implements IService<TsysOperLog> {
      * @return List<TsysOperLog>
      */
     public List<TsysOperLog> getNEW() throws Exception {
-        // TsysOperLogExample testExample = new TsysOperLogExample();
-        // testExample.setOrderByClause("id DESC");
-        // PageHelper.startPage(1, 10);
-        // List<TsysOperLog> tsysOperLogs = tsysOperLogMapper.selectByExample(testExample);
-        
         KeyValue[] orders = new KeyValue[]{new KeyValue("id", "desc")};
         TsysOperLog[] logs = dao.getPage(1, 10, null, orders);
         return Arrays.asList(logs);
@@ -76,10 +60,6 @@ public class SysOperLogService implements IService<TsysOperLog> {
     
     @Override
     public int delete(String ids) throws Exception {
-        // List<String> lista = ConvertUtil.toListStrArray(ids);
-        // TsysOperLogExample example = new TsysOperLogExample();
-        // example.createCriteria().andIdIn(lista);
-        // return tsysOperLogMapper.deleteByExample(example);
         String[] idArr = ids.split(",");
         
         int delete = dao.delete(Where.getInWhere("id", idArr));
@@ -88,34 +68,28 @@ public class SysOperLogService implements IService<TsysOperLog> {
     
     @Override
     public TsysOperLog getByPrimary(String id) throws Exception {
-        
-        // return tsysOperLogMapper.selectByPrimaryKey(id);
         return dao.getByPrimary(id);
     }
     
     @Override
     public int edit(TsysOperLog record) throws Exception {
-        // return tsysOperLogMapper.updateByPrimaryKeySelective(record);
         return dao.edit(record);
     }
 
     @Override
     public List<TsysOperLog> getList(Where[] wheres, KeyValue[] orders) throws Exception {
-        // return tsysOperLogMapper.selectByExample(example);
         TsysOperLog[] logs = dao.getList(null, null);
         return Arrays.asList(logs);
     }
     
     @Override
     public long getCount(Where[] wheres) throws Exception {
-        // return tsysOperLogMapper.countByExample(example);
         return dao.getCount(wheres);
     }
 
     @Override
     public int add(TsysOperLog record) throws Exception {
         record.setId(SnowflakeIdWorker.getUUID());
-        // return tsysOperLogMapper.insertSelective(record);
         TsysOperLog add = dao.add(record);
         return 1;
     }

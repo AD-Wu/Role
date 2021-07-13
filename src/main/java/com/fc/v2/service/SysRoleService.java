@@ -25,15 +25,6 @@ import java.util.List;
 @Service
 public class SysRoleService implements IService<TsysRole> {
     
-    //    //角色mapper
-    //    @Autowired
-    //    private TsysRoleMapper tsysRoleMapper;
-    //    //自定义角色dao
-    //    @Autowired
-    //    private RoleDao roleDao;
-    //    //自动生成的权限角色映射mapper
-    //    @Autowired
-    //    private TsysPermissionRoleMapper tsysPermissionRoleMapper;
     @Autowired
     private DaoManager daoManager;
     private IDao<TsysRole> roleDao;
@@ -51,16 +42,6 @@ public class SysRoleService implements IService<TsysRole> {
      * @return
      */
     public PageInfo<TsysRole> list(Tablepar tablepar) throws Exception {
-        // TsysRoleExample testExample = new TsysRoleExample();
-        // testExample.setOrderByClause("id+0 DESC");
-        // if (tablepar.getSearchText() != null && !"".equals(tablepar.getSearchText())) {
-        //     testExample.createCriteria().andNameLike("%" + tablepar.getSearchText() + "%");
-        // }
-        //
-        // PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
-        // List<TsysRole> list = tsysRoleMapper.selectByExample(testExample);
-        // PageInfo<TsysRole> pageInfo = new PageInfo<>(list);
-        // return pageInfo;
         Where[] wheres = null;
         if (tablepar.getSearchText() != null && !"".equals(tablepar.getSearchText())) {
             wheres = Where.getLikeWhere("name", tablepar.getSearchText());
@@ -79,8 +60,6 @@ public class SysRoleService implements IService<TsysRole> {
      * @return
      */
     public List<TsysRole> queryList() throws Exception {
-        // TsysRoleExample tsysRoleExample = new TsysRoleExample();
-        // return tsysRoleMapper.selectByExample(tsysRoleExample);
         TsysRole[] roles = roleDao.getList(null, null);
         return Arrays.asList(roles);
     }
@@ -91,16 +70,6 @@ public class SysRoleService implements IService<TsysRole> {
     @Override
     @Transactional
     public int delete(String ids) throws Exception {
-        // List<String> lista = ConvertUtil.toListStrArray(ids);
-        // // 先删除角色下面的所有权限
-        // TsysPermissionRoleExample permissionRoleExample = new TsysPermissionRoleExample();
-        // permissionRoleExample.createCriteria().andRoleIdIn(lista);
-        // tsysPermissionRoleMapper.deleteByExample(permissionRoleExample);
-        // // 再删除角色
-        // TsysRoleExample example = new TsysRoleExample();
-        // example.createCriteria().andIdIn(lista);
-        // return tsysRoleMapper.deleteByExample(example);
-        
         // 先删除角色下面的所有权限
         String[] idArr = ids.split(",");
         permissionRoleDao.delete(new Where[]{new Where("roleID", "in", idArr)});
@@ -111,17 +80,13 @@ public class SysRoleService implements IService<TsysRole> {
     
     @Override
     public int add(TsysRole record) throws Exception {
-        // //添加雪花主键id
-        // record.setID(SnowflakeIdWorker.getUUID());
-        // return tsysRoleMapper.insertSelective(record);
         record.setID(SnowflakeIdWorker.getUUID());
         TsysRole add = roleDao.add(record);
         return 1;
     }
-
+    
     @Override
     public TsysRole getByPrimary(String id) throws Exception {
-        // return tsysRoleMapper.selectByPrimaryKey(id);
         TsysRole role = roleDao.getByPrimary(id);
         return role;
         
@@ -129,7 +94,6 @@ public class SysRoleService implements IService<TsysRole> {
     
     @Override
     public int edit(TsysRole record) throws Exception {
-        // return tsysRoleMapper.updateByPrimaryKeySelective(record);
         int edit = roleDao.edit(record);
         return edit;
     }
@@ -140,21 +104,7 @@ public class SysRoleService implements IService<TsysRole> {
      * @return
      */
     @Transactional
-    public int updateRoleAndPrem(String roleId, String powerIds) throws Exception {
-        // //先删除角色下面的所有权限
-        // TsysPermissionRoleExample permissionRoleExample = new TsysPermissionRoleExample();
-        // permissionRoleExample.createCriteria().andRoleIdEqualTo(roleId);
-        // tsysPermissionRoleMapper.deleteByExample(permissionRoleExample);
-        // //添加权限关联
-        // List<String> prems = ConvertUtil.toListStrArray(powerIds);
-        // int i = 0;
-        // for (String pre : prems) {
-        //     TsysPermissionRole permissionRole = new TsysPermissionRole(RandomUtil.randomUUID(), roleId, pre);
-        //     tsysPermissionRoleMapper.insertSelective(permissionRole);
-        //     i++;
-        // }
-        // return i;
-        
+    public int updateRoleAndPerm(String roleId, String powerIds) throws Exception {
         //先删除角色下面的所有权限
         permissionRoleDao.delete(new Where[]{new Where("roleID", "=", roleId)});
         //添加权限关联
@@ -170,31 +120,25 @@ public class SysRoleService implements IService<TsysRole> {
         }
         return i;
     }
-
+    
     @Override
     public List<TsysRole> getList(Where[] wheres, KeyValue[] orders) throws Exception {
-        //        return tsysRoleMapper.selectByExample(example);
         TsysRole[] roles = roleDao.getList(wheres, orders);
         return Arrays.asList(roles);
     }
     
     @Override
     public long getCount(Where[] wheres) throws Exception {
-        //        return tsysRoleMapper.countByExample(example);
         int count = roleDao.getCount(wheres);
         return count;
     }
-
+    
     /**
      * 检查角色name
      *
      * @return
      */
     public int checkNameUnique(TsysRole tsysRole) throws Exception {
-        //        TsysRoleExample example = new TsysRoleExample();
-        //        example.createCriteria().andNameEqualTo(tsysRole.getName());
-        //        List<TsysRole> list = tsysRoleMapper.selectByExample(example);
-        //        return list.size();
         Where[] wheres = Where.getEqualsWhere("name", tsysRole.getName());
         TsysRole[] roles = roleDao.getList(wheres, null);
         return roles.length;
@@ -208,9 +152,6 @@ public class SysRoleService implements IService<TsysRole> {
      * @return
      */
     public List<TsysRole> queryUserRole(String userID) throws Exception {
-        
-        //        return roleDao.queryUserRole(userID);
-        
         IDatabase da = daoManager.getDatabaseAccess();
         String sql = "select r.id,r.name  from t_sys_role r " +
                      "LEFT JOIN t_sys_role_user ru ON  r.id=ru.sysRoleID " +

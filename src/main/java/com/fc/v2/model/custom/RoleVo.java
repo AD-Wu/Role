@@ -10,7 +10,7 @@ import com.fc.v2.model.auto.TsysRole;
 public class RoleVo extends TsysRole{
 	private static final long serialVersionUID = 1L;
 	
-	private boolean ischeck;//判断是否又这个权限
+	private boolean ischeck;//判断是否有这个权限
 	
 	public RoleVo() {
 		super();

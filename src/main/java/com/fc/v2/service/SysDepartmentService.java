@@ -23,9 +23,7 @@ import java.util.List;
  */
 @Service
 public class SysDepartmentService implements IService<SysDepartment> {
-
-    // @Autowired
-    // private SysDepartmentMapper sysDepartmentMapper;
+    
     @Autowired
     private DaoManager daoManager;
     private IDao<SysDepartment> dao;
@@ -40,20 +38,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
      * @return
      */
     public PageInfo<SysDepartment> list(Tablepar tablepar, String name) throws Exception {
-        // SysDepartmentExample testExample = new SysDepartmentExample();
-        // testExample.setOrderByClause("id ASC");
-        // if (name != null && !"".equals(name)) {
-        // 	testExample.createCriteria().andDeptNameLike("%" + name + "%");
-        // }
-        // if (StrUtil.isNotEmpty(tablepar.getOrderByColumn())) {
-        // 	testExample.setOrderByClause(
-        // 			StringUtils.toUnderScoreCase(tablepar.getOrderByColumn()) + " " + tablepar.getIsAsc());
-        // }
-        //
-        // List<SysDepartment> list = sysDepartmentMapper.selectByExample(testExample);
-        // PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
-        // PageInfo<SysDepartment> pageInfo = new PageInfo<>(list);
-        // return pageInfo;
         Where[] ws = null;
         if (name != null && !"".equals(name)) {
             ws = new Where[]{new Where("name", "like", name)};
@@ -72,13 +56,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
     
     @Override
     public int delete(String ids) throws Exception {
-        
-        // Integer[] integers = ConvertUtil.toIntArray(",", ids);
-        // List<Integer> stringB = Arrays.asList(integers);
-        // SysDepartmentExample example = new SysDepartmentExample();
-        // example.createCriteria().andIdIn(stringB);
-        // return sysDepartmentMapper.deleteByExample(example);
-        
         Integer[] integers = ConvertUtil.toIntArray(",", ids);
         int delete = dao.delete(new Where[]{new Where("id", "in", integers)});
         return delete;
@@ -87,9 +64,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
     
     @Override
     public SysDepartment getByPrimary(String id) throws Exception {
-        
-        // Integer id1 = Integer.valueOf(id);
-        // return sysDepartmentMapper.selectByPrimaryKey(id1);
         SysDepartment department = dao.getByPrimary(Integer.valueOf(id));
         return department;
     
@@ -97,7 +71,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
     
     @Override
     public int edit(SysDepartment record) throws Exception {
-        // return sysDepartmentMapper.updateByPrimaryKeySelective(record);
         int edit = dao.edit(record);
         return edit;
     }
@@ -107,11 +80,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
      */
     @Override
     public int add(SysDepartment record) throws Exception {
-        
-        // record.setId(null);
-        //
-        // return sysDepartmentMapper.insertSelective(record);
-    
         record.setId(null);
         SysDepartment add = dao.add(record);
         return 1;
@@ -119,8 +87,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
 
     @Override
     public List<SysDepartment> getList(Where[] wheres, KeyValue[] orders) throws Exception {
-        
-        // return sysDepartmentMapper.selectByExample(example);
         SysDepartment[] departments = dao.getList(wheres, orders);
         return Arrays.asList(departments);
     
@@ -128,8 +94,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
     
     @Override
     public long getCount(Where[] wheres) throws Exception {
-        
-        // return sysDepartmentMapper.countByExample(example);
         int count = dao.getCount(wheres);
         return count;
     }
@@ -143,11 +107,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
      * @return
      */
     public int checkNameUnique(SysDepartment sysDepartment) throws Exception {
-        // SysDepartmentExample example = new SysDepartmentExample();
-        // example.createCriteria().andDeptNameEqualTo(sysDepartment.getDeptName());
-        // List<SysDepartment> list = sysDepartmentMapper.selectByExample(example);
-        // return list.size();
-    
         Where[] ws = new Where[]{new Where("deptName", "=", sysDepartment.getDeptName())};
         SysDepartment[] deptNames = dao.getList(ws, null);
         return deptNames.length;
@@ -162,7 +121,6 @@ public class SysDepartmentService implements IService<SysDepartment> {
      * @return
      */
     public int updateVisible(SysDepartment record) throws Exception {
-        // return sysDepartmentMapper.updateByPrimaryKeySelective(record);
         int edit = dao.edit(record);
         return edit;
     }

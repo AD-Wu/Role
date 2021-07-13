@@ -1,6 +1,5 @@
 package com.fc.v2.controller;
 
-import com.fc.v2.actor.SysNoticeActor;
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.enums.ReadState;
@@ -47,17 +46,13 @@ public class AdminController extends BaseController {
     @Autowired
     private SysNoticeService sysNoticeService;
     
-    @Autowired
-    private SysNoticeActor noticeActor;
-    
     @ApiOperation(value = "首页", notes = "首页")
     @GetMapping("/index")
     public String index(HttpServletRequest request) throws Exception {
         request.getSession().setAttribute("sessionUserName", ShiroUtils.getUser().getNickname());
         // 获取公告信息
-        
-        // List<SysNotice> notices = sysNoticeService.getuserNoticeNotRead(ShiroUtils.getUser(), 0);
-        SysNotice[] notices = noticeActor.getUserNotice(ShiroUtils.getUser(), ReadState.UNREAD);
+    
+        SysNotice[] notices = sysNoticeService.getuserNoticeNotRead(ShiroUtils.getUser(), ReadState.UNREAD);
         request.getSession().setAttribute("notices", notices);
         return prefix + "/index";
     }

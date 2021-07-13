@@ -29,8 +29,6 @@ import java.util.List;
 @Service
 public class SysNoticeUserService implements IService<SysNoticeUser> {
     
-    // @Autowired
-    // private SysNoticeUserMapper sysNoticeUserMapper;
     
     @Autowired
     private DaoManager daoManager;
@@ -46,16 +44,6 @@ public class SysNoticeUserService implements IService<SysNoticeUser> {
      * @return
      */
     public PageInfo<SysNoticeUser> list(Tablepar tablepar, String name) throws Exception {
-        // SysNoticeUserExample testExample = new SysNoticeUserExample();
-        // testExample.setOrderByClause("id ASC");
-        // if (name != null && !"".equals(name)) {
-        //     testExample.createCriteria().andUserIdLike("%" + name + "%");
-        // }
-        // PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
-        // List<SysNoticeUser> list = sysNoticeUserMapper.selectByExample(testExample);
-        // PageInfo<SysNoticeUser> pageInfo = new PageInfo<>(list);
-        // return pageInfo;
-    
         Where[] ws = null;
         if (name != null && !"".equals(name)) {
             ws = new Where[]{new Where("userID", "like", name)};
@@ -69,10 +57,6 @@ public class SysNoticeUserService implements IService<SysNoticeUser> {
     
     @Override
     public int delete(String ids) throws Exception {
-        // List<String> lista = ConvertUtil.toListStrArray(ids);
-        // SysNoticeUserExample example = new SysNoticeUserExample();
-        // example.createCriteria().andIdIn(lista);
-        // return sysNoticeUserMapper.deleteByExample(example);
         String[] idArr = ids.split(",");
         int delete = dao.delete(new Where[]{new Where("id", "in", idArr)});
         return delete;
@@ -80,8 +64,6 @@ public class SysNoticeUserService implements IService<SysNoticeUser> {
     
     @Override
     public SysNoticeUser getByPrimary(String id) throws Exception {
-        
-        // return sysNoticeUserMapper.selectByPrimaryKey(id);
         SysNoticeUser user = dao.getByPrimary(id);
         return user;
         
@@ -89,7 +71,6 @@ public class SysNoticeUserService implements IService<SysNoticeUser> {
     
     @Override
     public int edit(SysNoticeUser record) throws Exception {
-        // return sysNoticeUserMapper.updateByPrimaryKeySelective(record);
         return dao.edit(record);
     }
     
@@ -98,10 +79,7 @@ public class SysNoticeUserService implements IService<SysNoticeUser> {
      */
     @Override
     public int add(SysNoticeUser record) throws Exception {
-        // //添加雪花主键id
-        // record.setId(SnowflakeIdWorker.getUUID());
-        // return sysNoticeUserMapper.insertSelective(record);
-        
+        //添加雪花主键id
         record.setId(SnowflakeIdWorker.getUUID());
         SysNoticeUser add = dao.add(record);
         return 1;
@@ -109,16 +87,12 @@ public class SysNoticeUserService implements IService<SysNoticeUser> {
 
     @Override
     public List<SysNoticeUser> getList(Where[] wheres, KeyValue[] orders) throws Exception {
-        
-        // return sysNoticeUserMapper.selectByExample(example);
         SysNoticeUser[] users = dao.getList(wheres, orders);
         return Arrays.asList(users);
     }
     
     @Override
     public long getCount(Where[] wheres) throws Exception {
-        
-        // return sysNoticeUserMapper.countByExample(example);
         return dao.getCount(wheres);
     }
 
@@ -130,12 +104,7 @@ public class SysNoticeUserService implements IService<SysNoticeUser> {
      * @return
      */
     public int checkNameUnique(SysNoticeUser sysNoticeUser) throws Exception {
-        // SysNoticeUserExample example = new SysNoticeUserExample();
-        // example.createCriteria().andUserIdEqualTo(sysNoticeUser.getUserId());
-        // List<SysNoticeUser> list = sysNoticeUserMapper.selectByExample(example);
-        // return list.size();
-    
-        SysNoticeUser[] users = dao.getList(new Where[]{new Where("userID", "=", sysNoticeUser.getUserId())}, null);
+        SysNoticeUser[] users = dao.getList(Where.getEqualsWhere("userID",sysNoticeUser.getUserId()), null);
         return users.length;
     }
     

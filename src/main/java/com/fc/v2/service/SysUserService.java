@@ -35,18 +35,6 @@ import java.util.List;
 @Service
 public class SysUserService implements IService<TsysUser> {
     
-    // // 生成的用户dao
-    // @Autowired
-    // private TsysUserMapper tsysUserMapper;
-    // // 生成的角色用户dao
-    // @Autowired
-    // private TSysRoleUserMapper tSysRoleUserMapper;
-    // //自定义角色dao
-    // @Autowired
-    // private RoleDao roleDao;
-    // //自动生成的角色dao
-    // @Autowired
-    // private TsysRoleMapper tsysRoleMapper;
     @Autowired
     private DaoManager daoManager;
     
@@ -57,11 +45,7 @@ public class SysUserService implements IService<TsysUser> {
      */
     @Transactional
     public PageInfo<TsysUser> list(Tablepar tablepar) throws Exception {
-        // IDao<Pikachu> pikachuDao = daoManager.getDao(Pikachu.class);
-        // pikachuDao.add(new Pikachu());
-        // System.out.println("=====================");
-        // int i = 6/0;
-        // System.out.println("=====================");
+        
         PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
         String username = tablepar.getSearchText();
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
@@ -90,25 +74,11 @@ public class SysUserService implements IService<TsysUser> {
         }
         PageInfo<TsysUser> pageInfo = new PageInfo<>(Arrays.asList(users));
         return pageInfo;
-        
-        // List<TsysUser> list = userDao.queryUserInfo(username);
-        
     }
     
     @Override
     @Transactional
     public int delete(String ids) throws Exception {
-        // List<String> lista = ConvertUtil.toListStrArray(ids);
-        // TsysUserExample example = new TsysUserExample();
-        // example.createCriteria().andIdIn(lista);
-        // int i = tsysUserMapper.deleteByExample(example);
-        // if (i > 0) {
-        //     TSysRoleUserExample tSysRoleUserExample = new TSysRoleUserExample();
-        //     tSysRoleUserExample.createCriteria().andSysUserIdIn(lista);
-        //     tSysRoleUserMapper.deleteByExample(tSysRoleUserExample);
-        // }
-        // return i;
-        
         // 分割ids
         String[] idAry = ids.split(",");
         // 生成where条件
@@ -126,7 +96,6 @@ public class SysUserService implements IService<TsysUser> {
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
         TsysUser add = userDao.add(record);
         return 1;
-        // return tsysUserMapper.insertSelective(record);
     }
     
     /**
@@ -147,7 +116,6 @@ public class SysUserService implements IService<TsysUser> {
             List<String> rolesList = ConvertUtil.toListStrArray(roles);
             for (String rolesID : rolesList) {
                 TSysRoleUser roleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID(), userID, rolesID);
-                // tSysRoleUserMapper.insertSelective(roleUser);
                 roleUserDao.add(roleUser);
             }
         }
@@ -155,11 +123,8 @@ public class SysUserService implements IService<TsysUser> {
         //密码加密
         record.setPassword(MD5Util.encode(record.getPassword()));
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
-        
         userDao.add(record);
         return 1;
-        
-        // return tsysUserMapper.insertSelective(record);
     }
     
     @Override
@@ -180,8 +145,6 @@ public class SysUserService implements IService<TsysUser> {
             }
         }
         return user;
-        
-        // return tsysUserMapper.selectByPrimaryKey(id);
     }
     
     @Override
@@ -192,17 +155,13 @@ public class SysUserService implements IService<TsysUser> {
         int update = userDao.update(new String[]{"password"}, new Object[]{pwd},
                 new String[]{"id"}, new Object[]{record.getId()});
         return update;
-        
-        // record.setPassword(MD5Util.encode(record.getPassword()));
-        // return tsysUserMapper.updateByPrimaryKeySelective(record);
     }
-
+    
     @Override
     public List<TsysUser> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
         TsysUser[] users = userDao.getList(wheres, orders);
         return Arrays.asList(users);
-        // return tsysUserMapper.selectByExample(example);
     }
     
     @Override
@@ -210,14 +169,8 @@ public class SysUserService implements IService<TsysUser> {
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
         int count = userDao.getCount(wheres);
         return count;
-        // return tsysUserMapper.countByExample(example);
+        
     }
-    
-    // @Override
-    // public int deleteByExample(TsysUserExample example) throws Exception {
-    //
-    //     return tsysUserMapper.deleteByExample(example);
-    // }
     
     /**
      * 检查用户name
@@ -227,12 +180,8 @@ public class SysUserService implements IService<TsysUser> {
      * @return
      */
     public int checkLoginNameUnique(TsysUser user) throws Exception {
-        // TsysUserExample example = new TsysUserExample();
-        // example.createCriteria().andUsernameEqualTo(user.getUsername());
-        // List<TsysUser> list = tsysUserMapper.selectByExample(example);
-        // return list.size();
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
-        TsysUser[] usernames = userDao.getList(new Where[]{new Where("username", "=", user.getUsername())}, null);
+        TsysUser[] usernames = userDao.getList(Where.getEqualsWhere("username", user.getUsername()), null);
         return usernames.length;
     }
     
@@ -242,44 +191,19 @@ public class SysUserService implements IService<TsysUser> {
      * @return
      */
     public List<RoleVo> getUserIsRole(String userID) throws Exception {
-        // List<RoleVo> list = new ArrayList<>();
-        // //查询出我的权限
-        // List<TsysRole> myRoles = roleDao.queryUserRole(userID);
-        // TsysRoleExample tsysRoleExample = new TsysRoleExample();
-        // //查询系统所有的角色
-        // List<TsysRole> tsysRoles = tsysRoleMapper.selectByExample(tsysRoleExample);
-        // if (StringUtils.isNotEmpty(tsysRoles)) {
-        //     for (TsysRole tsysRole : tsysRoles) {
-        //         Boolean isflag = false;
-        //         RoleVo roleVo = new RoleVo(tsysRole.getId(), tsysRole.getName(), isflag);
-        //         for (TsysRole myRole : myRoles) {
-        //             if (tsysRole.getId().equals(myRole.getId())) {
-        //                 isflag = true;
-        //                 break;
-        //             }
-        //         }
-        //         if (isflag) {
-        //             roleVo.setIscheck(true);
-        //             list.add(roleVo);
-        //         } else {
-        //             list.add(roleVo);
-        //         }
-        //     }
-        // }
-        // return list;
         
         List<RoleVo> list = new ArrayList<>();
         //查询出我的权限
         IDatabase db = daoManager.getDatabaseAccess();
         DaoListReader<TsysRole> reader = new DaoListReader<>(TsysRole.class,
                 MethodManager.getMethodData(TsysRole.class).getMethodsSetMap());
-        String sql ="select r.id,r.name  from t_sys_role r " +
-                    "LEFT JOIN t_sys_role_user ru ON  r.id=ru.sysRoleID " +
-                    "where ru.sysUserID=?";
+        String sql = "select r.id,r.name  from t_sys_role r " +
+                     "LEFT JOIN t_sys_role_user ru ON  r.id=ru.sysRoleID " +
+                     "where ru.sysUserID=?";
         Object[] params = new Object[]{userID};
-        db.executeReader(reader,sql,params,null);
+        db.executeReader(reader, sql, params, null);
         TsysRole[] myRoles = reader.getDatas();
-    
+        
         //查询系统所有的角色
         IDao<TsysRole> roleDao = daoManager.getDao(TsysRole.class);
         TsysRole[] roles = roleDao.getList(null, null);
@@ -312,9 +236,6 @@ public class SysUserService implements IService<TsysUser> {
      * @return
      */
     public int updateUserPassword(TsysUser record) throws Exception {
-        // record.setPassword(MD5Util.encode(record.getPassword()));
-        // //修改用户信息
-        // return tsysUserMapper.updateByPrimaryKeySelective(record);
         record.setPassword(MD5Util.encode(record.getPassword()));
         IDao<TsysUser> dao = daoManager.getDao(TsysUser.class);
         int edit = dao.edit(record);
@@ -330,21 +251,6 @@ public class SysUserService implements IService<TsysUser> {
      */
     @Transactional
     public int updateUserRoles(TsysUser record, String roleIds) throws Exception {
-        // //先删除这个用户的所有角色
-        // TSysRoleUserExample tSysRoleUserExample = new TSysRoleUserExample();
-        // tSysRoleUserExample.createCriteria().andSysUserIdEqualTo(record.getId());
-        // tSysRoleUserMapper.deleteByExample(tSysRoleUserExample);
-        // if (StringUtils.isNotEmpty(roleIds)) {
-        //     List<String> list_roles = ConvertUtil.toListStrArray(roleIds);
-        //     //添加新的角色信息
-        //     for (String role : list_roles) {
-        //         TSysRoleUser tSysRoleUser = new TSysRoleUser(SnowflakeIdWorker.getUUID(), record.getId(), role);
-        //         tSysRoleUserMapper.insertSelective(tSysRoleUser);
-        //     }
-        // }
-        // //修改用户信息
-        // return tsysUserMapper.updateByPrimaryKeySelective(record);
-        
         //先删除这个用户的所有角色
         IDao<TSysRoleUser> roleUserDao = daoManager.getDao(TSysRoleUser.class);
         roleUserDao.delete(new Where[]{new Where("sysUserID", "=", record.getId())});
