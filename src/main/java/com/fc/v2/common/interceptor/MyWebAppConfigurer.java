@@ -20,8 +20,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 @Configuration
 public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
 	
-	//private static Logger logger=LoggerFactory.getLogger(WebMvcConfigurationSupport.class);
-
 	/** 解决跨域问题 **/
 	@Override
 	public void addCorsMappings(CorsRegistry registry){
@@ -44,7 +42,7 @@ public class MyWebAppConfigurer  extends  WebMvcConfigurationSupport  {
 	/** 添加拦截器 **/
 	@Override
 	protected void addInterceptors(InterceptorRegistry registry){
-		registry.addInterceptor(new MyInterceptor());
+		// registry.addInterceptor(new MyInterceptor());
 		super.addInterceptors(registry);
 	}
 	

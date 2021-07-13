@@ -25,9 +25,6 @@ public class OssEndpoint {
     
     private final OssTemplate template;
     
-    // @Autowired
-    // public SysFileService sysFileService;
-    
     public OssEndpoint(OssTemplate ossTemplate) {
         this.template = ossTemplate;
     }

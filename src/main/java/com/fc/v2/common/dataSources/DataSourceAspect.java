@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
 @Order(1)
 //@EnableAsync
 public class DataSourceAspect {
-	//private static final Logger log = LoggerFactory.getLogger(DataSourceAspect.class);
 	
 	@Pointcut("@annotation(com.fc.v2.common.dataSources.DataSource)")
     public void dsPointCut()

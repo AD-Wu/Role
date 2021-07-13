@@ -100,15 +100,6 @@ public class GlobalExceptionResolver{
     }
     
     /**
-     * 演示模式异常
-     */
-    @ExceptionHandler(RuntimeException.class)
-    public AjaxResult demoModeException(RuntimeException e)
-    {
-        return AjaxResult.error("演示模式，不允许操作");
-    }
-    
-    /**
      * 拦截未知的运行时异常
      */
     @ExceptionHandler(RuntimeException.class)

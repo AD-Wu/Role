@@ -28,7 +28,6 @@ import java.util.Map;
  * @date 2019-12-06 21:11
  */
 @Configuration
-//@MapperScan(basePackages = "com.fc.v2.mapper")
 public class MybatisConfig {
 
 	@Bean

@@ -135,7 +135,6 @@ public class LogAspect
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
      * 
-     * @param joinPoint 切点
      * @return 方法描述
      * @throws Exception
      */
@@ -159,7 +158,6 @@ public class LogAspect
      * 获取请求的参数，放到log中
      * 
      * @param operLog
-     * @param request
      */
     private void setRequestValue(TsysOperLog operLog)
     {
