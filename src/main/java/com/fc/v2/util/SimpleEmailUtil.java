@@ -1,7 +1,6 @@
 package com.fc.v2.util;
 
 import com.fc.v2.common.conf.V2Config;
-import com.fc.v2.common.spring.SpringUtils;
 import com.fc.v2.model.auto.TSysEmail;
 import com.fc.v2.model.custom.email.MailSenderInfo;
 import com.fc.v2.model.custom.email.MyAuthenticator;

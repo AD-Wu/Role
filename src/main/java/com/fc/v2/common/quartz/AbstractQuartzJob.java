@@ -2,7 +2,7 @@ package com.fc.v2.common.quartz;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 
-import com.fc.v2.common.spring.SpringUtils;
+import com.fc.v2.util.SpringUtils;
 import com.fc.v2.model.auto.SysQuartzJob;
 import com.fc.v2.model.auto.SysQuartzJobLog;
 import com.fc.v2.service.SysQuartzJobLogService;

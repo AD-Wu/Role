@@ -2,11 +2,9 @@ package com.fc.v2.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.fc.v2.common.base.IService;
-import com.fc.v2.common.support.ConvertUtil;
+import com.fc.v2.util.ConvertUtil;
 import com.fc.v2.model.auto.SysDepartment;
-import com.fc.v2.model.auto.SysInterUrl;
 import com.fc.v2.model.custom.Tablepar;
-import com.fc.v2.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pikachu.common.collection.KeyValue;

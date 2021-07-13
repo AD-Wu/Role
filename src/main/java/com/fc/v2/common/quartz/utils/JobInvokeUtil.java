@@ -1,6 +1,6 @@
 package com.fc.v2.common.quartz.utils;
 
-import com.fc.v2.common.spring.SpringUtils;
+import com.fc.v2.util.SpringUtils;
 import com.fc.v2.model.auto.SysQuartzJob;
 import com.fc.v2.util.StringUtils;
 
@@ -74,7 +74,6 @@ public class JobInvokeUtil
     /**
      * 校验是否为为class包名
      * 
-     * @param str 名称
      * @return true是 false否
      */
     public static boolean isValidClassName(String invokeTarget)

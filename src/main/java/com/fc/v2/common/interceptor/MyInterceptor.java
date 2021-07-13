@@ -2,8 +2,7 @@ package com.fc.v2.common.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.fc.v2.common.conf.V2Config;
-import com.fc.v2.common.exception.demo.DemoModeException;
-import com.fc.v2.common.spring.SpringUtils;
+import com.fc.v2.util.SpringUtils;
 import com.fc.v2.model.auto.SysInterUrl;
 import com.fc.v2.service.SysInterUrlService;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -139,7 +138,7 @@ public class MyInterceptor implements HandlerInterceptor {
         if (v2Config.getDemoEnabled().equals("true")) {
             Boolean b = ifurl(request, response);
             if (b) {
-                throw new DemoModeException();
+                throw new RuntimeException("自定义异常");
             }
         }
         return true;// 只有返回true才会继续向下执行，返回false取消当前请求

@@ -1,4 +1,4 @@
-package com.fc.v2.common.support;
+package com.fc.v2.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.fc.v2.util.StringUtils;

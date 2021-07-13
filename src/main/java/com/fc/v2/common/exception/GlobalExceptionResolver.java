@@ -1,7 +1,6 @@
 package com.fc.v2.common.exception;
 
 import com.fc.v2.common.domain.AjaxResult;
-import com.fc.v2.common.exception.demo.DemoModeException;
 import com.fc.v2.util.ServletUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
@@ -103,8 +102,8 @@ public class GlobalExceptionResolver{
     /**
      * 演示模式异常
      */
-    @ExceptionHandler(DemoModeException.class)
-    public AjaxResult demoModeException(DemoModeException e)
+    @ExceptionHandler(RuntimeException.class)
+    public AjaxResult demoModeException(RuntimeException e)
     {
         return AjaxResult.error("演示模式，不允许操作");
     }

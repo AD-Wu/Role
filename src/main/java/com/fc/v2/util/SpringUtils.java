@@ -1,4 +1,4 @@
-package com.fc.v2.common.spring;
+package com.fc.v2.util;
 
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
