@@ -26,7 +26,7 @@ public class DepartmentController extends BaseController {
     
     private final String prefix = "admin/sysDepartment";
     @Autowired
-    private DepartmentService sysDepartmentService;
+    private DepartmentService departmentService;
     
     /**
      * 分页跳转
@@ -62,7 +62,7 @@ public class DepartmentController extends BaseController {
     @RequiresPermissions("gen:department:list")
     @ResponseBody
     public ResultTable list(Tablepar tablepar, String searchText) throws Exception {
-        PageInfo<Department> page = sysDepartmentService.list(tablepar, searchText);
+        PageInfo<Department> page = departmentService.list(tablepar, searchText);
         return treeTable(page.getList());
     }
     
@@ -92,7 +92,7 @@ public class DepartmentController extends BaseController {
     @ResponseBody
     public AjaxResult add(@RequestBody Department department) {
         int b = 0;
-        try {b = sysDepartmentService.add(department);} catch (Exception e) {
+        try {b = departmentService.add(department);} catch (Exception e) {
             e.printStackTrace();
         }
         if (b > 0) {
@@ -116,7 +116,9 @@ public class DepartmentController extends BaseController {
     @ResponseBody
     public AjaxResult remove(String ids) {
         int b = 0;
-        try {b = sysDepartmentService.delete(ids);} catch (Exception e) {
+        try {
+            b = departmentService.delete(ids);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (b > 0) {
@@ -135,7 +137,7 @@ public class DepartmentController extends BaseController {
     @PostMapping("/checkNameUnique")
     @ResponseBody
     public int checkNameUnique(Department department) throws Exception {
-        int b = sysDepartmentService.checkNameUnique(department);
+        int b = departmentService.checkNameUnique(department);
         if (b > 0) {
             return 1;
         } else {
@@ -155,12 +157,14 @@ public class DepartmentController extends BaseController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, ModelMap mmap) {
         //获取自己的权限信息
-        Department mytsysPermission = null;
-        try {mytsysPermission = sysDepartmentService.getByPrimary(id);} catch (Exception e) {
+        Department dept = null;
+        try {
+            dept = departmentService.getByPrimary(id);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         
-        mmap.put("SysDepartment", mytsysPermission);
+        mmap.put("Department", dept);
         return prefix + "/edit";
     }
     
@@ -173,7 +177,7 @@ public class DepartmentController extends BaseController {
     @PutMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@RequestBody Department record) throws Exception {
-        return toAjax(sysDepartmentService.edit(record));
+        return toAjax(departmentService.edit(record));
         
     }
     
@@ -182,7 +186,7 @@ public class DepartmentController extends BaseController {
     public ResuTree selectParent() {
         List<Department> list = null;
         try {
-            list = sysDepartmentService.getList(null,null);
+            list = departmentService.getList(null, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -199,7 +203,7 @@ public class DepartmentController extends BaseController {
     @PostMapping("/get/{id}")
     @ApiOperation(value = "根据id查询唯一", notes = "根据id查询唯一")
     public Department edit(@PathVariable("id") String id) throws Exception {
-        return sysDepartmentService.getByPrimary(id);
+        return departmentService.getByPrimary(id);
     }
     
     /**
@@ -209,22 +213,22 @@ public class DepartmentController extends BaseController {
     @ApiOperation(value = "获取部门树状数据结构", notes = "获取部门树状数据结构")
     @ResponseBody
     public ResuTree tree() throws Exception {
-        List<Department> data = sysDepartmentService.getList(null,null);
+        List<Department> data = departmentService.getList(null, null);
         return dataTree(data);
     }
     
-    /**
-     * 修改状态
-     *
-     * @param record
-     *
-     * @return
-     */
-    @PutMapping("/updateVisible")
-    @ResponseBody
-    public AjaxResult updateVisible(@RequestBody Department record) throws Exception {
-        int i = sysDepartmentService.updateVisible(record);
-        return toAjax(i);
-    }
+    // /**
+    //  * 修改状态
+    //  *
+    //  * @param record
+    //  *
+    //  * @return
+    //  */
+    // @PutMapping("/updateVisible")
+    // @ResponseBody
+    // public AjaxResult updateVisible(@RequestBody Department record) throws Exception {
+    //     int i = departmentService.updateVisible(record);
+    //     return toAjax(i);
+    // }
     
 }

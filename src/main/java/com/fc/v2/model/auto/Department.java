@@ -37,11 +37,11 @@ public class Department implements Serializable {
      */
     @ApiModelProperty(value = "部门名称")
     private String deptName;
-    /**
-     * 状态
-     */
-    @ApiModelProperty(value = "状态")
-    private int status;
+    // /**
+    //  * 状态
+    //  */
+    // @ApiModelProperty(value = "状态")
+    // private int status;
 
     @IColumn(doc = "子菜单个数",ignore = true)
     private int childCount;
@@ -70,13 +70,13 @@ public class Department implements Serializable {
         this.deptName = deptName;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
+    // public int getStatus() {
+    //     return status;
+    // }
+    //
+    // public void setStatus(int status) {
+    //     this.status = status;
+    // }
 
     public int getChildCount() {
         return childCount;

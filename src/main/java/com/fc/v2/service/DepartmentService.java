@@ -115,18 +115,18 @@ public class DepartmentService implements IService<Department> {
         return deptNames.length;
     }
 
-    /**
-     * 修改权限状态展示或者不展示
-     *
-     * @param record
-     * @return
-     */
-    public int updateVisible(Department record) throws Exception {
-        Department old = dao.getByPrimary(record.getId());
-        old.setStatus(record.getStatus());
-        int edit = dao.edit(old);
-        return edit;
-    }
+    // /**
+    //  * 修改权限状态展示或者不展示
+    //  *
+    //  * @param record
+    //  * @return
+    //  */
+    // public int updateVisible(Department record) throws Exception {
+    //     Department old = dao.getByPrimary(record.getId());
+    //     // old.setStatus(record.getStatus());
+    //     int edit = dao.edit(old);
+    //     return edit;
+    // }
 
 
     private Department[] getDepartments(Where[] wheres, KeyValue[] orders) throws Exception {

@@ -225,8 +225,9 @@ public class UserService implements IService<User> {
      * @return
      */
     public int updateUserPassword(User record) throws Exception {
-        record.setPassword(MD5Util.encode(record.getPassword()));
-        int edit = userDao.edit(record);
+        User old = userDao.getByPrimary(record.getId());
+        old.setPassword(MD5Util.encode(record.getPassword()));
+        int edit = userDao.edit(old);
         return edit;
     }
     
