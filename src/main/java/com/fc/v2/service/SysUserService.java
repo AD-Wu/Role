@@ -49,7 +49,6 @@ public class SysUserService implements IService<TsysUser> {
         PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
         String username = tablepar.getSearchText();
         IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
-        IDao<SysPosition> posDao = daoManager.getDao(SysPosition.class);
         IDao<SysDepartment> deptDao = daoManager.getDao(SysDepartment.class);
         
         TsysUser[] users = null;
@@ -63,10 +62,6 @@ public class SysUserService implements IService<TsysUser> {
                     new KeyValue[]{new KeyValue("id", "desc")});
         }
         for (TsysUser user : users) {
-            SysPosition pos = posDao.getByPrimary(user.getPosId());
-            if (pos != null) {
-                user.setPosName(pos.getPostName());
-            }
             SysDepartment dept = deptDao.getByPrimary(user.getDepId());
             if (dept != null) {
                 user.setDepName(dept.getDeptName());
@@ -134,15 +129,11 @@ public class SysUserService implements IService<TsysUser> {
         TsysUser user = userDao.getByPrimary(id);
         if (user != null) {
             IDao<SysDepartment> deptDao = daoManager.getDao(SysDepartment.class);
-            IDao<SysPosition> posDao = daoManager.getDao(SysPosition.class);
             SysDepartment dept = deptDao.getByPrimary(user.getDepId());
-            SysPosition pos = posDao.getByPrimary(user.getPosId());
             if (dept != null) {
                 user.setDepName(dept.getDeptName());
             }
-            if (pos != null) {
-                user.setPosName(pos.getPostName());
-            }
+
         }
         return user;
     }

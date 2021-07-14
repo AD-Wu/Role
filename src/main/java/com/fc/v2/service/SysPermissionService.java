@@ -129,7 +129,9 @@ public class SysPermissionService implements IService<TsysPermission> {
      * @return
      */
     public int updateVisible(TsysPermission record) throws Exception {
-        int edit = permissionDao.edit(record);
+        TsysPermission old = permissionDao.getByPrimary(record.getId());
+        old.setVisible(record.getVisible());
+        int edit = permissionDao.edit(old);
         return edit;
     }
 

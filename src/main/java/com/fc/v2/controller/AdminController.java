@@ -2,11 +2,8 @@ package com.fc.v2.controller;
 
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
-import com.fc.v2.enums.ReadState;
-import com.fc.v2.model.auto.SysNotice;
 import com.fc.v2.model.auto.TsysUser;
 import com.fc.v2.model.custom.SysMenu;
-import com.fc.v2.service.SysNoticeService;
 import com.fc.v2.shiro.util.ShiroUtils;
 import com.fc.v2.util.StringUtils;
 import com.wf.captcha.utils.CaptchaUtil;
@@ -43,17 +40,11 @@ public class AdminController extends BaseController {
     
     private static Logger logger = LoggerFactory.getLogger(AdminController.class);
     private String prefix = "admin";
-    @Autowired
-    private SysNoticeService sysNoticeService;
-    
+
     @ApiOperation(value = "首页", notes = "首页")
     @GetMapping("/index")
     public String index(HttpServletRequest request) throws Exception {
         request.getSession().setAttribute("sessionUserName", ShiroUtils.getUser().getNickname());
-        // 获取公告信息
-    
-        SysNotice[] notices = sysNoticeService.getuserNoticeNotRead(ShiroUtils.getUser(), ReadState.UNREAD);
-        request.getSession().setAttribute("notices", notices);
         return prefix + "/index";
     }
     

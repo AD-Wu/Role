@@ -5,6 +5,7 @@ import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResuTree;
 import com.fc.v2.common.domain.ResultTable;
 import com.fc.v2.model.auto.TsysPermission;
+import com.fc.v2.model.custom.SysPower;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.shiro.util.ShiroUtils;
 import com.github.pagehelper.PageInfo;
@@ -218,11 +219,11 @@ public class PermissionController extends BaseController {
      * @return
      */
     @ApiOperation(value = "根据角色id获取所有打勾权限", notes = "根据角色id获取 所有打勾权限")
-    @GetMapping("/getCheckPrem")
+    @GetMapping("/getCheckPerm")
     @ResponseBody
-    public ResuTree getCheckPrem(String roleId) throws Exception {
-        
-        return dataTree(sysPermissionService.getRolePower(roleId));
+    public ResuTree getCheckPerm(String roleId) throws Exception {
+        List<SysPower> rolePower = sysPermissionService.getRolePower(roleId);
+        return dataTree(rolePower);
     }
     
     /**
@@ -243,7 +244,7 @@ public class PermissionController extends BaseController {
     //@Log(title = "修改保存角色", action = "1")
     @ApiOperation(value = "授权保存", notes = "授权保存")
     @RequiresPermissions("system:role:edit")
-    @PutMapping("/saveRolePower")
+    @PostMapping("/saveRolePower")
     @ResponseBody
     public AjaxResult saveRolePower(String roleId, String powerIds) throws Exception {
         int i = sysRoleService.updateRoleAndPerm(roleId, powerIds);

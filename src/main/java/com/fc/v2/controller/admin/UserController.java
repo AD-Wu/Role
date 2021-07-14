@@ -12,13 +12,13 @@ import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.log.Log;
 import com.fc.v2.model.auto.SysDepartment;
-import com.fc.v2.model.auto.SysPosition;
+//import com.fc.v2.model.auto.SysPosition;
 import com.fc.v2.model.auto.TsysRole;
 import com.fc.v2.model.auto.TsysUser;
 import com.fc.v2.model.custom.RoleVo;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.service.SysDepartmentService;
-import com.fc.v2.service.SysPositionService;
+//import com.fc.v2.service.SysPositionService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,9 +39,6 @@ public class UserController extends BaseController {
     //部门
     @Autowired
     private SysDepartmentService departmentService;
-    //岗位
-    @Autowired
-    private SysPositionService positionService;
 
     /**
      * 展示跳转页面
@@ -101,19 +98,12 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //岗位列表
-        List<SysPosition> sysPositions = null;
-        try {
-            sysPositions = positionService.getList(null, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         //角色
         modelMap.put("tsysRoleList", tsysRoleList);
         //部门
         modelMap.put("departmentsList", departments);
-        //岗位
-        modelMap.put("sysPositionsList", sysPositions);
+
         return prefix + "/add";
     }
 
@@ -194,21 +184,21 @@ public class UserController extends BaseController {
     public String edit(@PathVariable("id") String id, ModelMap mmap) throws Exception {
         //查询所有角色
         List<RoleVo> roleVos = sysUserService.getUserIsRole(id);
-        //岗位列表
-        List<SysPosition> sysPositions = null;
-        try {
-            sysPositions = positionService.getList(null, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        //岗位列表
+//        List<SysPosition> sysPositions = null;
+//        try {
+//            sysPositions = positionService.getList(null, null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         mmap.put("roleVos", roleVos);
         try {
             mmap.put("TsysUser", sysUserService.getByPrimary(id));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //岗位
-        mmap.put("sysPositionsList", sysPositions);
+//        //岗位
+//        mmap.put("sysPositionsList", sysPositions);
         return prefix + "/edit";
     }
 

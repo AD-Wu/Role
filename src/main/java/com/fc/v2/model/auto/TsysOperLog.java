@@ -5,6 +5,7 @@ import com.fc.v2.util.DateUtils;
 import com.pikachu.common.annotations.IColumn;
 import com.pikachu.common.annotations.ITable;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @ITable(doc = "日志", cache = true, history = true, table = "t_sys_oper_log")
@@ -19,7 +20,7 @@ public class TsysOperLog {
     private String operParam;
     private String errorMsg;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date operTime;
+    private LocalDateTime operTime;
     
     public String getId() {
         return id;
@@ -77,16 +78,12 @@ public class TsysOperLog {
         this.errorMsg = errorMsg == null ? null : errorMsg.trim();
     }
     
-    public Date getOperTime() {
+    public LocalDateTime getOperTime() {
         return operTime;
     }
     
-    public void setOperTime(Date operTime) {
+    public void setOperTime(LocalDateTime operTime) {
         this.operTime = operTime;
-    }
-    
-    public String getdate() {
-        return DateUtils.dateTime(this.operTime);
     }
     
 }

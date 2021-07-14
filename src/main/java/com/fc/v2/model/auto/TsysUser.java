@@ -35,35 +35,14 @@ public class TsysUser implements Serializable {
      * 部门Id
      **/
     @ApiModelProperty(value = "部门Id")
-    private Integer depId;
-    /**
-     * 岗位Id
-     **/
-    @ApiModelProperty(value = "岗位Id")
-    private String posId;
+    private String depId;
+
     /**
      * 部门名称
      **/
+    @IColumn(doc = "部门名称",ignore = true)
     private String depName;
-    /**
-     * 岗位名称
-     **/
-    private String posName;
-    
-    public TsysUser(String Id, String username, String password, String nickname, Integer depId, String posId) {
-        super();
-        this.Id = Id;
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-        this.depId = depId;
-        this.posId = posId;
-    }
-    
-    public TsysUser() {
-        super();
-    }
-    
+
     public String getId() {
         return Id;
     }
@@ -96,22 +75,14 @@ public class TsysUser implements Serializable {
         this.nickname = nickname == null ? null : nickname.trim();
     }
     
-    public Integer getDepId() {
+    public String getDepId() {
         return depId;
     }
     
-    public void setDepId(Integer depId) {
+    public void setDepId(String depId) {
         this.depId = depId;
     }
-    
-    public String getPosId() {
-        return posId;
-    }
-    
-    public void setPosId(String posId) {
-        this.posId = posId;
-    }
-    
+
     public String getDepName() {
         return depName;
     }
@@ -119,13 +90,5 @@ public class TsysUser implements Serializable {
     public void setDepName(String depName) {
         this.depName = depName;
     }
-    
-    public String getPosName() {
-        return posName;
-    }
-    
-    public void setPosName(String posName) {
-        this.posName = posName;
-    }
-    
+
 }

@@ -1,10 +1,8 @@
 package com.fc.v2.controller.admin;
 
 import com.fc.v2.common.base.BaseController;
-import com.fc.v2.model.auto.SysNotice;
 import com.fc.v2.model.auto.TsysOperLog;
 import com.fc.v2.model.custom.Service;
-import com.fc.v2.service.SysNoticeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -32,9 +30,7 @@ public class ServiceController extends BaseController {
     
     //跳转页面参数
     private final String prefix = "admin/service";
-    @Autowired
-    private SysNoticeService sysNoticeService;
-    
+
     /**
      * 展示页面
      *
@@ -50,18 +46,8 @@ public class ServiceController extends BaseController {
     @RequiresPermissions("system:service:view")
     public String view(ModelMap model) throws Exception {
         
-        List<SysNotice> sysNotices = sysNoticeService.getNEW();
         List<TsysOperLog> sysOperLog = sysOperLogService.getNEW();
-        if (sysNotices == null || sysNotices.size() <= 0) {
-            SysNotice sysNotice = new SysNotice();
-            sysNotice.setId("0");
-            sysNotice.setTitle("暂无公告");
-            sysNotice.setCreateTime(new Date());
-            sysNotices.add(sysNotice);
-        }
-        
         model.addAttribute("service", new Service());
-        model.addAttribute("sysNotices", sysNotices);
         model.addAttribute("sysOperLog", sysOperLog);
         return prefix + "/list";
     }

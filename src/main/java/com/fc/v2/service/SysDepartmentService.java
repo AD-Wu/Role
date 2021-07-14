@@ -2,6 +2,7 @@ package com.fc.v2.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.fc.v2.common.base.IService;
+import com.fc.v2.model.auto.TsysPermission;
 import com.fc.v2.util.ConvertUtil;
 import com.fc.v2.model.auto.SysDepartment;
 import com.fc.v2.model.custom.Tablepar;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,15 +25,16 @@ import java.util.List;
  */
 @Service
 public class SysDepartmentService implements IService<SysDepartment> {
-    
+
     @Autowired
     private DaoManager daoManager;
     private IDao<SysDepartment> dao;
+
     @PostConstruct
     private void init() {
         this.dao = daoManager.getDao(SysDepartment.class);
     }
-    
+
     /**
      * 分页查询
      *
@@ -42,87 +45,104 @@ public class SysDepartmentService implements IService<SysDepartment> {
         if (name != null && !"".equals(name)) {
             ws = new Where[]{new Where("name", "like", name)};
         }
-        KeyValue[] orders = new KeyValue[2];
-        orders[0] = new KeyValue("id", "asc");
-        if (StrUtil.isNotEmpty(tablepar.getOrderByColumn())) {
-            orders[1] = new KeyValue(tablepar.getOrderByColumn(), tablepar.getIsAsc());
-        }
-        SysDepartment[] departments = dao.getList(ws, orders);
+        List<KeyValue> orders = new ArrayList<>();
+        orders.add(new KeyValue("deptName", "desc"));
+        SysDepartment[] departments = getDepartments(ws, orders.toArray(new KeyValue[0]));
         PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
         PageInfo<SysDepartment> pageInfo = new PageInfo<>(Arrays.asList(departments));
         return pageInfo;
-        
+
     }
-    
+
     @Override
     public int delete(String ids) throws Exception {
-        Integer[] integers = ConvertUtil.toIntArray(",", ids);
-        int delete = dao.delete(new Where[]{new Where("id", "in", integers)});
+        String[] idArr = ids.split(",");
+        int delete = dao.delete(Where.getInWhere("id", idArr));
         return delete;
-        
+
     }
-    
+
     @Override
     public SysDepartment getByPrimary(String id) throws Exception {
-        SysDepartment department = dao.getByPrimary(Integer.valueOf(id));
+        SysDepartment department = dao.getByPrimary(id);
+        department.setChildCount(getChildCount(department));
         return department;
-    
+
     }
-    
+
     @Override
     public int edit(SysDepartment record) throws Exception {
         int edit = dao.edit(record);
         return edit;
     }
-    
+
     /**
      * 添加
      */
     @Override
     public int add(SysDepartment record) throws Exception {
-        record.setId(null);
+        String pid = record.getParentId();
+        if (pid == null || "".equals(pid.trim())) {
+            record.setParentId("0");
+        }
         SysDepartment add = dao.add(record);
         return 1;
     }
 
     @Override
     public List<SysDepartment> getList(Where[] wheres, KeyValue[] orders) throws Exception {
-        SysDepartment[] departments = dao.getList(wheres, orders);
+        if (orders == null || orders.length == 0) {
+            orders = new KeyValue[]{new KeyValue("deptName", "desc")};
+        }
+        SysDepartment[] departments = getDepartments(wheres, orders);
         return Arrays.asList(departments);
-    
+
     }
-    
+
     @Override
     public long getCount(Where[] wheres) throws Exception {
         int count = dao.getCount(wheres);
         return count;
     }
 
-    
+
     /**
      * 检查name
      *
      * @param sysDepartment
-     *
      * @return
      */
     public int checkNameUnique(SysDepartment sysDepartment) throws Exception {
-        Where[] ws = new Where[]{new Where("deptName", "=", sysDepartment.getDeptName())};
+        Where[] ws = Where.getEqualsWhere("deptName", sysDepartment.getDeptName());
         SysDepartment[] deptNames = dao.getList(ws, null);
         return deptNames.length;
-        
     }
-    
+
     /**
      * 修改权限状态展示或者不展示
      *
      * @param record
-     *
      * @return
      */
     public int updateVisible(SysDepartment record) throws Exception {
-        int edit = dao.edit(record);
+        SysDepartment old = dao.getByPrimary(record.getId());
+        old.setStatus(record.getStatus());
+        int edit = dao.edit(old);
         return edit;
     }
-    
+
+
+    private SysDepartment[] getDepartments(Where[] wheres, KeyValue[] orders) throws Exception {
+        SysDepartment[] departs = dao.getList(wheres, orders);
+        for (SysDepartment depart : departs) {
+            depart.setChildCount(getChildCount(depart));
+        }
+        return departs;
+    }
+
+    private int getChildCount(SysDepartment depart) throws Exception {
+        Where[] countWheres = Where.getEqualsWhere("parentId", depart.getId());
+        int childCount = dao.getCount(countWheres);
+        return childCount;
+    }
 }

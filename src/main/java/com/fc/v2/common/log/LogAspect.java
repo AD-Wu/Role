@@ -22,6 +22,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -114,7 +115,7 @@ public class LogAspect
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
             operLog.setMethod(className + "." + methodName + "()");
-            operLog.setOperTime(new Date());
+            operLog.setOperTime(LocalDateTime.now());
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
             // 保存数据库
