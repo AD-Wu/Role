@@ -31,11 +31,11 @@
         let dtree = layui.dtree;
         let form = layui.form;
         let $ = layui.jquery;
-        let MODULE_PATH = rootPath+"/PermissionController";
+        let MODULE_PATH = rootPath + "/PermissionController";
         dtree.render({
             elem: "#role-power",
             method: "get",
-            url: MODULE_PATH+"/getCheckPrem?roleId=" + [[${roleId}]],
+            url: MODULE_PATH + "/getCheckPerm?roleId=" + [[${roleId}]],
             dataFormat: "list",
             checkbar: true,
             skin: "layui",
@@ -55,14 +55,13 @@
             data.field.roleId = [[${roleId}]];
             data.field.powerIds = ids;
 
-
             $.ajax({
-                url: MODULE_PATH+'/saveRolePower',
+                url: MODULE_PATH + '/saveRolePower',
                 data: data.field,
                 dataType: 'json',
-                type: 'put',
+                type: 'post',
                 success: function (result) {
-                    if (result.code==200) {
+                    if (result.code == 200) {
                         layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                             parent.layer.close(parent.layer.getFrameIndex(window.name));
                         });

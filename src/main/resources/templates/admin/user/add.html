@@ -35,14 +35,6 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">岗位</label>
-                    <div class="layui-input-block">
-                        <select id="positionId" name="posId">
-                            <option th:each="list : ${sysPositionsList}" th:text="${list.postName}" th:value="${list.id}"></option>
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-form-item">
                     <label class="layui-form-label">角色</label>
                     <div class="layui-input-block">
                         <input th:each="sysRole:${tsysRoleList}" th:value="${sysRole.id}" th:title="${sysRole.name}"

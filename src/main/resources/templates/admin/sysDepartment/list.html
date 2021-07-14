@@ -31,28 +31,31 @@
 </div>
 
 <script type="text/html" id="department-toolbar">
-    <button shiro:hasPermission="gen:sysDepartment:add"  class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+    <button shiro:hasPermission="gen:sysDepartment:add" class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
-    <button shiro:hasPermission="gen:sysDepartment:remove"  class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+    <button shiro:hasPermission="gen:sysDepartment:remove" class="pear-btn pear-btn-danger pear-btn-md"
+            lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
     </button>
 </script>
 
 <script type="text/html" id="department-bar">
-    <button shiro:hasPermission="gen:sysDepartment:edit"  class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    <button shiro:hasPermission="gen:sysDepartment:edit" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
+        <i class="layui-icon layui-icon-edit"></i>
     </button>
-    <button shiro:hasPermission="gen:sysDepartment:remove"  class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    <button shiro:hasPermission="gen:sysDepartment:remove" class="pear-btn pear-btn-danger pear-btn-sm"
+            lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
 
 
 <script type="text/html" id="department-enable">
-    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="department-enable" {{ d.status== 1 ? 'checked' : '' }}>
+    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用"
+           lay-filter="department-enable" {{ d.status== 1 ? 'checked' : '' }}>
 </script>
-
 
 
 </body>
@@ -64,7 +67,7 @@
         let $ = layui.jquery;
         let treetable = layui.treetable;
 
-        let MODULE_PATH = rootPath+"/SysDepartmentController/";
+        let MODULE_PATH = rootPath + "/SysDepartmentController/";
 
         window.render = function () {
             treetable.render({
@@ -77,17 +80,13 @@
                 treeDefaultClose: true,
                 toolbar: '#department-toolbar',
                 elem: '#department-table',
-                url: MODULE_PATH+'list',
+                url: MODULE_PATH + 'list',
                 page: false,
                 cols: [
                     [
                         {type: 'checkbox'},
                         {field: 'deptName', minWidth: 200, title: '部门名称'},
-                        {field: 'leader', title: '部门负责人'},
-                        {field: 'phone', title: '电话'},
-                        {field: 'email', title: '邮箱'},
-                        {field: 'status', title: '状态',templet: '#department-enable'},
-                        {field: 'orderNum', title: '排序'},
+                        {field: 'status', title: '状态', templet: '#department-enable'},
                         {title: '操作', templet: '#department-bar', width: 150, align: 'center'}
                     ]
                 ]
@@ -155,14 +154,14 @@
             let loading = layer.load()
 
             $.ajax({
-                url: MODULE_PATH+'updateVisible',
-                data: JSON.stringify({id: this.value,status:operate}),
+                url: MODULE_PATH + 'updateVisible',
+                data: JSON.stringify({id: this.value, status: operate}),
                 dataType: 'json',
                 contentType: 'application/json',
                 type: 'put',
                 success: function (result) {
                     layer.close(loading);
-                    if (result.code==200) {
+                    if (result.code == 200) {
                         layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                         });
                     } else {
@@ -203,7 +202,7 @@
                     type: 'delete',
                     success: function (result) {
                         layer.close(loading);
-                        if (result.code==200) {
+                        if (result.code == 200) {
                             layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                                 obj.del();
 
@@ -237,7 +236,7 @@
                     type: 'delete',
                     success: function (result) {
                         layer.close(loading);
-                        if (result.code==200) {
+                        if (result.code == 200) {
                             layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                                 table.reload('department-table');
                             });
