@@ -4,7 +4,7 @@
     <th:block th:include="include :: header('部门修改')"/>
 </head>
 <body>
-<form class="layui-form" th:object="${SysDepartment}">
+<form class="layui-form" th:object="${Department}">
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
@@ -72,7 +72,7 @@
             skin: "layui",
             dataFormat: "list",
             response: {treeId: "id", parentId: "parentId", title: "deptName"},  //修改response中返回数据的定义
-            selectInitVal: '[[${SysDepartment.parentId}]]'
+            selectInitVal: '[[${Department.parentId}]]'
         });
 
 

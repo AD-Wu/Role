@@ -4,7 +4,7 @@
     <th:block th:include="include :: header('权限修改')"/>
 </head>
 <body>
-<form class="layui-form" th:object="${TsysPermission}">
+<form class="layui-form" th:object="${Permission}">
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
@@ -40,11 +40,11 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">状态</label>
                     <div class=" ">
-                        <input type="radio" lay-filter="powerType" th:checked="${TsysPermission.type eq 0}"
+                        <input type="radio" lay-filter="powerType" th:checked="${Permission.type eq 0}"
                                name="type" value="0" title="目录">
-                        <input type="radio" lay-filter="powerType" th:checked="${TsysPermission.type eq 1}"
+                        <input type="radio" lay-filter="powerType" th:checked="${Permission.type eq 1}"
                                name="type" value="1" title="菜单">
-                        <input type="radio" lay-filter="powerType" th:checked="${TsysPermission.type eq 2}"
+                        <input type="radio" lay-filter="powerType" th:checked="${Permission.type eq 2}"
                                name="type" value="2" title="按钮">
                     </div>
                 </div>
@@ -124,7 +124,7 @@
             skin: "layui",
             dataFormat: "list",
             response: {treeId: "id", parentId: "pid", title: "name"},  //修改response中返回数据的定义
-            selectInitVal: '[[${TsysPermission.pid}]]'
+            selectInitVal: '[[${Permission.pid}]]'
         });
 
         form.on("radio(powerType)", function (data) {
@@ -187,7 +187,7 @@
             }
         });
 
-        iconPicker.checkIcon("icon", '[[${TsysPermission.icon}]]');
+        iconPicker.checkIcon("icon", '[[${Permission.icon}]]');
 
          window.init = function (type) {
             if (type == '0') {
@@ -210,7 +210,7 @@
             }
         }
 
-        window.init('[[${TsysPermission.type}]]');
+        window.init('[[${Permission.type}]]');
 
     })
 </script>

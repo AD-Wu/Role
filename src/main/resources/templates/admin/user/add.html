@@ -37,7 +37,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">角色</label>
                     <div class="layui-input-block">
-                        <input th:each="sysRole:${tsysRoleList}" th:value="${sysRole.id}" th:title="${sysRole.name}"
+                        <input th:each="role:${roleList}" th:value="${role.id}" th:title="${role.name}"
                                type="checkbox"  lay-skin="primary">
                     </div>
                 </div>
