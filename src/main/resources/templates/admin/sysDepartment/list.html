@@ -46,17 +46,12 @@
     <button shiro:hasPermission="gen:department:edit" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit">
         <i class="layui-icon layui-icon-edit"></i>
     </button>
+    <button shiro:hasPermission="system:permission:edit" class="pear-btn pear-btn-warming pear-btn-sm" lay-event="power"><i class="layui-icon layui-icon-vercode"></i>
+    </button>
     <button shiro:hasPermission="gen:department:remove" class="pear-btn pear-btn-danger pear-btn-sm"
             lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
-
-
-<script type="text/html" id="department-enable">
-    <input type="checkbox" name="enable" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用"
-           lay-filter="department-enable" {{ d.status== 1 ? 'checked' : '' }}>
-</script>
-
 
 </body>
 <th:block th:include="include :: footer"/>
@@ -85,9 +80,10 @@
                 cols: [
                     [
                         {type: 'checkbox'},
-                        {field: 'deptName', minWidth: 200, title: '部门名称'},
-                        {field: 'status', title: '状态', templet: '#department-enable'},
-                        {title: '操作', templet: '#department-bar', width: 150, align: 'center'}
+                        // {field: 'deptName', minWidth: 200, title: '部门名称', align: 'center'},
+                        // {title: '操作', templet: '#department-bar', width: 150, align: 'center'}
+                        {field: 'deptName', title: '部门名称', },
+                        {title: '操作', templet: '#department-bar', align: 'center'}
                     ]
                 ]
             });
@@ -140,35 +136,6 @@
             } else if (obj.event === 'batchRemove') {
                 window.batchRemove(obj);
             }
-        });
-
-        form.on('switch(department-enable)', function (obj) {
-            let operate;
-
-            if (obj.elem.checked) {
-                operate = 1;
-            } else {
-                operate = 0;
-            }
-
-            let loading = layer.load()
-
-            $.ajax({
-                url: MODULE_PATH + 'updateVisible',
-                data: JSON.stringify({id: this.value, status: operate}),
-                dataType: 'json',
-                contentType: 'application/json',
-                type: 'put',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.code == 200) {
-                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
-                        });
-                    } else {
-                        layer.msg(result.msg, {icon: 2, time: 1000});
-                    }
-                }
-            })
         });
 
 
