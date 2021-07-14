@@ -182,21 +182,13 @@ public class UserController extends BaseController {
     public String edit(@PathVariable("id") String id, ModelMap mmap) throws Exception {
         //查询所有角色
         List<RoleVo> roleVos = sysUserService.getUserIsRole(id);
-//        //岗位列表
-//        List<SysPosition> sysPositions = null;
-//        try {
-//            sysPositions = positionService.getList(null, null);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
         mmap.put("roleVos", roleVos);
         try {
-            mmap.put("TsysUser", sysUserService.getByPrimary(id));
+            mmap.put("User", sysUserService.getByPrimary(id));
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        //岗位
-//        mmap.put("sysPositionsList", sysPositions);
         return prefix + "/edit";
     }
 
@@ -225,7 +217,7 @@ public class UserController extends BaseController {
     @GetMapping("/editPwd/{id}")
     public String editPwd(@PathVariable("id") String id, ModelMap mmap) {
         try {
-            mmap.put("TsysUser", sysUserService.getByPrimary(id));
+            mmap.put("User", sysUserService.getByPrimary(id));
         } catch (Exception e) {
             e.printStackTrace();
         }
