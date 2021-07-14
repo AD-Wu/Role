@@ -23,17 +23,17 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class SysRoleService implements IService<TsysRole> {
+public class RoleService implements IService<Role> {
     
     @Autowired
     private DaoManager daoManager;
-    private IDao<TsysRole> roleDao;
-    private IDao<TsysPermissionRole> permissionRoleDao;
+    private IDao<Role> roleDao;
+    private IDao<RolePermission> permissionRoleDao;
     
     @PostConstruct
     private void init() {
-        this.roleDao = daoManager.getDao(TsysRole.class);
-        this.permissionRoleDao = daoManager.getDao(TsysPermissionRole.class);
+        this.roleDao = daoManager.getDao(Role.class);
+        this.permissionRoleDao = daoManager.getDao(RolePermission.class);
     }
     
     /**
@@ -41,16 +41,16 @@ public class SysRoleService implements IService<TsysRole> {
      *
      * @return
      */
-    public PageInfo<TsysRole> list(Tablepar tablepar) throws Exception {
+    public PageInfo<Role> list(Tablepar tablepar) throws Exception {
         Where[] wheres = null;
         if (tablepar.getSearchText() != null && !"".equals(tablepar.getSearchText())) {
             wheres = Where.getLikeWhere("name", tablepar.getSearchText());
         }
         KeyValue[] orders = new KeyValue[]{new KeyValue("id", "DESC")};
-        TsysRole[] roles = roleDao.getList(wheres, orders);
+        Role[] roles = roleDao.getList(wheres, orders);
         
         PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
-        PageInfo<TsysRole> pageInfo = new PageInfo<>(Arrays.asList(roles));
+        PageInfo<Role> pageInfo = new PageInfo<>(Arrays.asList(roles));
         return pageInfo;
     }
     
@@ -59,8 +59,8 @@ public class SysRoleService implements IService<TsysRole> {
      *
      * @return
      */
-    public List<TsysRole> queryList() throws Exception {
-        TsysRole[] roles = roleDao.getList(null, null);
+    public List<Role> queryList() throws Exception {
+        Role[] roles = roleDao.getList(null, null);
         return Arrays.asList(roles);
     }
     
@@ -79,21 +79,21 @@ public class SysRoleService implements IService<TsysRole> {
     }
     
     @Override
-    public int add(TsysRole record) throws Exception {
+    public int add(Role record) throws Exception {
         record.setID(SnowflakeIdWorker.getUUID());
-        TsysRole add = roleDao.add(record);
+        Role add = roleDao.add(record);
         return 1;
     }
     
     @Override
-    public TsysRole getByPrimary(String id) throws Exception {
-        TsysRole role = roleDao.getByPrimary(id);
+    public Role getByPrimary(String id) throws Exception {
+        Role role = roleDao.getByPrimary(id);
         return role;
         
     }
     
     @Override
-    public int edit(TsysRole record) throws Exception {
+    public int edit(Role record) throws Exception {
         int edit = roleDao.edit(record);
         return edit;
     }
@@ -111,19 +111,19 @@ public class SysRoleService implements IService<TsysRole> {
         String[] permIdAry = powerIds.split(",");
         int i = 0;
         for (String perID : permIdAry) {
-            TsysPermissionRole permissionRole = new TsysPermissionRole();
-            permissionRole.setId(RandomUtil.randomUUID());
-            permissionRole.setRoleId(roleId);
-            permissionRole.setPermissionId(perID);
-            permissionRoleDao.add(permissionRole);
+            RolePermission rolePermission = new RolePermission();
+            rolePermission.setId(RandomUtil.randomUUID());
+            rolePermission.setRoleId(roleId);
+            rolePermission.setPermissionId(perID);
+            permissionRoleDao.add(rolePermission);
             i++;
         }
         return i;
     }
     
     @Override
-    public List<TsysRole> getList(Where[] wheres, KeyValue[] orders) throws Exception {
-        TsysRole[] roles = roleDao.getList(wheres, orders);
+    public List<Role> getList(Where[] wheres, KeyValue[] orders) throws Exception {
+        Role[] roles = roleDao.getList(wheres, orders);
         return Arrays.asList(roles);
     }
     
@@ -138,9 +138,9 @@ public class SysRoleService implements IService<TsysRole> {
      *
      * @return
      */
-    public int checkNameUnique(TsysRole tsysRole) throws Exception {
-        Where[] wheres = Where.getEqualsWhere("name", tsysRole.getName());
-        TsysRole[] roles = roleDao.getList(wheres, null);
+    public int checkNameUnique(Role role) throws Exception {
+        Where[] wheres = Where.getEqualsWhere("name", role.getName());
+        Role[] roles = roleDao.getList(wheres, null);
         return roles.length;
     }
     
@@ -151,16 +151,16 @@ public class SysRoleService implements IService<TsysRole> {
      *
      * @return
      */
-    public List<TsysRole> queryUserRole(String userID) throws Exception {
+    public List<Role> queryUserRole(String userID) throws Exception {
         IDatabase da = daoManager.getDatabaseAccess();
         String sql = "select r.id,r.name  from t_sys_role r " +
                      "LEFT JOIN t_sys_role_user ru ON  r.id=ru.sysRoleID " +
                      "where ru.sysUserID=?";
-        DaoListReader<TsysRole> reader = new DaoListReader<>(TsysRole.class,
-                MethodManager.getMethodData(TsysRole.class)
+        DaoListReader<Role> reader = new DaoListReader<>(Role.class,
+                MethodManager.getMethodData(Role.class)
                         .getMethodsSetMap());
         da.executeReader(reader, sql, new Object[]{userID}, null);
-        TsysRole[] roles = reader.getDatas();
+        Role[] roles = reader.getDatas();
         return Arrays.asList(roles);
     }
     

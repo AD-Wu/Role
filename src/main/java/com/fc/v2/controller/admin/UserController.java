@@ -3,6 +3,9 @@ package com.fc.v2.controller.admin;
 import java.util.List;
 
 import com.fc.v2.common.domain.ResultTable;
+import com.fc.v2.model.auto.Department;
+import com.fc.v2.model.auto.Role;
+import com.fc.v2.model.auto.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,14 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.log.Log;
-import com.fc.v2.model.auto.SysDepartment;
-//import com.fc.v2.model.auto.SysPosition;
-import com.fc.v2.model.auto.TsysRole;
-import com.fc.v2.model.auto.TsysUser;
 import com.fc.v2.model.custom.RoleVo;
 import com.fc.v2.model.custom.Tablepar;
-import com.fc.v2.service.SysDepartmentService;
-//import com.fc.v2.service.SysPositionService;
+import com.fc.v2.service.DepartmentService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +36,7 @@ public class UserController extends BaseController {
     private final String prefix = "admin/user";
     //部门
     @Autowired
-    private SysDepartmentService departmentService;
+    private DepartmentService departmentService;
 
     /**
      * 展示跳转页面
@@ -69,7 +67,7 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:list")
     @ResponseBody
     public ResultTable list(Tablepar tablepar) {
-        PageInfo<TsysUser> page = null;
+        PageInfo<User> page = null;
         try {
             page = sysUserService.list(tablepar);
         } catch (Exception e) {
@@ -90,9 +88,9 @@ public class UserController extends BaseController {
     @GetMapping("/add")
     public String add(ModelMap modelMap) throws Exception {
         //添加角色列表
-        List<TsysRole> tsysRoleList = sysRoleService.queryList();
+        List<Role> roleList = sysRoleService.queryList();
         //部门列表
-        List<SysDepartment> departments = null;
+        List<Department> departments = null;
         try {
             departments = departmentService.getList(null, null);
         } catch (Exception e) {
@@ -100,7 +98,7 @@ public class UserController extends BaseController {
         }
 
         //角色
-        modelMap.put("tsysRoleList", tsysRoleList);
+        modelMap.put("roleList", roleList);
         //部门
         modelMap.put("departmentsList", departments);
 
@@ -120,7 +118,7 @@ public class UserController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:user:add")
     @ResponseBody
-    public AjaxResult add(TsysUser user, @RequestParam(value = "roleIds", required = false) String roleIds) throws Exception {
+    public AjaxResult add(User user, @RequestParam(value = "roleIds", required = false) String roleIds) throws Exception {
         int b = sysUserService.insertUserRoles(user, roleIds);
         if (b > 0) {
             return success();
@@ -157,14 +155,14 @@ public class UserController extends BaseController {
     /**
      * 检查用户
      *
-     * @param tsysUser
+     * @param user
      * @return
      */
     @ApiOperation(value = "检查Name唯一", notes = "检查Name唯一")
     @PostMapping("/checkLoginNameUnique")
     @ResponseBody
-    public int checkLoginNameUnique(TsysUser tsysUser) throws Exception {
-        int b = sysUserService.checkLoginNameUnique(tsysUser);
+    public int checkLoginNameUnique(User user) throws Exception {
+        int b = sysUserService.checkLoginNameUnique(user);
         if (b > 0) {
             return 1;
         } else {
@@ -210,9 +208,9 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(TsysUser tsysUser, @RequestParam(value = "roleIds", required = false) String roleIds)
+    public AjaxResult editSave(User user, @RequestParam(value = "roleIds", required = false) String roleIds)
             throws Exception {
-        return toAjax(sysUserService.updateUserRoles(tsysUser, roleIds));
+        return toAjax(sysUserService.updateUserRoles(user, roleIds));
     }
 
     /**
@@ -242,8 +240,8 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:editPwd")
     @PostMapping("/editPwd")
     @ResponseBody
-    public AjaxResult editPwdSave(TsysUser tsysUser) throws Exception {
-        return toAjax(sysUserService.updateUserPassword(tsysUser));
+    public AjaxResult editPwdSave(User user) throws Exception {
+        return toAjax(sysUserService.updateUserPassword(user));
     }
 
 }

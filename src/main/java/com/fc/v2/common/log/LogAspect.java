@@ -1,8 +1,8 @@
 package com.fc.v2.common.log;
 
-import com.fc.v2.model.auto.TsysOperLog;
-import com.fc.v2.model.auto.TsysUser;
-import com.fc.v2.service.SysOperLogService;
+import com.fc.v2.model.auto.OperLog;
+import com.fc.v2.model.auto.User;
+import com.fc.v2.service.OperLogService;
 import com.fc.v2.shiro.util.ShiroUtils;
 import com.fc.v2.util.ServletUtils;
 import com.fc.v2.util.StringUtils;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -39,7 +38,7 @@ public class LogAspect
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
     @Autowired
-    private SysOperLogService operLogService;
+    private OperLogService operLogService;
 
     // 配置织入点
     @Pointcut("@annotation(com.fc.v2.common.log.Log)")
@@ -83,10 +82,10 @@ public class LogAspect
             }
 
             // 获取当前的用户
-            TsysUser currentUser = ShiroUtils.getUser();
+            User currentUser = ShiroUtils.getUser();
 
             // *========数据库日志=========*//
-            TsysOperLog operLog = new TsysOperLog();
+            OperLog operLog = new OperLog();
            
             //赋值操作
             /*String ip = ShiroUtils.getIp();
@@ -139,7 +138,7 @@ public class LogAspect
      * @return 方法描述
      * @throws Exception
      */
-    public void getControllerMethodDescription(Log log, TsysOperLog operLog) throws Exception
+    public void getControllerMethodDescription(Log log, OperLog operLog) throws Exception
     {
         // 设置action动作
        // operLog.setAction(log.action());
@@ -160,7 +159,7 @@ public class LogAspect
      * 
      * @param operLog
      */
-    private void setRequestValue(TsysOperLog operLog)
+    private void setRequestValue(OperLog operLog)
     {
         Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
         Gson gson=new Gson();

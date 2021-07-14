@@ -1,10 +1,7 @@
 package com.fc.v2.service;
 
-import cn.hutool.core.util.StrUtil;
 import com.fc.v2.common.base.IService;
-import com.fc.v2.model.auto.TsysPermission;
-import com.fc.v2.util.ConvertUtil;
-import com.fc.v2.model.auto.SysDepartment;
+import com.fc.v2.model.auto.Department;
 import com.fc.v2.model.custom.Tablepar;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,15 +21,15 @@ import java.util.List;
  * 部门表 SysDepartmentService
  */
 @Service
-public class SysDepartmentService implements IService<SysDepartment> {
+public class DepartmentService implements IService<Department> {
 
     @Autowired
     private DaoManager daoManager;
-    private IDao<SysDepartment> dao;
+    private IDao<Department> dao;
 
     @PostConstruct
     private void init() {
-        this.dao = daoManager.getDao(SysDepartment.class);
+        this.dao = daoManager.getDao(Department.class);
     }
 
     /**
@@ -40,16 +37,16 @@ public class SysDepartmentService implements IService<SysDepartment> {
      *
      * @return
      */
-    public PageInfo<SysDepartment> list(Tablepar tablepar, String name) throws Exception {
+    public PageInfo<Department> list(Tablepar tablepar, String name) throws Exception {
         Where[] ws = null;
         if (name != null && !"".equals(name)) {
             ws = new Where[]{new Where("name", "like", name)};
         }
         List<KeyValue> orders = new ArrayList<>();
         orders.add(new KeyValue("deptName", "desc"));
-        SysDepartment[] departments = getDepartments(ws, orders.toArray(new KeyValue[0]));
+        Department[] departments = getDepartments(ws, orders.toArray(new KeyValue[0]));
         PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
-        PageInfo<SysDepartment> pageInfo = new PageInfo<>(Arrays.asList(departments));
+        PageInfo<Department> pageInfo = new PageInfo<>(Arrays.asList(departments));
         return pageInfo;
 
     }
@@ -63,15 +60,15 @@ public class SysDepartmentService implements IService<SysDepartment> {
     }
 
     @Override
-    public SysDepartment getByPrimary(String id) throws Exception {
-        SysDepartment department = dao.getByPrimary(id);
+    public Department getByPrimary(String id) throws Exception {
+        Department department = dao.getByPrimary(id);
         department.setChildCount(getChildCount(department));
         return department;
 
     }
 
     @Override
-    public int edit(SysDepartment record) throws Exception {
+    public int edit(Department record) throws Exception {
         int edit = dao.edit(record);
         return edit;
     }
@@ -80,21 +77,21 @@ public class SysDepartmentService implements IService<SysDepartment> {
      * 添加
      */
     @Override
-    public int add(SysDepartment record) throws Exception {
+    public int add(Department record) throws Exception {
         String pid = record.getParentId();
         if (pid == null || "".equals(pid.trim())) {
             record.setParentId("0");
         }
-        SysDepartment add = dao.add(record);
+        Department add = dao.add(record);
         return 1;
     }
 
     @Override
-    public List<SysDepartment> getList(Where[] wheres, KeyValue[] orders) throws Exception {
+    public List<Department> getList(Where[] wheres, KeyValue[] orders) throws Exception {
         if (orders == null || orders.length == 0) {
             orders = new KeyValue[]{new KeyValue("deptName", "desc")};
         }
-        SysDepartment[] departments = getDepartments(wheres, orders);
+        Department[] departments = getDepartments(wheres, orders);
         return Arrays.asList(departments);
 
     }
@@ -109,12 +106,12 @@ public class SysDepartmentService implements IService<SysDepartment> {
     /**
      * 检查name
      *
-     * @param sysDepartment
+     * @param department
      * @return
      */
-    public int checkNameUnique(SysDepartment sysDepartment) throws Exception {
-        Where[] ws = Where.getEqualsWhere("deptName", sysDepartment.getDeptName());
-        SysDepartment[] deptNames = dao.getList(ws, null);
+    public int checkNameUnique(Department department) throws Exception {
+        Where[] ws = Where.getEqualsWhere("deptName", department.getDeptName());
+        Department[] deptNames = dao.getList(ws, null);
         return deptNames.length;
     }
 
@@ -124,23 +121,23 @@ public class SysDepartmentService implements IService<SysDepartment> {
      * @param record
      * @return
      */
-    public int updateVisible(SysDepartment record) throws Exception {
-        SysDepartment old = dao.getByPrimary(record.getId());
+    public int updateVisible(Department record) throws Exception {
+        Department old = dao.getByPrimary(record.getId());
         old.setStatus(record.getStatus());
         int edit = dao.edit(old);
         return edit;
     }
 
 
-    private SysDepartment[] getDepartments(Where[] wheres, KeyValue[] orders) throws Exception {
-        SysDepartment[] departs = dao.getList(wheres, orders);
-        for (SysDepartment depart : departs) {
+    private Department[] getDepartments(Where[] wheres, KeyValue[] orders) throws Exception {
+        Department[] departs = dao.getList(wheres, orders);
+        for (Department depart : departs) {
             depart.setChildCount(getChildCount(depart));
         }
         return departs;
     }
 
-    private int getChildCount(SysDepartment depart) throws Exception {
+    private int getChildCount(Department depart) throws Exception {
         Where[] countWheres = Where.getEqualsWhere("parentId", depart.getId());
         int childCount = dao.getCount(countWheres);
         return childCount;

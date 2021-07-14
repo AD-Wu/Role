@@ -3,7 +3,7 @@ package com.fc.v2.controller.admin;
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResultTable;
-import com.fc.v2.model.auto.TsysRole;
+import com.fc.v2.model.auto.Role;
 import com.fc.v2.model.custom.Tablepar;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -52,7 +52,7 @@ public class RoleController extends BaseController{
 	@RequiresPermissions("system:role:list")
 	@ResponseBody
 	public ResultTable list(Tablepar tablepar) throws Exception {
-		PageInfo<TsysRole> page=sysRoleService.list(tablepar) ;
+		PageInfo<Role> page=sysRoleService.list(tablepar) ;
 		return pageTable(page.getList(),page.getTotal());
 	}
 
@@ -77,7 +77,7 @@ public class RoleController extends BaseController{
 	@PostMapping("/add")
 	@RequiresPermissions("system:role:add")
 	@ResponseBody
-	public AjaxResult add(@RequestBody TsysRole role){
+	public AjaxResult add(@RequestBody Role role){
 		int b= 0;
 		try {b = sysRoleService.add(role);} catch (Exception e) {
 			e.printStackTrace();
@@ -118,8 +118,8 @@ public class RoleController extends BaseController{
 	@ApiOperation(value = "检查Name唯一", notes = "检查Name唯一")
 	@PostMapping("/checkNameUnique")
 	@ResponseBody
-	public int checkNameUnique(TsysRole tsysRole) throws Exception {
-		int b=sysRoleService.checkNameUnique(tsysRole);
+	public int checkNameUnique(Role role) throws Exception {
+		int b=sysRoleService.checkNameUnique(role);
 		if(b>0){
 			return 1;
 		}else{
@@ -154,10 +154,10 @@ public class RoleController extends BaseController{
     @RequiresPermissions("system:role:edit")
     @PutMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(@RequestBody TsysRole tsysRole)
+    public AjaxResult editSave(@RequestBody Role role)
     {
 	    int i= 0;
-	    try {i = sysRoleService.edit(tsysRole);} catch (Exception e) {
+	    try {i = sysRoleService.edit(role);} catch (Exception e) {
 		    e.printStackTrace();
 	    }
 	    return toAjax(i);

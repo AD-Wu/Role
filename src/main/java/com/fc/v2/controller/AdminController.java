@@ -2,7 +2,7 @@ package com.fc.v2.controller;
 
 import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
-import com.fc.v2.model.auto.TsysUser;
+import com.fc.v2.model.auto.User;
 import com.fc.v2.model.custom.SysMenu;
 import com.fc.v2.shiro.util.ShiroUtils;
 import com.fc.v2.util.StringUtils;
@@ -14,7 +14,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,8 +87,8 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "用户登录验证", notes = "用户登录验证")
     @PostMapping("/login")
     @ResponseBody
-    public AjaxResult login(TsysUser user, String captcha, RedirectAttributes redirectAttributes, boolean rememberMe,
-            HttpServletRequest request) {
+    public AjaxResult login(User user, String captcha, RedirectAttributes redirectAttributes, boolean rememberMe,
+                            HttpServletRequest request) {
         boolean yz = true;
         // 获取session中的验证码
         String verCode = (String) request.getSession().getAttribute("captcha");
@@ -160,7 +159,7 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "手机登录", notes = "手机登录")
     @PostMapping("/API/login")
     @ResponseBody
-    public AjaxResult APIlogin(TsysUser user, boolean rememberMe, HttpServletRequest request) {
+    public AjaxResult APIlogin(User user, boolean rememberMe, HttpServletRequest request) {
         // ModelAndView view =new ModelAndView();
         Boolean yz = true;
         //		if (V2Config.getRollVerification()) {// 滚动验证

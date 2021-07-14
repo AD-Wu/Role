@@ -1,12 +1,12 @@
 package com.fc.v2.shiro.util;
 
+import com.fc.v2.model.auto.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
-import com.fc.v2.model.auto.TsysUser;
 import com.fc.v2.shiro.service.MyShiroRealm;
 import com.fc.v2.util.BeanUtils;
 import com.fc.v2.util.StringUtils;
@@ -59,13 +59,13 @@ public class ShiroUtils {
      * @author fuce
      * @Date 2019年11月21日 上午10:00:10
      */
-    public static TsysUser getUser()
+    public static User getUser()
     {
-    	TsysUser user = null;
+    	User user = null;
         Object obj = getSubjct().getPrincipal();
         if (StringUtils.isNotNull(obj))
         {
-            user = new TsysUser();
+            user = new User();
             BeanUtils.copyBeanProp(user, obj);
         }
         return user;
@@ -77,7 +77,7 @@ public class ShiroUtils {
      * @author fuce
      * @Date 2019年11月21日 上午9:59:52
      */
-    public static void setUser(TsysUser user)
+    public static void setUser(User user)
     {
         Subject subject = getSubjct();
         PrincipalCollection principalCollection = subject.getPrincipals();
@@ -107,11 +107,11 @@ public class ShiroUtils {
      */
     public static String getUserId()
     {
-        TsysUser tsysUser = getUser();
-        if (tsysUser == null || tsysUser.getId() == null){
+        User user = getUser();
+        if (user == null || user.getId() == null){
             throw new RuntimeException("用户不存在！");
         }
-        return tsysUser.getId().trim();
+        return user.getId().trim();
     }
 
     /**
@@ -122,11 +122,11 @@ public class ShiroUtils {
      */
     public static String getLoginName()
     {
-        TsysUser tsysUser = getUser();
-        if (tsysUser == null){
+        User user = getUser();
+        if (user == null){
             throw new RuntimeException("用户不存在！");
         }
-        return tsysUser.getUsername();
+        return user.getUsername();
     }
     
     /**

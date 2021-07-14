@@ -6,7 +6,7 @@ import com.pikachu.common.annotations.ITable;
 import java.io.Serializable;
 
 @ITable(doc = "角色权限表", cache = false, history = false, table = "t_sys_permission_role")
-public class TsysPermissionRole implements Serializable {
+public class RolePermission implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @IColumn(doc = "主键", pk = true)

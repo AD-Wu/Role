@@ -7,7 +7,7 @@ import com.pikachu.common.annotations.ITable;
 import io.swagger.annotations.ApiModelProperty;
 
 @ITable(doc = "用户表", cache = false, history = false, table = "t_sys_user")
-public class TsysUser implements Serializable {
+public class User implements Serializable {
     
     private static final long serialVersionUId = 1L;
     /**

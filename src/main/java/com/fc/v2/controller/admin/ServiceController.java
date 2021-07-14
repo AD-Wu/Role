@@ -1,18 +1,16 @@
 package com.fc.v2.controller.admin;
 
 import com.fc.v2.common.base.BaseController;
-import com.fc.v2.model.auto.TsysOperLog;
+import com.fc.v2.model.auto.OperLog;
 import com.fc.v2.model.custom.Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +44,7 @@ public class ServiceController extends BaseController {
     @RequiresPermissions("system:service:view")
     public String view(ModelMap model) throws Exception {
         
-        List<TsysOperLog> sysOperLog = sysOperLogService.getNEW();
+        List<OperLog> sysOperLog = sysOperLogService.getNEW();
         model.addAttribute("service", new Service());
         model.addAttribute("sysOperLog", sysOperLog);
         return prefix + "/list";

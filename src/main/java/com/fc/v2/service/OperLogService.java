@@ -1,7 +1,7 @@
 package com.fc.v2.service;
 
 import com.fc.v2.common.base.IService;
-import com.fc.v2.model.auto.TsysOperLog;
+import com.fc.v2.model.auto.OperLog;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
@@ -18,16 +18,16 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class SysOperLogService implements IService<TsysOperLog> {
+public class OperLogService implements IService<OperLog> {
     
    
     @Autowired
     private DaoManager daoManager;
-    private IDao<TsysOperLog> dao;
+    private IDao<OperLog> dao;
     
     @PostConstruct
     private void init() {
-        this.dao = daoManager.getDao(TsysOperLog.class);
+        this.dao = daoManager.getDao(OperLog.class);
     }
     
     /**
@@ -35,13 +35,13 @@ public class SysOperLogService implements IService<TsysOperLog> {
      *
      * @return PageInfo<TsysOperLog>
      */
-    public PageInfo<TsysOperLog> list(Tablepar tablepar, String searchText) throws Exception {
+    public PageInfo<OperLog> list(Tablepar tablepar, String searchText) throws Exception {
         KeyValue[] orders = new KeyValue[]{new KeyValue("id", "desc")};
         Where[] wheres = null;
         if (searchText != null && !"".equals(searchText)) {
             wheres = new Where[]{new Where("title", "like", searchText)};
         }
-        TsysOperLog[] logs = dao.getList(wheres, orders);
+        OperLog[] logs = dao.getList(wheres, orders);
         PageHelper.startPage(tablepar.getPage(), tablepar.getLimit());
         return new PageInfo<>(Arrays.asList(logs));
     }
@@ -51,9 +51,9 @@ public class SysOperLogService implements IService<TsysOperLog> {
      *
      * @return List<TsysOperLog>
      */
-    public List<TsysOperLog> getNEW() throws Exception {
+    public List<OperLog> getNEW() throws Exception {
         KeyValue[] orders = new KeyValue[]{new KeyValue("id", "desc")};
-        TsysOperLog[] logs = dao.getPage(1, 10, null, orders);
+        OperLog[] logs = dao.getPage(1, 10, null, orders);
         return Arrays.asList(logs);
         
     }
@@ -67,18 +67,18 @@ public class SysOperLogService implements IService<TsysOperLog> {
     }
     
     @Override
-    public TsysOperLog getByPrimary(String id) throws Exception {
+    public OperLog getByPrimary(String id) throws Exception {
         return dao.getByPrimary(id);
     }
     
     @Override
-    public int edit(TsysOperLog record) throws Exception {
+    public int edit(OperLog record) throws Exception {
         return dao.edit(record);
     }
 
     @Override
-    public List<TsysOperLog> getList(Where[] wheres, KeyValue[] orders) throws Exception {
-        TsysOperLog[] logs = dao.getList(null, null);
+    public List<OperLog> getList(Where[] wheres, KeyValue[] orders) throws Exception {
+        OperLog[] logs = dao.getList(null, null);
         return Arrays.asList(logs);
     }
     
@@ -88,9 +88,9 @@ public class SysOperLogService implements IService<TsysOperLog> {
     }
 
     @Override
-    public int add(TsysOperLog record) throws Exception {
+    public int add(OperLog record) throws Exception {
         record.setId(SnowflakeIdWorker.getUUID());
-        TsysOperLog add = dao.add(record);
+        OperLog add = dao.add(record);
         return 1;
     }
     

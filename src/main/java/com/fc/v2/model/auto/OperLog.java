@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @ITable(doc = "日志", cache = true, history = true, table = "t_sys_oper_log")
-public class TsysOperLog {
+public class OperLog {
     
     @IColumn(doc = "主键", pk = true)
     private String id;

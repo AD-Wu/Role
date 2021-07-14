@@ -4,7 +4,7 @@ import com.fc.v2.common.base.BaseController;
 import com.fc.v2.common.domain.AjaxResult;
 import com.fc.v2.common.domain.ResuTree;
 import com.fc.v2.common.domain.ResultTable;
-import com.fc.v2.model.auto.TsysPermission;
+import com.fc.v2.model.auto.Permission;
 import com.fc.v2.model.custom.SysPower;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.shiro.util.ShiroUtils;
@@ -29,17 +29,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/PermissionController")
 public class PermissionController extends BaseController {
-    
+
     //跳转页面参数
     private final String prefix = "admin/permission";
-    
+
     /**
      * 权限列表展示
      *
      * @param model
-     *
      * @return
-     *
      * @author fuce
      * @Date 2019年11月11日 下午3:43:51
      */
@@ -49,13 +47,12 @@ public class PermissionController extends BaseController {
     public String view(ModelMap model) {
         return prefix + "/list";
     }
-    
+
     /**
      * 权限列表
      *
      * @param tablepar
      * @param searchText 搜索字符
-     *
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
@@ -63,11 +60,11 @@ public class PermissionController extends BaseController {
     @RequiresPermissions("system:permission:list")
     @ResponseBody
     public ResultTable list(Tablepar tablepar, String searchText) throws Exception {
-        PageInfo<TsysPermission> page = sysPermissionService.list(tablepar, searchText);
-        
+        PageInfo<Permission> page = sysPermissionService.list(tablepar, searchText);
+
         return treeTable(page.getList());
     }
-    
+
     /**
      * 新增权限
      */
@@ -76,10 +73,9 @@ public class PermissionController extends BaseController {
     public String add() {
         return prefix + "/add";
     }
-    
+
     /**
      * 权限添加
-     *
      *
      * @return
      */
@@ -88,20 +84,19 @@ public class PermissionController extends BaseController {
     @PostMapping("/add")
     @RequiresPermissions("system:permission:add")
     @ResponseBody
-    public AjaxResult add(@RequestBody TsysPermission tsysPermission) throws Exception {
-        int b = sysPermissionService.add(tsysPermission);
+    public AjaxResult add(@RequestBody Permission permission) throws Exception {
+        int b = sysPermissionService.add(permission);
         if (b > 0) {
             return success();
         } else {
             return error();
         }
     }
-    
+
     /**
      * 删除权限
      *
      * @param ids
-     *
      * @return
      */
     //@Log(title = "删除权限", action = "1")
@@ -111,7 +106,9 @@ public class PermissionController extends BaseController {
     @ResponseBody
     public AjaxResult remove(String ids) {
         int b = 0;
-        try {b = sysPermissionService.delete(ids);} catch (Exception e) {
+        try {
+            b = sysPermissionService.delete(ids);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (b == 1) {
@@ -124,26 +121,25 @@ public class PermissionController extends BaseController {
             return error();
         }
     }
-    
+
     /**
      * 检查权限
      *
-     * @param TsysPermission
-     *
+     * @param Permission
      * @return
      */
     @ApiOperation(value = "检查权限", notes = "检查权限")
     @PostMapping("/checkNameUnique")
     @ResponseBody
-    public int checkNameUnique(TsysPermission TsysPermission) throws Exception {
-        int b = sysPermissionService.checkNameUnique(TsysPermission);
+    public int checkNameUnique(Permission Permission) throws Exception {
+        int b = sysPermissionService.checkNameUnique(Permission);
         if (b > 0) {
             return 1;
         } else {
             return 0;
         }
     }
-    
+
     /**
      * 检查权限URL
      *
@@ -152,15 +148,15 @@ public class PermissionController extends BaseController {
     @ApiOperation(value = "检查权限URL", notes = "检查权限URL")
     @PostMapping("/checkURLUnique")
     @ResponseBody
-    public int checkURLUnique(@RequestBody TsysPermission tsysPermission) throws Exception {
-        int b = sysPermissionService.checkURLUnique(tsysPermission);
+    public int checkURLUnique(@RequestBody Permission permission) throws Exception {
+        int b = sysPermissionService.checkURLUnique(permission);
         if (b > 0) {
             return 1;
         } else {
             return 0;
         }
     }
-    
+
     /**
      * 检查权限perms字段
      *
@@ -169,35 +165,34 @@ public class PermissionController extends BaseController {
     @ApiOperation(value = "检查权限perms字段", notes = "检查权限perms字段")
     @PostMapping("/checkPermsUnique")
     @ResponseBody
-    public int checkPermsUnique(TsysPermission tsysPermission) throws Exception {
-        int b = sysPermissionService.checkPermsUnique(tsysPermission);
+    public int checkPermsUnique(Permission permission) throws Exception {
+        int b = sysPermissionService.checkPermsUnique(permission);
         if (b > 0) {
             return 1;
         } else {
             return 0;
         }
     }
-    
+
     /**
      * 修改权限
      *
      * @param id
      * @param mmap
-     *
      * @return
      */
     @ApiOperation(value = "修改跳转", notes = "修改跳转")
     @GetMapping("/edit/{roleId}")
     public String edit(@PathVariable("roleId") String id, ModelMap mmap) throws Exception {
         //获取自己的权限信息
-        TsysPermission mytsysPermission = mytsysPermission = sysPermissionService.getByPrimary(id);
+        Permission selfPermission = sysPermissionService.getByPrimary(id);
         //获取父权限信息
-        TsysPermission pattsysPermission = pattsysPermission = sysPermissionService.getByPrimary(mytsysPermission.getPid());
-        mmap.put("TsysPermission", mytsysPermission);
-        mmap.put("pattsysPermission", pattsysPermission);
+        Permission parentPermission = sysPermissionService.getByPrimary(selfPermission.getPid());
+        mmap.put("Permission", selfPermission);
+        mmap.put("pattsysPermission", parentPermission);
         return prefix + "/edit";
     }
-    
+
     /**
      * 修改保存权限
      */
@@ -206,16 +201,15 @@ public class PermissionController extends BaseController {
     @RequiresPermissions("system:permission:edit")
     @PostMapping("/edit")
     @ResponseBody
-    public AjaxResult editSave(@RequestBody TsysPermission TsysPermission) throws Exception {
-        int i = sysPermissionService.updateByPrimaryKey(TsysPermission);
+    public AjaxResult editSave(@RequestBody Permission Permission) throws Exception {
+        int i = sysPermissionService.updateByPrimaryKey(Permission);
         return toAjax(i);
     }
-    
+
     /**
      * 根据角色id获取bootstarp 所有打勾权限
      *
      * @param roleId 角色id集合
-     *
      * @return
      */
     @ApiOperation(value = "根据角色id获取所有打勾权限", notes = "根据角色id获取 所有打勾权限")
@@ -225,7 +219,7 @@ public class PermissionController extends BaseController {
         List<SysPower> rolePower = sysPermissionService.getRolePower(roleId);
         return dataTree(rolePower);
     }
-    
+
     /**
      * 跳转到菜单树页面
      *
@@ -237,7 +231,7 @@ public class PermissionController extends BaseController {
         model.addAttribute("roleId", roleId);
         return prefix + "/tree";
     }
-    
+
     /**
      * 修改保存角色
      */
@@ -254,24 +248,24 @@ public class PermissionController extends BaseController {
         }
         return toAjax(i);
     }
-    
+
     @GetMapping("/selectParent")
     @ResponseBody
     public ResuTree selectParent() throws Exception {
-        List<TsysPermission> list = sysPermissionService.getAll(null);
-        TsysPermission basePower = new TsysPermission();
+        List<Permission> list = sysPermissionService.getAll(null);
+        Permission basePower = new Permission();
         basePower.setName("顶级权限");
         basePower.setId("0");
         basePower.setPid("-1");
         list.add(basePower);
         return dataTree(list);
     }
-    
+
     @PutMapping("/updateVisible")
     @ResponseBody
-    public AjaxResult updateVisible(@RequestBody TsysPermission TsysPermission) throws Exception {
-        int i = sysPermissionService.updateVisible(TsysPermission);
+    public AjaxResult updateVisible(@RequestBody Permission Permission) throws Exception {
+        int i = sysPermissionService.updateVisible(Permission);
         return toAjax(i);
     }
-    
+
 }

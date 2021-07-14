@@ -26,19 +26,19 @@ public class BaseController
 {
 	//系统用户
 	@Autowired
-	public SysUserService sysUserService; 
+	public UserService sysUserService;
 	
 	//系统角色
 	@Autowired
-	public SysRoleService sysRoleService; 
+	public RoleService sysRoleService;
 	
 	//权限
 	@Autowired
-	public SysPermissionService sysPermissionService;
+	public PermissionService sysPermissionService;
 
 	//日志操作
 	@Autowired
-	public SysOperLogService sysOperLogService;
+	public OperLogService sysOperLogService;
 	
 	//配置文件
 	@Autowired

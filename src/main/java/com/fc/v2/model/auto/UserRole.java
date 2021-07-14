@@ -6,7 +6,7 @@ import com.pikachu.common.annotations.ITable;
 import java.io.Serializable;
 
 @ITable(doc = "角色用户表", cache = false, history = false, table = "t_sys_role_user")
-public class TSysRoleUser implements Serializable {
+public class UserRole implements Serializable {
     private static final long serialVersionUID = 1L;
     @IColumn(doc = "主键", pk = true)
     private String id;
@@ -38,11 +38,11 @@ public class TSysRoleUser implements Serializable {
         this.sysRoleId = sysRoleId == null ? null : sysRoleId.trim();
     }
 
-    public TSysRoleUser() {
+    public UserRole() {
         super();
     }
 
-    public TSysRoleUser(String id, String sysUserId, String sysRoleId) {
+    public UserRole(String id, String sysUserId, String sysRoleId) {
         super();
         this.id = id;
         this.sysUserId = sysUserId;

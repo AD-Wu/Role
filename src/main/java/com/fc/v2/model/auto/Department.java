@@ -18,7 +18,7 @@ import java.lang.Integer;
  */
 @ApiModel(value = "SysDepartment", description = "部门表")
 @ITable(doc = "部门表", table = "t_sys_department", cache = false, history = false)
-public class SysDepartment implements Serializable {
+public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**

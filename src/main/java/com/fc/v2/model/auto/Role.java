@@ -6,7 +6,7 @@ import com.pikachu.common.annotations.ITable;
 import java.io.Serializable;
 
 @ITable(doc = "角色表", cache = true, history = false, table = "t_sys_role")
-public class TsysRole implements Serializable {
+public class Role implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
@@ -15,7 +15,7 @@ public class TsysRole implements Serializable {
     private String name;
     
     
-    public TsysRole() {
+    public Role() {
     
     }
     
@@ -35,7 +35,7 @@ public class TsysRole implements Serializable {
         this.name = name == null ? null : name.trim();
     }
     
-    public TsysRole(String id, String name) {
+    public Role(String id, String name) {
         this.id = id;
         this.name = name;
     }

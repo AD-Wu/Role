@@ -1,10 +1,10 @@
 package com.fc.v2.shiro.service;
 
-import com.fc.v2.model.auto.TsysPermission;
-import com.fc.v2.model.auto.TsysRole;
-import com.fc.v2.model.auto.TsysUser;
-import com.fc.v2.service.SysPermissionService;
-import com.fc.v2.service.SysRoleService;
+import com.fc.v2.model.auto.Permission;
+import com.fc.v2.model.auto.Role;
+import com.fc.v2.model.auto.User;
+import com.fc.v2.service.PermissionService;
+import com.fc.v2.service.RoleService;
 import com.fc.v2.util.StringUtils;
 import com.pikachu.framework.database.DaoManager;
 import com.pikachu.framework.database.IDao;
@@ -35,10 +35,10 @@ import java.util.List;
 public class MyShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    private SysPermissionService permissionService;
+    private PermissionService permissionService;
 
     @Autowired
-    private SysRoleService roleService;
+    private RoleService roleService;
 
     @Autowired
     private DaoManager daoManager;
@@ -59,8 +59,8 @@ public class MyShiroRealm extends AuthorizingRealm {
         String password = new String((char[]) token.getCredentials());
         // 通过username从数据库中查找 User对象，如果找到，没找到.
         // 实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        IDao<TsysUser> userDao = daoManager.getDao(TsysUser.class);
-        TsysUser userInfo = null;
+        IDao<User> userDao = daoManager.getDao(User.class);
+        User userInfo = null;
         try {
             userInfo = userDao.getBean(new String[]{"username"}, new Object[]{username});
         } catch (Exception e) {
@@ -90,26 +90,26 @@ public class MyShiroRealm extends AuthorizingRealm {
             throw new AuthorizationException("principals should not be null");
         }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        TsysUser userinfo = (TsysUser) principals.getPrimaryPrincipal();
+        User userinfo = (User) principals.getPrimaryPrincipal();
         String uid = userinfo.getId();
-        List<TsysRole> tsysRoles = null;
+        List<Role> roles = null;
         try {
-            tsysRoles = roleService.queryUserRole(uid);
+            roles = roleService.queryUserRole(uid);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (TsysRole userRole : tsysRoles) {
+        for (Role userRole : roles) {
             //System.out.println("角色名字:"+gson.toJson(userrole));
             String rolid = userRole.getId();//角色id
             authorizationInfo.addRole(userRole.getName());//添加角色名字
-            List<TsysPermission> permissions = null;
+            List<Permission> permissions = null;
             try {
-                TsysPermission[] perms = permissionService.queryRoleId(rolid);
+                Permission[] perms = permissionService.queryRoleId(rolid);
                 permissions = Arrays.asList(perms);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            for (TsysPermission p : permissions) {
+            for (Permission p : permissions) {
                 //System.out.println("角色下面的权限:"+gson.toJson(p));
                 if (StringUtils.isNotEmpty(p.getPerms())) {
                     authorizationInfo.addStringPermission(p.getPerms());

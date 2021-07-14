@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.StringJoiner;
 
 @ITable(doc = "权限表", cache = false, history = false, table = "t_sys_permission")
-public class TsysPermission implements Serializable {
+public class Permission implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @IColumn(doc = "主键", pk = true)
@@ -123,7 +123,7 @@ public class TsysPermission implements Serializable {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", TsysPermission.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Permission.class.getSimpleName() + "[", "]")
                 .add("id='" + id + "'")
                 .add("name='" + name + "'")
                 .add("descripion='" + descripion + "'")
