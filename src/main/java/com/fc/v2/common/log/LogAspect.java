@@ -2,7 +2,6 @@ package com.fc.v2.common.log;
 
 import com.fc.v2.model.auto.OperLog;
 import com.fc.v2.model.auto.User;
-import com.fc.v2.service.OperLogService;
 import com.fc.v2.shiro.util.ShiroUtils;
 import com.fc.v2.util.ServletUtils;
 import com.fc.v2.util.StringUtils;
@@ -36,9 +35,6 @@ import java.util.Map;
 public class LogAspect
 {
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
-
-    @Autowired
-    private OperLogService operLogService;
 
     // 配置织入点
     @Pointcut("@annotation(com.fc.v2.common.log.Log)")
@@ -121,7 +117,7 @@ public class LogAspect
             //System.out.println("-----------------");
             //System.out.println(new Gson().toJson(operLog));
             //System.out.println("-----------------");
-            operLogService.add(operLog);
+            // operLogService.add(operLog);
         }
         catch (Exception exp)
         {

@@ -72,9 +72,9 @@ public class RoleService implements IService<Role> {
     public int delete(String ids) throws Exception {
         // 先删除角色下面的所有权限
         String[] idArr = ids.split(",");
-        permissionRoleDao.delete(new Where[]{new Where("roleID", "in", idArr)});
+        permissionRoleDao.delete(Where.getInWhere("roleID",  idArr));
         // 再删除角色
-        int delete = roleDao.delete(new Where[]{new Where("id", "in", idArr)});
+        int delete = roleDao.delete(Where.getInWhere("id",  idArr));
         return delete;
     }
     
@@ -105,14 +105,14 @@ public class RoleService implements IService<Role> {
      */
     @Transactional
     public int updateRoleAndPerm(String roleId, String powerIds) throws Exception {
-        //先删除角色下面的所有权限
-        permissionRoleDao.delete(new Where[]{new Where("roleID", "=", roleId)});
-        //添加权限关联
+        // 先删除角色下面的所有权限
+        permissionRoleDao.delete(Where.getEqualsWhere("roleID",roleId));
+        // 添加权限关联
         String[] permIdAry = powerIds.split(",");
         int i = 0;
         for (String perID : permIdAry) {
             RolePermission rolePermission = new RolePermission();
-            rolePermission.setId(RandomUtil.randomUUID());
+            rolePermission.setId(SnowflakeIdWorker.getUUID());
             rolePermission.setRoleId(roleId);
             rolePermission.setPermissionId(perID);
             permissionRoleDao.add(rolePermission);
@@ -153,9 +153,9 @@ public class RoleService implements IService<Role> {
      */
     public List<Role> queryUserRole(String userID) throws Exception {
         IDatabase da = daoManager.getDatabaseAccess();
-        String sql = "select r.id,r.name  from t_sys_role r " +
-                     "LEFT JOIN t_sys_role_user ru ON  r.id=ru.sysRoleID " +
-                     "where ru.sysUserID=?";
+        String sql = "select r.id,r.name  from role r " +
+                     "LEFT JOIN userRole ru ON  r.id=ru.roleID " +
+                     "where ru.userID=?";
         DaoListReader<Role> reader = new DaoListReader<>(Role.class,
                 MethodManager.getMethodData(Role.class)
                         .getMethodsSetMap());

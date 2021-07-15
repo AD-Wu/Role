@@ -5,13 +5,14 @@ import com.pikachu.common.annotations.ITable;
 
 import java.io.Serializable;
 
-@ITable(doc = "角色表", cache = true, history = false, table = "t_sys_role")
+@ITable(doc = "角色表", cache = false, history = false)
 public class Role implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
     @IColumn(doc = "主键", pk = true)
     private String id;
+    private String parentId;
     private String name;
     
     
@@ -25,6 +26,14 @@ public class Role implements Serializable {
     
     public void setID(String id) {
         this.id = id == null ? null : id.trim();
+    }
+    
+    public String getParentId() {
+        return parentId;
+    }
+    
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
     
     public String getName() {

@@ -44,9 +44,7 @@ public class ServiceController extends BaseController {
     @RequiresPermissions("system:service:view")
     public String view(ModelMap model) throws Exception {
         
-        List<OperLog> sysOperLog = sysOperLogService.getNEW();
         model.addAttribute("service", new Service());
-        model.addAttribute("sysOperLog", sysOperLog);
         return prefix + "/list";
     }
     

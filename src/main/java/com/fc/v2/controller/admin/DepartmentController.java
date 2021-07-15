@@ -171,7 +171,6 @@ public class DepartmentController extends BaseController {
     /**
      * 修改保存
      */
-    //@Log(title = "部门表修改", action = "111")
     @ApiOperation(value = "修改保存", notes = "修改保存")
     @RequiresPermissions("gen:department:edit")
     @PutMapping("/edit")
@@ -217,18 +216,5 @@ public class DepartmentController extends BaseController {
         return dataTree(data);
     }
     
-    // /**
-    //  * 修改状态
-    //  *
-    //  * @param record
-    //  *
-    //  * @return
-    //  */
-    // @PutMapping("/updateVisible")
-    // @ResponseBody
-    // public AjaxResult updateVisible(@RequestBody Department record) throws Exception {
-    //     int i = departmentService.updateVisible(record);
-    //     return toAjax(i);
-    // }
     
 }

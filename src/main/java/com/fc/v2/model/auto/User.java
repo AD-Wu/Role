@@ -6,7 +6,7 @@ import com.pikachu.common.annotations.IColumn;
 import com.pikachu.common.annotations.ITable;
 import io.swagger.annotations.ApiModelProperty;
 
-@ITable(doc = "用户表", cache = false, history = false, table = "t_sys_user")
+@ITable(doc = "用户表", cache = false, history = false)
 public class User implements Serializable {
     
     private static final long serialVersionUId = 1L;
@@ -26,22 +26,18 @@ public class User implements Serializable {
      **/
     @ApiModelProperty(value = "用户密码")
     private String password;
-    /**
-     * 昵称
-     **/
-    @ApiModelProperty(value = "昵称")
-    private String nickname;
+    
     /**
      * 部门Id
      **/
     @ApiModelProperty(value = "部门Id")
-    private String depId;
+    private String deptId;
 
     /**
      * 部门名称
      **/
     @IColumn(doc = "部门名称",ignore = true)
-    private String depName;
+    private String deptName;
 
     public String getId() {
         return Id;
@@ -67,28 +63,20 @@ public class User implements Serializable {
         this.password = password == null ? null : password.trim();
     }
     
-    public String getNickname() {
-        return nickname;
+    public String getDeptId() {
+        return deptId;
     }
     
-    public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
-    }
-    
-    public String getDepId() {
-        return depId;
-    }
-    
-    public void setDepId(String depId) {
-        this.depId = depId;
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
 
-    public String getDepName() {
-        return depName;
+    public String getDeptName() {
+        return deptName;
     }
     
-    public void setDepName(String depName) {
-        this.depName = depName;
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
 }

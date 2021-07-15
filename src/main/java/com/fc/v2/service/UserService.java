@@ -69,9 +69,9 @@ public class UserService implements IService<User> {
                     new KeyValue[]{new KeyValue("id", "desc")});
         }
         for (User user : users) {
-            Department dept = deptDao.getByPrimary(user.getDepId());
+            Department dept = deptDao.getByPrimary(user.getDeptId());
             if (dept != null) {
-                user.setDepName(dept.getDeptName());
+                user.setDeptName(dept.getDeptName());
             }
         }
         PageInfo<User> pageInfo = new PageInfo<>(Arrays.asList(users));
@@ -84,7 +84,7 @@ public class UserService implements IService<User> {
         // 分割ids
         String[] idAry = ids.split(",");
         // 先删除用户角色
-        int userRoleDelete = userRoleDao.delete(Where.getInWhere("sysUserId", idAry));
+        int userRoleDelete = userRoleDao.delete(Where.getInWhere("userId", idAry));
         // 生成where条件
         int userDelete = userDao.delete(Where.getInWhere("id", idAry));
         return userDelete;
@@ -131,9 +131,9 @@ public class UserService implements IService<User> {
         User user = userDao.getByPrimary(id);
         if (user != null) {
             IDao<Department> deptDao = daoManager.getDao(Department.class);
-            Department dept = deptDao.getByPrimary(user.getDepId());
+            Department dept = deptDao.getByPrimary(user.getDeptId());
             if (dept != null) {
-                user.setDepName(dept.getDeptName());
+                user.setDeptName(dept.getDeptName());
             }
 
         }
@@ -186,9 +186,9 @@ public class UserService implements IService<User> {
         IDatabase db = daoManager.getDatabaseAccess();
         DaoListReader<Role> reader = new DaoListReader<>(Role.class,
                 MethodManager.getMethodData(Role.class).getMethodsSetMap());
-        String sql = "select r.id,r.name  from t_sys_role r " +
-                     "LEFT JOIN t_sys_role_user ru ON  r.id=ru.sysRoleID " +
-                     "where ru.sysUserID=?";
+        String sql = "select r.id,r.name  from role r " +
+                     "LEFT JOIN userRole ru ON  r.id=ru.roleID " +
+                     "where ru.userID=?";
         Object[] params = new Object[]{userID};
         db.executeReader(reader, sql, params, null);
         Role[] myRoles = reader.getDatas();
@@ -241,7 +241,7 @@ public class UserService implements IService<User> {
     @Transactional
     public int updateUserRoles(User record, String roleIds) throws Exception {
         // 先删除这个用户的所有角色
-        int delete = userRoleDao.delete(Where.getEqualsWhere("sysUserID", record.getId()));
+        int delete = userRoleDao.delete(Where.getEqualsWhere("userID", record.getId()));
 
         if (StringUtils.isNotEmpty(roleIds)) {
             String[] roles = roleIds.split(",");

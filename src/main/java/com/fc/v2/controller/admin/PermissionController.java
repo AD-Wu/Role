@@ -241,7 +241,7 @@ public class PermissionController extends BaseController {
     @PostMapping("/saveRolePower")
     @ResponseBody
     public AjaxResult saveRolePower(String roleId, String powerIds) throws Exception {
-        int i = sysRoleService.updateRoleAndPerm(roleId, powerIds);
+        int i = roleService.updateRoleAndPerm(roleId, powerIds);
         if (i > 0) {
             //大于0刷新权限
             ShiroUtils.clearCachedAuthorizationInfo();

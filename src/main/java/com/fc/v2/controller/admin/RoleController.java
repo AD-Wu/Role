@@ -52,7 +52,7 @@ public class RoleController extends BaseController{
 	@RequiresPermissions("system:role:list")
 	@ResponseBody
 	public ResultTable list(Tablepar tablepar) throws Exception {
-		PageInfo<Role> page=sysRoleService.list(tablepar) ;
+		PageInfo<Role> page= roleService.list(tablepar) ;
 		return pageTable(page.getList(),page.getTotal());
 	}
 
@@ -79,7 +79,7 @@ public class RoleController extends BaseController{
 	@ResponseBody
 	public AjaxResult add(@RequestBody Role role){
 		int b= 0;
-		try {b = sysRoleService.add(role);} catch (Exception e) {
+		try {b = roleService.add(role);} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if(b>0){
@@ -101,7 +101,7 @@ public class RoleController extends BaseController{
 	@ResponseBody
 	public AjaxResult remove(String ids){
         int b= 0;
-        try {b = sysRoleService.delete(ids);} catch (Exception e) {
+        try {b = roleService.delete(ids);} catch (Exception e) {
             e.printStackTrace();
         }
         if(b>0){
@@ -119,7 +119,7 @@ public class RoleController extends BaseController{
 	@PostMapping("/checkNameUnique")
 	@ResponseBody
 	public int checkNameUnique(Role role) throws Exception {
-		int b=sysRoleService.checkNameUnique(role);
+		int b= roleService.checkNameUnique(role);
 		if(b>0){
 			return 1;
 		}else{
@@ -138,7 +138,7 @@ public class RoleController extends BaseController{
 	@GetMapping("/edit/{roleId}")
     public String edit(@PathVariable("roleId") String id, ModelMap mmap)
     {
-	    try {mmap.put("sysRole", sysRoleService.getByPrimary(id));} catch (Exception e) {
+	    try {mmap.put("sysRole", roleService.getByPrimary(id));} catch (Exception e) {
 		    e.printStackTrace();
 	    }
 	    return prefix + "/edit";
@@ -157,7 +157,9 @@ public class RoleController extends BaseController{
     public AjaxResult editSave(@RequestBody Role role)
     {
 	    int i= 0;
-	    try {i = sysRoleService.edit(role);} catch (Exception e) {
+	    try {
+	    	i = roleService.edit(role);
+	    } catch (Exception e) {
 		    e.printStackTrace();
 	    }
 	    return toAjax(i);

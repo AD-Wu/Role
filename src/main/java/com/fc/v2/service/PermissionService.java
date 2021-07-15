@@ -225,8 +225,8 @@ public class PermissionService implements IService<Permission> {
 
     public Permission[] queryRoleId(String roleId) throws Exception {
         //角色权限
-        String queryRoleIdSQL = "select p.* from t_sys_permission p " +
-                "left join t_sys_permission_role pr on p.id=pr.permissionID " +
+        String queryRoleIdSQL = "select p.* from permission p " +
+                "left join rolePermission pr on p.id=pr.permissionID " +
                 "where pr.roleID=?";
         IDatabase db = daoManager.getDatabaseAccess();
         DaoListReader<Permission> reader = new DaoListReader<>(Permission.class,
@@ -293,9 +293,9 @@ public class PermissionService implements IService<Permission> {
             return permList;
         }
 
-        String findByAdminUserIdSQL = "select distinct p.*,(select count(1) from t_sys_permission where pid=p.id) childCount " +
-                "from t_sys_permission_role spr,t_sys_role_user sru,t_sys_permission p " +
-                "where spr.roleID = sru.sysRoleID AND spr.permissionID = p.id and visible=0  AND sru.sysUserID=? " +
+        String findByAdminUserIdSQL = "select distinct p.*,(select count(1) from permission where pid=p.id) childCount " +
+                "from rolePermission spr,userRole sru,permission p " +
+                "where spr.roleID = sru.roleID AND spr.permissionID = p.id and visible=0  AND sru.userID=? " +
                 "GROUP BY p.id " +
                 "ORDER BY orderNum  is null  ASC,orderNum  ASC";
         IDatabase db = daoManager.getDatabaseAccess();

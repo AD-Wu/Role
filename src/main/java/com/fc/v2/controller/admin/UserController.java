@@ -69,7 +69,7 @@ public class UserController extends BaseController {
     public ResultTable list(Tablepar tablepar) {
         PageInfo<User> page = null;
         try {
-            page = sysUserService.list(tablepar);
+            page = userService.list(tablepar);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,7 +88,7 @@ public class UserController extends BaseController {
     @GetMapping("/add")
     public String add(ModelMap modelMap) throws Exception {
         //添加角色列表
-        List<Role> roleList = sysRoleService.queryList();
+        List<Role> roleList = roleService.queryList();
         //部门列表
         List<Department> departments = null;
         try {
@@ -119,7 +119,7 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:add")
     @ResponseBody
     public AjaxResult add(User user, @RequestParam(value = "roleIds", required = false) String roleIds) throws Exception {
-        int b = sysUserService.insertUserRoles(user, roleIds);
+        int b = userService.insertUserRoles(user, roleIds);
         if (b > 0) {
             return success();
         } else {
@@ -141,7 +141,7 @@ public class UserController extends BaseController {
     public AjaxResult remove(String ids) {
         int b = 0;
         try {
-            b = sysUserService.delete(ids);
+            b = userService.delete(ids);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,7 +162,7 @@ public class UserController extends BaseController {
     @PostMapping("/checkLoginNameUnique")
     @ResponseBody
     public int checkLoginNameUnique(User user) throws Exception {
-        int b = sysUserService.checkLoginNameUnique(user);
+        int b = userService.checkLoginNameUnique(user);
         if (b > 0) {
             return 1;
         } else {
@@ -181,11 +181,11 @@ public class UserController extends BaseController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, ModelMap mmap) throws Exception {
         //查询所有角色
-        List<RoleVo> roleVos = sysUserService.getUserIsRole(id);
+        List<RoleVo> roleVos = userService.getUserIsRole(id);
 
         mmap.put("roleVos", roleVos);
         try {
-            mmap.put("User", sysUserService.getByPrimary(id));
+            mmap.put("User", userService.getByPrimary(id));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -202,7 +202,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(User user, @RequestParam(value = "roleIds", required = false) String roleIds)
             throws Exception {
-        return toAjax(sysUserService.updateUserRoles(user, roleIds));
+        return toAjax(userService.updateUserRoles(user, roleIds));
     }
 
     /**
@@ -217,7 +217,7 @@ public class UserController extends BaseController {
     @GetMapping("/editPwd/{id}")
     public String editPwd(@PathVariable("id") String id, ModelMap mmap) {
         try {
-            mmap.put("User", sysUserService.getByPrimary(id));
+            mmap.put("User", userService.getByPrimary(id));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -233,7 +233,7 @@ public class UserController extends BaseController {
     @PostMapping("/editPwd")
     @ResponseBody
     public AjaxResult editPwdSave(User user) throws Exception {
-        return toAjax(sysUserService.updateUserPassword(user));
+        return toAjax(userService.updateUserPassword(user));
     }
 
 }

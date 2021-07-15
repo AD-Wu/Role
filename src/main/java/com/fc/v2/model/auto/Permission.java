@@ -6,14 +6,14 @@ import com.pikachu.common.annotations.ITable;
 import java.io.Serializable;
 import java.util.StringJoiner;
 
-@ITable(doc = "权限表", cache = false, history = false, table = "t_sys_permission")
+@ITable(doc = "权限表", cache = false, history = false)
 public class Permission implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @IColumn(doc = "主键", pk = true)
     private String id;
     private String name;
-    private String descripion;
+    private String description;
     private String url;
     private Integer isBlank;
     private String pid;
@@ -41,12 +41,12 @@ public class Permission implements Serializable {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getDescripion() {
-        return descripion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripion(String descripion) {
-        this.descripion = descripion == null ? null : descripion.trim();
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     public String getUrl() {
@@ -126,7 +126,7 @@ public class Permission implements Serializable {
         return new StringJoiner(", ", Permission.class.getSimpleName() + "[", "]")
                 .add("id='" + id + "'")
                 .add("name='" + name + "'")
-                .add("descripion='" + descripion + "'")
+                .add("descripion='" + description + "'")
                 .add("url='" + url + "'")
                 .add("isBlank=" + isBlank)
                 .add("pid='" + pid + "'")

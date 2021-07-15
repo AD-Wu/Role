@@ -43,7 +43,7 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "首页", notes = "首页")
     @GetMapping("/index")
     public String index(HttpServletRequest request) throws Exception {
-        request.getSession().setAttribute("sessionUserName", ShiroUtils.getUser().getNickname());
+        request.getSession().setAttribute("sessionUserName", ShiroUtils.getUser().getUsername());
         return prefix + "/index";
     }
     

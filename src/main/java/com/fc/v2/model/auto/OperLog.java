@@ -8,7 +8,7 @@ import com.pikachu.common.annotations.ITable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@ITable(doc = "日志", cache = true, history = true, table = "t_sys_oper_log")
+@ITable(doc = "日志", cache = false, history = false)
 public class OperLog {
     
     @IColumn(doc = "主键", pk = true)
