@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('用户列表')"/>
+    <th:block th:include="include :: header('用户列表')" />
 </head>
 <body class="pear-container">
 <div class="layui-card">
@@ -36,7 +36,8 @@
         <i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
-    <button shiro:hasPermission="system:user:remove" class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+    <button shiro:hasPermission="system:user:remove" class="pear-btn pear-btn-danger pear-btn-md"
+            lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
     </button>
@@ -44,38 +45,41 @@
 
 <script type="text/html" id="user-bar">
 
-    <button shiro:hasPermission="system:user:edit" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    <button shiro:hasPermission="system:user:edit" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i
+            class="layui-icon layui-icon-edit"></i>
     </button>
 
-    <button shiro:hasPermission="system:user:remove" class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    <button shiro:hasPermission="system:user:remove" class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i
+            class="layui-icon layui-icon-delete"></i>
     </button>
 
 
-    <button shiro:hasPermission="system:user:editPwd" class="pear-btn pear-btn-warming pear-btn-md" lay-event="editPwd"><i class="layui-icon layui-icon-password"></i>
+    <button shiro:hasPermission="system:user:editPwd" class="pear-btn pear-btn-warming pear-btn-md" lay-event="editPwd">
+        <i class="layui-icon layui-icon-password"></i>
     </button>
 
 
 </script>
 
 <script type="text/html" id="role-enable">
-    <input type="checkbox" name="enable" value="{{d.roleId}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="role-enable" {{d.enable== '0' ? 'checked' : '' }} >
+    <input type="checkbox" name="enable" value="{{d.roleId}}" lay-skin="switch" lay-text="启用|禁用"
+           lay-filter="role-enable" {{d.enable== '0' ? 'checked' : '' }} >
 </script>
 
-<th:block th:include="include :: footer"/>
+<th:block th:include="include :: footer" />
 <script>
     layui.use(['table', 'form', 'jquery'], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
 
-        let MODULE_PATH = rootPath+"/UserController";
+        let MODULE_PATH = rootPath + "/UserController";
         let cols = [
             [
                 {type: 'checkbox'},
-                {title: 'ID', field: 'id', align: 'center'},
-                {title: '昵称', field: 'nickname', align: 'center'},
+                // {title: 'ID', field: 'id', align: 'center'},
                 {title: '登录名称', field: 'username', align: 'center'},
-                {title: '部门名称', field: 'depName', align: 'center'},
+                {title: '部门名称', field: 'deptName', align: 'center'},
                 {title: '操作', toolbar: '#user-bar', align: 'center'}
             ]
         ]
@@ -101,7 +105,7 @@
                 window.remove(obj);
             } else if (obj.event === 'edit') {
                 window.edit(obj);
-            }else if (obj.event === 'editPwd') {
+            } else if (obj.event === 'editPwd') {
                 window.editPwd(obj);
             }
         });
@@ -167,7 +171,7 @@
                     type: 'delete',
                     success: function (result) {
                         layer.close(loading);
-                        if (result.code==200) {
+                        if (result.code == 200) {
                             layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                                 obj.del();
                             });
@@ -200,7 +204,7 @@
                     type: 'delete',
                     success: function (result) {
                         layer.close(loading);
-                        if (result.code==200) {
+                        if (result.code == 200) {
                             layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                                 table.reload('user-table');
                             });

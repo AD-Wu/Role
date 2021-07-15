@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('角色列表')"/>
+    <th:block th:include="include :: header('角色列表')" />
 </head>
 <body class="pear-container">
 <div class="layui-card">
@@ -36,7 +36,8 @@
         <i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
-    <button shiro:hasPermission="system:role:remove" class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+    <button shiro:hasPermission="system:role:remove" class="pear-btn pear-btn-danger pear-btn-md"
+            lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
     </button>
@@ -44,33 +45,38 @@
 
 <script type="text/html" id="role-bar">
 
-    <button shiro:hasPermission="system:role:edit" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    <button shiro:hasPermission="system:role:edit" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i
+            class="layui-icon layui-icon-edit"></i>
     </button>
-    <button shiro:hasPermission="system:permission:edit" class="pear-btn pear-btn-warming pear-btn-sm" lay-event="power"><i class="layui-icon layui-icon-vercode"></i>
+    <button shiro:hasPermission="system:permission:edit" class="pear-btn pear-btn-warming pear-btn-sm"
+            lay-event="power"><i class="layui-icon layui-icon-vercode"></i>
     </button>
-    <button shiro:hasPermission="system:role:remove" class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    <button shiro:hasPermission="system:role:remove" class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i
+            class="layui-icon layui-icon-delete"></i>
     </button>
 
 </script>
 
 <script type="text/html" id="role-enable">
-    <input type="checkbox" name="enable" value="{{d.roleId}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="role-enable" {{d.enable== '0' ? 'checked' : '' }} >
+    <input type="checkbox" name="enable" value="{{d.roleId}}" lay-skin="switch" lay-text="启用|禁用"
+           lay-filter="role-enable" {{d.enable== '0' ? 'checked' : '' }} >
 </script>
 
-<th:block th:include="include :: footer"/>
+<th:block th:include="include :: footer" />
 <script>
     layui.use(['table', 'form', 'jquery'], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
 
-        let MODULE_PATH = rootPath+"/RoleController/";
-        let PERMISSION_PATH = rootPath+"/PermissionController/";
+        let MODULE_PATH = rootPath + "/RoleController/";
+        let PERMISSION_PATH = rootPath + "/PermissionController/";
         let cols = [
             [
                 {type: 'checkbox'},
-                {title: 'ID', field: 'id', align: 'center'},
-                {title: '角色名', field: 'name', align: 'center'},
+                // {title: 'ID', field: 'id', align: 'center'},
+                // {title: '角色名', field: 'name', align: 'center'},
+                {title: '角色名', field: 'name'},
                 {title: '操作', toolbar: '#role-bar', align: 'center'}
             ]
         ]
@@ -156,7 +162,7 @@
                     type: 'delete',
                     success: function (result) {
                         layer.close(loading);
-                        if (result.code==200) {
+                        if (result.code == 200) {
                             layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                                 obj.del();
                             });
@@ -189,7 +195,7 @@
                     type: 'delete',
                     success: function (result) {
                         layer.close(loading);
-                        if (result.code==200) {
+                        if (result.code == 200) {
                             layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                                 table.reload('role-table');
                             });
