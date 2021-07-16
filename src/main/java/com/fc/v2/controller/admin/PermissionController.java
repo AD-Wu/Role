@@ -60,7 +60,7 @@ public class PermissionController extends BaseController {
     @RequiresPermissions("system:permission:list")
     @ResponseBody
     public ResultTable list(Tablepar tablepar, String searchText) throws Exception {
-        PageInfo<Permission> page = sysPermissionService.list(tablepar, searchText);
+        PageInfo<Permission> page = permissionService.list(tablepar, searchText);
 
         return treeTable(page.getList());
     }
@@ -85,7 +85,7 @@ public class PermissionController extends BaseController {
     @RequiresPermissions("system:permission:add")
     @ResponseBody
     public AjaxResult add(@RequestBody Permission permission) throws Exception {
-        int b = sysPermissionService.add(permission);
+        int b = permissionService.add(permission);
         if (b > 0) {
             return success();
         } else {
@@ -107,7 +107,7 @@ public class PermissionController extends BaseController {
     public AjaxResult remove(String ids) {
         int b = 0;
         try {
-            b = sysPermissionService.delete(ids);
+            b = permissionService.delete(ids);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,7 +132,7 @@ public class PermissionController extends BaseController {
     @PostMapping("/checkNameUnique")
     @ResponseBody
     public int checkNameUnique(Permission Permission) throws Exception {
-        int b = sysPermissionService.checkNameUnique(Permission);
+        int b = permissionService.checkNameUnique(Permission);
         if (b > 0) {
             return 1;
         } else {
@@ -149,7 +149,7 @@ public class PermissionController extends BaseController {
     @PostMapping("/checkURLUnique")
     @ResponseBody
     public int checkURLUnique(@RequestBody Permission permission) throws Exception {
-        int b = sysPermissionService.checkURLUnique(permission);
+        int b = permissionService.checkURLUnique(permission);
         if (b > 0) {
             return 1;
         } else {
@@ -166,7 +166,7 @@ public class PermissionController extends BaseController {
     @PostMapping("/checkPermsUnique")
     @ResponseBody
     public int checkPermsUnique(Permission permission) throws Exception {
-        int b = sysPermissionService.checkPermsUnique(permission);
+        int b = permissionService.checkPermsUnique(permission);
         if (b > 0) {
             return 1;
         } else {
@@ -185,9 +185,9 @@ public class PermissionController extends BaseController {
     @GetMapping("/edit/{roleId}")
     public String edit(@PathVariable("roleId") String id, ModelMap mmap) throws Exception {
         //获取自己的权限信息
-        Permission selfPermission = sysPermissionService.getByPrimary(id);
+        Permission selfPermission = permissionService.getByPrimary(id);
         //获取父权限信息
-        Permission parentPermission = sysPermissionService.getByPrimary(selfPermission.getPid());
+        Permission parentPermission = permissionService.getByPrimary(selfPermission.getPid());
         mmap.put("Permission", selfPermission);
         mmap.put("pattsysPermission", parentPermission);
         return prefix + "/edit";
@@ -202,7 +202,7 @@ public class PermissionController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@RequestBody Permission Permission) throws Exception {
-        int i = sysPermissionService.updateByPrimaryKey(Permission);
+        int i = permissionService.updateByPrimaryKey(Permission);
         return toAjax(i);
     }
 
@@ -216,7 +216,7 @@ public class PermissionController extends BaseController {
     @GetMapping("/getCheckPerm")
     @ResponseBody
     public ResuTree getCheckPerm(String roleId) throws Exception {
-        List<SysPower> rolePower = sysPermissionService.getRolePower(roleId);
+        List<SysPower> rolePower = permissionService.getRolePower(roleId);
         return dataTree(rolePower);
     }
 
@@ -252,7 +252,7 @@ public class PermissionController extends BaseController {
     @GetMapping("/selectParent")
     @ResponseBody
     public ResuTree selectParent() throws Exception {
-        List<Permission> list = sysPermissionService.getAll(null);
+        List<Permission> list = permissionService.getAll(null);
         Permission basePower = new Permission();
         basePower.setName("顶级权限");
         basePower.setId("0");
@@ -264,7 +264,7 @@ public class PermissionController extends BaseController {
     @PutMapping("/updateVisible")
     @ResponseBody
     public AjaxResult updateVisible(@RequestBody Permission Permission) throws Exception {
-        int i = sysPermissionService.updateVisible(Permission);
+        int i = permissionService.updateVisible(Permission);
         return toAjax(i);
     }
 

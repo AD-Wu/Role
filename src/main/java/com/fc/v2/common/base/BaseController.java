@@ -34,7 +34,7 @@ public class BaseController
 	
 	//权限
 	@Autowired
-	public PermissionService sysPermissionService;
+	public PermissionService permissionService;
 	
 	//配置文件
 	@Autowired

@@ -51,7 +51,7 @@ public class AdminController extends BaseController {
     @GetMapping("/getUserMenu")
     @ResponseBody
     public List<SysMenu> getUserMenu() throws Exception {
-        List<SysMenu> sysMenus = sysPermissionService.getSysMenus(ShiroUtils.getUserId());
+        List<SysMenu> sysMenus = permissionService.getSysMenus(ShiroUtils.getUserId());
         return sysMenus;
     }
     
