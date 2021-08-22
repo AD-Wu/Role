@@ -5,7 +5,7 @@ import com.fc.v2.model.auto.*;
 import com.fc.v2.model.custom.SysMenu;
 import com.fc.v2.model.custom.SysPower;
 import com.fc.v2.model.custom.Tablepar;
-import com.fc.v2.util.SnowflakeIdWorker;
+import com.fc.v2.util.SnowflakeID;
 import com.fc.v2.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -96,7 +96,7 @@ public class PermissionService implements IService<Permission> {
     @Override
     public int add(Permission record) throws Exception {
         //添加雪花主键id
-        record.setId(SnowflakeIdWorker.getUUID());
+        record.setId(SnowflakeID.get());
         permissionDao.add(record);
         return 1;
     }

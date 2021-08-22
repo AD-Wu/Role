@@ -1,10 +1,9 @@
 package com.fc.v2.service;
 
-import cn.hutool.core.util.RandomUtil;
 import com.fc.v2.common.base.IService;
 import com.fc.v2.model.auto.*;
 import com.fc.v2.model.custom.Tablepar;
-import com.fc.v2.util.SnowflakeIdWorker;
+import com.fc.v2.util.SnowflakeID;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.pikachu.common.collection.KeyValue;
@@ -80,7 +79,7 @@ public class RoleService implements IService<Role> {
     
     @Override
     public int add(Role record) throws Exception {
-        record.setID(SnowflakeIdWorker.getUUID());
+        record.setID(SnowflakeID.get());
         Role add = roleDao.add(record);
         return 1;
     }
@@ -112,7 +111,7 @@ public class RoleService implements IService<Role> {
         int i = 0;
         for (String perID : permIdAry) {
             RolePermission rolePermission = new RolePermission();
-            rolePermission.setId(SnowflakeIdWorker.getUUID());
+            rolePermission.setId(SnowflakeID.get());
             rolePermission.setRoleId(roleId);
             rolePermission.setPermissionId(perID);
             permissionRoleDao.add(rolePermission);

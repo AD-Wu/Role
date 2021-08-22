@@ -1,7 +1,6 @@
 package com.fc.v2.controller.admin;
 
 import com.fc.v2.common.base.BaseController;
-import com.fc.v2.model.auto.OperLog;
 import com.fc.v2.model.custom.Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

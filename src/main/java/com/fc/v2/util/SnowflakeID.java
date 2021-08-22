@@ -12,7 +12,7 @@ package com.fc.v2.util;
  * 加起来刚好64位，为一个Long型。<br>
  * SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，并且效率较高，经测试，SnowFlake每秒能够产生26万ID左右。
  */
-public class SnowflakeIdWorker {
+public class SnowflakeID {
  
     // ==============================Fields===========================================
     /** 开始时间截 (2015-01-01) */
@@ -58,14 +58,14 @@ public class SnowflakeIdWorker {
     private long lastTimestamp = -1L;
  
     
-    static SnowflakeIdWorker idWorker = new SnowflakeIdWorker(1, 1);
+    static SnowflakeID idWorker = new SnowflakeID(1, 1);
     //==============================Constructors=====================================
     /**
      * 构造函数
      * @param workerId 工作ID (0~31)
      * @param dataCenterId 数据中心ID (0~31)
      */
-    public SnowflakeIdWorker(long workerId, long dataCenterId) {
+    public SnowflakeID(long workerId, long dataCenterId) {
         if (workerId > maxWorkerId || workerId < 0) {
             throw new IllegalArgumentException(String.format("workerId can't be greater than %d or less than 0", maxWorkerId));
         }
@@ -139,7 +139,7 @@ public class SnowflakeIdWorker {
     /** 测试 */
     public static void main(String[] args) {
         System.out.println(System.currentTimeMillis());
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(1, 1);
+        SnowflakeID idWorker = new SnowflakeID(1, 1);
         long startTime = System.nanoTime();
         for (int i = 0; i < 500; i++) {
             long id = idWorker.nextId();
@@ -148,7 +148,7 @@ public class SnowflakeIdWorker {
         System.out.println((System.nanoTime()-startTime)/1000000+"ms");
     }
     
-    public static String getUUID() {
+    public static String get() {
     	long id = idWorker.nextId();
     	return String.valueOf(id);
     }

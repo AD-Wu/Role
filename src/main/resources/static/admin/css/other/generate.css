@@ -14,7 +14,8 @@ td .layui-table-cell .layui-form-select, td .layui-table-cell > input.layui-inpu
     line-height: 30px;
 }
 .layui-input[type=text]:focus {
-    border-color: #5FB878 !important
+    /*border-color: #5FB878 !important*/
+    border-color: #A1CDA7 !important
 }
 .layui-form-item .layui-input[readonly] {
     background-color: whitesmoke;

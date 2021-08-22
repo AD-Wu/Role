@@ -34,13 +34,15 @@ tab:
 ## 主题配置
 theme: 
   ## 默认主题色，对应 colors 配置中的 ID 标识
-  defaultColor: "2"
+  defaultColor: "0"
   ## 默认的菜单主题 dark-theme 黑 / light-theme 白
   defaultMenu: "dark-theme"
   ## 是否允许用户切换主题，false 时关闭自定义主题面板
   allowCustom: true
 ## 供选择的主题色配置列表
-colors: 
+colors:
+- id: "0"
+  color: "#A1CDA7"
 - id: "1"
   color: "#2d8cf0"
 - id: "2"

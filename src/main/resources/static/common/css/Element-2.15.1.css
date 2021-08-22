@@ -12956,7 +12956,7 @@
 }
 
 .el-timeline-item__node--success {
-    background-color: #67C23A
+    background-color: #13ce66
 }
 
 .el-timeline-item__node--warning {
@@ -12964,7 +12964,7 @@
 }
 
 .el-timeline-item__node--danger {
-    background-color: #F56C6C
+    background-color: #ff4949
 }
 
 .el-timeline-item__node--info {
@@ -13568,13 +13568,13 @@
 
 .el-button--success {
     color: #FFF;
-    background-color: #67C23A;
-    border-color: #67C23A
+    background-color: #13ce66;
+    border-color: #13ce66
 }
 
 .el-button--success:focus, .el-button--success:hover {
-    background: #85ce61;
-    border-color: #85ce61;
+    background: #59d08e;
+    border-color: #59d08e;
     color: #FFF
 }
 

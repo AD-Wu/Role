@@ -6,7 +6,7 @@ import com.fc.v2.model.auto.*;
 import com.fc.v2.model.custom.RoleVo;
 import com.fc.v2.model.custom.Tablepar;
 import com.fc.v2.util.MD5Util;
-import com.fc.v2.util.SnowflakeIdWorker;
+import com.fc.v2.util.SnowflakeID;
 import com.fc.v2.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -110,13 +110,13 @@ public class UserService implements IService<User> {
      */
     @Transactional
     public int insertUserRoles(User record, String roles) throws Exception {
-        String userID = SnowflakeIdWorker.getUUID();
+        String userID = SnowflakeID.get();
         record.setId(userID);
         if (StringUtils.isNotEmpty(roles)) {
             // 获取数据库操作对象
             List<String> rolesList = ConvertUtil.toListStrArray(roles);
             for (String rolesID : rolesList) {
-                UserRole userRole = new UserRole(SnowflakeIdWorker.getUUID(), userID, rolesID);
+                UserRole userRole = new UserRole(SnowflakeID.get(), userID, rolesID);
                 userRoleDao.add(userRole);
             }
         }
@@ -247,7 +247,7 @@ public class UserService implements IService<User> {
             String[] roles = roleIds.split(",");
             //添加新的角色信息
             for (String role : roles) {
-                UserRole userRole = new UserRole(SnowflakeIdWorker.getUUID(), record.getId(), role);
+                UserRole userRole = new UserRole(SnowflakeID.get(), record.getId(), role);
                 userRoleDao.add(userRole);
             }
         }

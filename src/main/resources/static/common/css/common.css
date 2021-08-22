@@ -72,6 +72,32 @@ Sunday添加
     padding-left: 0;
 }
 
+.el-form-item {
+    width: 90%;
+}
 
+.el-cascader {
+    width: 100%;
+}
+
+.header-search {
+    width: 25%;
+    margin-right: 10px;
+}
+
+.table-header {
+    background: #c0c2bc;
+    color: #fff
+}
+
+.el-driver-line {
+    margin: 13px 0;
+}
+
+/*.el-header {*/
+/*    background-color: #343d46;*/
+/*    color: #FFF;*/
+/*    line-height: 58px;*/
+/*}*/
 
 

@@ -1,6 +1,5 @@
 package com.fc.v2.common.log;
 
-import com.fc.v2.model.auto.OperLog;
 import com.fc.v2.model.auto.User;
 import com.fc.v2.shiro.util.ShiroUtils;
 import com.fc.v2.util.ServletUtils;
@@ -81,7 +80,6 @@ public class LogAspect
             User currentUser = ShiroUtils.getUser();
 
             // *========数据库日志=========*//
-            OperLog operLog = new OperLog();
            
             //赋值操作
             /*String ip = ShiroUtils.getIp();
@@ -89,11 +87,11 @@ public class LogAspect
             // 操作地点
             //operLog.setOperLocation(AddressUtils.getRealAddressByIP(ip));
             // 请求的地址
-            operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
+            // operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (currentUser != null)
             {
 //            	//操作人
-                operLog.setOperName(currentUser.getUsername());
+//                 operLog.setOperName(currentUser.getUsername());
 //                if (StringUtils.isNotNull(currentUser.getDept())
 //                        && StringUtils.isNotEmpty(currentUser.getDept().getDeptName()))
 //                {
@@ -104,15 +102,15 @@ public class LogAspect
             if (e != null)
             {
             	//错误日志
-            	operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
+            	// operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
             }
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
-            operLog.setMethod(className + "." + methodName + "()");
-            operLog.setOperTime(LocalDateTime.now());
-            // 处理设置注解上的参数
-            getControllerMethodDescription(controllerLog, operLog);
+            // operLog.setMethod(className + "." + methodName + "()");
+            // operLog.setOperTime(LocalDateTime.now());
+            // // 处理设置注解上的参数
+            // getControllerMethodDescription(controllerLog, operLog);
             // 保存数据库
             //System.out.println("-----------------");
             //System.out.println(new Gson().toJson(operLog));
@@ -134,34 +132,34 @@ public class LogAspect
      * @return 方法描述
      * @throws Exception
      */
-    public void getControllerMethodDescription(Log log, OperLog operLog) throws Exception
-    {
-        // 设置action动作
-       // operLog.setAction(log.action());
-        // 设置标题
-        operLog.setTitle(log.title());
-        // 设置channel
-        //operLog.setChannel(log.channel());
-        // 是否需要保存request，参数和值
-        if (log.isSaveRequestData())
-        {
-            // 获取参数的信息，传入到数据库中。
-            setRequestValue(operLog);
-        }
-    }
+    // public void getControllerMethodDescription(Log log, OperLog operLog) throws Exception
+    // {
+    //     // 设置action动作
+    //    // operLog.setAction(log.action());
+    //     // 设置标题
+    //     // operLog.setTitle(log.title());
+    //     // 设置channel
+    //     //operLog.setChannel(log.channel());
+    //     // 是否需要保存request，参数和值
+    //     if (log.isSaveRequestData())
+    //     {
+    //         // 获取参数的信息，传入到数据库中。
+    //         setRequestValue(operLog);
+    //     }
+    // }
 
     /**
      * 获取请求的参数，放到log中
      * 
      * @param operLog
      */
-    private void setRequestValue(OperLog operLog)
-    {
-        Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
-        Gson gson=new Gson();
-        String params = gson.toJson(map);
-        operLog.setOperParam(StringUtils.substring(params, 0, 255));
-    }
+    // private void setRequestValue(OperLog operLog)
+    // {
+    //     Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
+    //     Gson gson=new Gson();
+    //     String params = gson.toJson(map);
+    //     operLog.setOperParam(StringUtils.substring(params, 0, 255));
+    // }
 
     /**
      * 是否存在注解，如果存在就获取
